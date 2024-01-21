@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 class TournamentNameViewModel extends ChangeNotifier{
 
 
-  String _selectedTournamentId = '';
+  late int? _selectedTournamentId ;
 
-  String get selectedTournamentId => _selectedTournamentId;
+  int? get selectedTournamentId => _selectedTournamentId;
 
-  void setSelectedTournamentId(String tournamentId) {
+  void setSelectedTournamentId(int tournamentId) {
     _selectedTournamentId = tournamentId;
     notifyListeners();
   }

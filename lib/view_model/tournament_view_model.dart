@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
+import '../data/database_Helper/database_helper.dart';
 import '../data/model/tournament_model.dart';
 
-class TournamentViewModel extends ChangeNotifier{
-  List<Tournament> _tournaments = [];
-  List<Tournament> get tournaments => _tournaments;
+class TournamentViewModel with ChangeNotifier {
+  List<Tournament> _tournamentList = [];
 
-  void addTournament(Tournament tournament){
-    _tournaments.add(tournament);
+  List<Tournament> get tournamentList => _tournamentList;
+
+  Future<void> addTournament(Tournament tournament) async {
+    Tournament newTournament =await DbHelper().insert(tournament);
+    _tournamentList.add(newTournament);
     notifyListeners();
   }
-}
 
+
+}
 

@@ -5,6 +5,7 @@ import 'package:football_host/view/home_view.dart';
 import 'package:football_host/view/new_tournament.dart';
 
 
+
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings){
     switch (settings.name) {
@@ -28,21 +29,22 @@ class Routes {
         transitionDuration: const Duration(milliseconds: 500)
         );
 
-      // case RoutesName.addTeams:
-      //   return PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation){
-      //     return   AddTeams();
-      //   },
-      //       transitionsBuilder: (context, animation, secondaryAnimation, child){
-      //         const begin = Offset(1, 1);
-      //         const end = Offset.zero;
-      //         const curve = Curves.bounceInOut;
-      //         var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-      //         var offsetAnimation = animation.drive(tween);
-      //
-      //         return SlideTransition(position: offsetAnimation, child: child,);
-      //       },
-      //       transitionDuration: const Duration(milliseconds: 500)
-      //   );
+      case RoutesName.addTeams:
+        return PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation){
+          final tournament = ModalRoute.of(context)!.settings.arguments as String?;
+          return   AddTeams(tournamentName: tournament,);
+        },
+            transitionsBuilder: (context, animation, secondaryAnimation, child){
+              const begin = Offset(1, 1);
+              const end = Offset.zero;
+              const curve = Curves.bounceInOut;
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(position: offsetAnimation, child: child,);
+            },
+            transitionDuration: const Duration(milliseconds: 500)
+        );
 
 
       default:

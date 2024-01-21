@@ -15,6 +15,7 @@ class AddTournament extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController tournamentNameController = TextEditingController();
+    TournamentViewModel tournamentViewModel = Provider.of<TournamentViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.appBarColor,
@@ -40,12 +41,11 @@ class AddTournament extends StatelessWidget {
           ),
           InkWell(
             onTap: () async{
-              TournamentViewModel tournamentViewModel = Provider.of<TournamentViewModel>(context, listen: false);
-              String tournamentName = tournamentNameController.text;
+              String tournamentName = tournamentNameController.text.trim();
               if(tournamentName.isNotEmpty){
-                Tournament newTournament = Tournament(id: 0, name: tournamentName, team: []);
-                tournamentViewModel.addTournament(newTournament);
-                await Utils.toastMessage('Tournament Added Successfully');
+                Tournament tournament = Tournament(name: tournamentName);
+                await tournamentViewModel.addTournament(tournament);
+                await Utils.toastMessage('Tournament added');
                 Navigator.pop(context);
               }
 

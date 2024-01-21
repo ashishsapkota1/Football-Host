@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
             flex: 3,
             child: Consumer<TournamentViewModel>(
               builder: (context, viewModel, _) {
-                final tournaments = viewModel.tournaments;
+                final tournaments = viewModel.tournamentList;
 
                 return ListView.builder(
                     itemCount: tournaments.length,
@@ -52,12 +52,19 @@ class _HomeViewState extends State<HomeView> {
                                 top: Responsive.screenHeight(context) * 0.01,
                                 ),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                final tournamentNameModel = Provider.of<TournamentNameViewModel>(context, listen: false);
+                                final selectedTournament = tournaments[index];
+                                tournamentNameModel.setSelectedTournament(selectedTournament.name!);
+                                tournamentNameModel.setSelectedTournamentId(selectedTournament.id!);
+                                print(selectedTournament.name);
+                                Navigator.pushNamed(context, RoutesName.addTeams, arguments: selectedTournament.name);
+                              },
                               child: Card(
                                 elevation: 2,
                                 color: AppColor.cardGrey,
                                 child: ListTile(
-                                  title: Text(tournaments[index].name, style: TextStyles.cardText,),
+                                  title: Text(tournaments[index].name!, style: TextStyles.cardText,),
                                 ),
                               ),
                             ),
