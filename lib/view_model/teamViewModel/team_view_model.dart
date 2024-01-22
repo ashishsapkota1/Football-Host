@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:football_host/data/database_Helper/database_helper.dart';
 
-import '../data/model/team_model.dart';
+import '../../data/model/team_model.dart';
 
 
 class TeamViewModel extends ChangeNotifier{

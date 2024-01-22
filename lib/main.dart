@@ -3,7 +3,8 @@ import 'package:football_host/resources/utils/routes/routes.dart';
 import 'package:football_host/resources/utils/routes/routes_name.dart';
 import 'package:football_host/view_model/home_view_model.dart';
 import 'package:football_host/view_model/navbar_view_model.dart';
-import 'package:football_host/view_model/team_view_model.dart';
+import 'package:football_host/view_model/player_view_model.dart';
+import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HomeViewModel()),
         ChangeNotifierProvider(create: (context) =>TournamentNameViewModel()),
         ChangeNotifierProvider(create: (context) => NavbarViewModel()),
-        ChangeNotifierProvider(create: (context) => TeamViewModel())
+        ChangeNotifierProvider(create: (context) => TeamViewModel()),
+        ChangeNotifierProvider(create: (context) => PlayerViewModel())
       ],
       child:  MaterialApp(
         theme: ThemeData(fontFamily: 'Poppins'),

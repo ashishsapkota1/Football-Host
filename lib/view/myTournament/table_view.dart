@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/responsive.dart';
-import 'package:football_host/view_model/team_view_model.dart';
+import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,7 @@
+import 'package:football_host/data/model/player_model.dart';
 import 'package:football_host/data/model/team_model.dart';
-import 'package:football_host/view_model/team_view_model.dart';
+import 'package:football_host/view_model/player_view_model.dart';
+import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -11,6 +13,7 @@ class DbHelper {
   static const String dbName = 'tournament_host.db';
   final TournamentViewModel _tournamentViewModel = TournamentViewModel();
   final TeamViewModel _teamViewModel = TeamViewModel();
+  final PlayerViewModel _playerViewModel = PlayerViewModel();
 
   Future<Database?> get db async {
     if (_db != null) {
@@ -22,20 +25,31 @@ class DbHelper {
 
   initDb() async {
     String path = join(await getDatabasesPath(), dbName);
-    var db = await openDatabase(path, version: 3, onCreate: _createDb);
+    var db = await openDatabase(path, version: 4, onCreate: _createDb);
     return db;
   }
 
   _createDb(Database db, int version) async {
     await db.execute("CREATE TABLE IF NOT EXISTS TOURNAMENT("
         "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-        " name TEXT NOT NULL)");
+        " name TEXT NOT NULL)"
+    );
 
     await db.execute(
         "CREATE TABLE IF NOT EXISTS TEAM(ID INTEGER PRIMARY KEY AUTOINCREMENT ,"
         " teamName TEXT NOT NULL, "
         "tournamentId INTEGER NOT NULL,"
-        "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(ID) ON DELETE CASCADE)");
+        "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(ID) ON DELETE CASCADE)"
+    );
+
+    await db.execute(
+        "CREATE TABLE IF NOT EXISTS PLAYER(ID INTEGER PRIMARY KEY AUTOINCREMENT ,"
+            "playerName TEXT NOT NULL, "
+            "position TEXT NOT NULL, "
+            "jerseyNo INTEGER, "
+            "teamId INTEGER NOT NULL,"
+            "FOREIGN KEY(teamId) REFERENCES TEAM(ID) ON DELETE CASCADE)"
+    );
   }
 
   Future<Tournament> insert(Tournament tournament) async {
@@ -62,6 +76,19 @@ class DbHelper {
       return updatedTeam;
     } else {
       throw Exception('failed to insert teams');
+    }
+  }
+
+  Future<Player> insertPlayer(int teamId, Player player) async{
+    var dbClient = await db;
+    int? id = await dbClient?.insert('PLAYER', player.toMap(teamId));
+
+    if(id != null && id>0) {
+      Player updatedPlayer = player.copyWith(id: id);
+      _playerViewModel.addPlayer(teamId, updatedPlayer);
+      return updatedPlayer;
+    }else{
+      throw Exception('cant add player');
     }
   }
 

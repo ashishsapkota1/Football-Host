@@ -1,4 +1,4 @@
-import 'package:football_host/data/model/player_model.dart';
+
 
 class Team{
   int? id;
@@ -22,8 +22,4 @@ class Team{
     };
   }
 
-  Team.fromMap(Map<String, dynamic> map)
-      : id = map['id'],
-        tournamentId = map["tournamentId"],
-        teamName = map['teamName'];
 }

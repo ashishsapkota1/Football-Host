@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:football_host/view_model/team_view_model.dart';
+import 'package:football_host/resources/utils/routes/routes_name.dart';
+import 'package:football_host/view_model/teamViewModel/teamName_view_model.dart';
+import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +38,12 @@ class TournamentTeams extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
+                              final teamNameModel = Provider.of<TeamNameViewModel>(context,listen: false);
+                              final selectedTeamName = teamList[index].teamName;
+                              teamNameModel.setSelectedTeam(selectedTeamName!);
+                              final selectedTeamId = teamList[index].id;
+                              teamNameModel.setSelectedTeamId(selectedTeamId!);
+                              Navigator.pushNamed(context, RoutesName.teamPlayers,arguments: selectedTeamName);
                               print(teamList[index].tournamentId);
                             },
                             child: Card(

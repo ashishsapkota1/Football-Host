@@ -4,7 +4,7 @@ import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/utils.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
-import '../../view_model/team_view_model.dart';
+import '../../view_model/teamViewModel/team_view_model.dart';
 import '../utils/text_styles.dart';
 
 class FloatingButton extends StatefulWidget {
