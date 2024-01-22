@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:football_host/view_model/navbar_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
-import '../data/model/tournament_model.dart';
 import '../resources/app_colors.dart';
+import '../resources/components/floating_button.dart';
+import '../resources/utils/responsive.dart';
 import '../resources/utils/text_styles.dart';
+import 'myTournament/table_view.dart';
 import 'myTournament/tournament_matches.dart';
 import 'myTournament/tournament_teams.dart';
 
 class AddTeams extends StatefulWidget {
-
   final String? tournamentName;
   const AddTeams({super.key, required this.tournamentName});
 
@@ -23,16 +24,9 @@ class _AddTeamsState extends State<AddTeams> {
   Widget build(BuildContext context) {
     final getTournamentName =
         Provider.of<TournamentNameViewModel>(context, listen: false);
+    final navBar = Provider.of<NavbarViewModel>(context);
     final String tournamentName = getTournamentName.selectedTournament;
-    final int? tournamentId =  Provider.of<TournamentNameViewModel>(context)
-        .selectedTournamentId;
-    print(tournamentId);
-
-    currentTab = [
-      TournamentTeams(),
-
-      const TournamentMatches()
-    ];
+    currentTab = [const TournamentTeams(), const TournamentMatches(),const TournamentTable()];
     return Scaffold(
         backgroundColor: AppColor.backGroundColor,
         appBar: AppBar(
@@ -43,11 +37,11 @@ class _AddTeamsState extends State<AddTeams> {
           ),
           centerTitle: true,
         ),
-        // floatingActionButton: Padding(
-        //   padding:
-        //       EdgeInsets.only(bottom: Responsive.screenHeight(context) * 0.1),
-        //   child: FloatingButton(),
-        // ),
+        floatingActionButton: Padding(
+          padding:
+              EdgeInsets.only(bottom: Responsive.screenHeight(context) * 0.1),
+          child: const FloatingButton(),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         bottomNavigationBar:
             Consumer<NavbarViewModel>(builder: (context, navBar, _) {
@@ -67,7 +61,9 @@ class _AddTeamsState extends State<AddTeams> {
                   icon: Icon(Icons.scoreboard),
                   label: 'Matches',
                 ),
+                BottomNavigationBarItem(icon: Icon(Icons.table_view),label: 'Table')
               ]);
-        }));
+
+        }),body: currentTab[navBar.selectedItem],);
   }
 }

@@ -3,7 +3,7 @@ import '../data/database_Helper/database_helper.dart';
 import '../data/model/tournament_model.dart';
 
 class TournamentViewModel with ChangeNotifier {
-  List<Tournament> _tournamentList = [];
+  final List<Tournament> _tournamentList = [];
 
   List<Tournament> get tournamentList => _tournamentList;
 

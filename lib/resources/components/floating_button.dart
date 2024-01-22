@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/data/model/team_model.dart';
 import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/utils.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
-import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import '../../view_model/team_view_model.dart';
 import '../utils/text_styles.dart';
 
-class FloatingButton extends StatelessWidget {
-  FloatingButton({super.key});
+class FloatingButton extends StatefulWidget {
+  const FloatingButton({super.key});
 
-  TextEditingController _addTeamsController = TextEditingController();
+  @override
+  State<FloatingButton> createState() => _FloatingButtonState();
+}
+
+class _FloatingButtonState extends State<FloatingButton> {
+  final TextEditingController _addTeamsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +33,17 @@ class FloatingButton extends StatelessWidget {
   }
 }
 
-_displayTextField(BuildContext context, TextEditingController _controller) {
+_displayTextField(BuildContext context, TextEditingController controller) {
   return showDialog(
       context: context,
       builder: (context) {
         final tournamentNameProvider = Provider.of<TournamentNameViewModel>(context, listen: false);
-        final tournamentProvider = Provider.of<TournamentViewModel>(context, listen: false);
+        final teamProvider = Provider.of<TeamViewModel>(context, listen: false);
         return AlertDialog(
           backgroundColor: AppColor.backGroundColor,
           title: const Text('Enter Team Name',style: TextStyle(color: AppColor.appBarColor),),
           content: TextField(
-            controller: _controller,
+            controller: controller,
             decoration: InputDecoration(
                 hintText: 'Team Name',
                 border: OutlineInputBorder(
@@ -46,15 +51,20 @@ _displayTextField(BuildContext context, TextEditingController _controller) {
           ),
           actions: [ElevatedButton(
               onPressed: () async{
-                final String teamName = _controller.text;
+                final String teamName = controller.text.trim();
                 final  int? tournamentId = tournamentNameProvider.selectedTournamentId;
 
-                tournamentProvider.addTeamToTournament(tournamentId , newTeam);
-                print(tournamentId);
-                print(newTeam.id);
+                if(teamName.isNotEmpty){
+                  Team team = Team(teamName: teamName, tournamentId: tournamentId);
+                  teamProvider.addTeam(tournamentId!, team);
+                  await Utils.toastMessage('teams added');
+                  Navigator.pop(context);
+                  controller.clear();
+                  print(team.teamName);
+                  print(team.tournamentId);
 
-                await Utils.toastMessage('Team Added Successfully');
-                Navigator.pop(context);
+                }
+
 
 
               },

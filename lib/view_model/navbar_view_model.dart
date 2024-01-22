@@ -7,7 +7,6 @@ class NavbarViewModel extends ChangeNotifier{
   set setSelectedItem(int index){
     _selectedItem = index;
     notifyListeners();
-
   }
 
 }

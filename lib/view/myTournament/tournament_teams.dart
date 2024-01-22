@@ -1,43 +1,59 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../../view_model/tournament_view_model.dart';
-//
-// class TournamentTeams extends StatefulWidget {
-//   final String tournamentId;
-//   const TournamentTeams({super.key, required this.tournamentId});
-//
-//   @override
-//   State<TournamentTeams> createState() => _TournamentTeamsState();
-// }
-//
-// class _TournamentTeamsState extends State<TournamentTeams> {
-//   @override
-//   Widget build(BuildContext context) {
-//     print('Tournament ID in Teams widget: ${widget.tournamentId}');
-//     return Consumer<TournamentViewModel>(builder: (context, teamViewModel, _) {
-//       // final teams = teamViewModel.tournamentsMap[widget.tournamentId];
-//         return ListView.builder(
-//           itemCount: teams.teams.length,
-//           itemBuilder: (context, index) {
-//             // final team = teams.teams[index];
-//             return ListTile(
-//               title: Text(team.name),
-//             );
-//           },
-//         );
-//     });
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
+import 'package:football_host/view_model/team_view_model.dart';
+import 'package:football_host/view_model/tournamentName_view_model.dart';
+import 'package:provider/provider.dart';
+
+import '../../resources/app_colors.dart';
+import '../../resources/utils/responsive.dart';
+import '../../resources/utils/text_styles.dart';
 
 class TournamentTeams extends StatelessWidget {
   const TournamentTeams({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+
+    final getTournamentId = Provider.of<TournamentNameViewModel>(context);
+    final tournamentId = getTournamentId.selectedTournamentId;
+    return Column(
+      children: [
+        Expanded(
+          child: Consumer<TeamViewModel>(
+            builder: (context, viewModel, _) {
+              final teamList = viewModel.getTournamentTeams(tournamentId!);
+              print(teamList);
+
+              return ListView.builder(
+                  itemCount: teamList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: Responsive.screenWidth(context) * 0.02,
+                            right: Responsive.screenWidth(context) * 0.02,
+                            top: Responsive.screenHeight(context) * 0.01,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              print(teamList[index].tournamentId);
+                            },
+                            child: Card(
+                              elevation: 2,
+                              color: AppColor.cardGrey,
+                              child: ListTile(
+                                title: Text(teamList[index].teamName!, style: TextStyles.teamCardText,),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

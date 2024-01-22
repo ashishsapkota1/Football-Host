@@ -18,4 +18,8 @@ class TextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );
+  static const TextStyle teamCardText = TextStyle(
+    color: AppColor.appBarColor,
+    fontSize: 18
+  );
 }
