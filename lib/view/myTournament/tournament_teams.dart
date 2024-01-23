@@ -38,7 +38,7 @@ class TournamentTeams extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              final teamNameModel = Provider.of<TeamNameViewModel>(context,listen: false);
+                              final teamNameModel = Provider.of<TeamNameViewModel>(context, listen: false);
                               final selectedTeamName = teamList[index].teamName;
                               teamNameModel.setSelectedTeam(selectedTeamName!);
                               final selectedTeamId = teamList[index].id;

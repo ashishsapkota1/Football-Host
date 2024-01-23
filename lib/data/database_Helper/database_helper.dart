@@ -25,7 +25,7 @@ class DbHelper {
 
   initDb() async {
     String path = join(await getDatabasesPath(), dbName);
-    var db = await openDatabase(path, version: 4, onCreate: _createDb);
+    var db = await openDatabase(path, version: 7, onCreate: _createDb);
     return db;
   }
 
