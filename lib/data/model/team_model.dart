@@ -22,4 +22,12 @@ class Team{
     };
   }
 
+  factory Team.fromMap(Map<String, dynamic> map) {
+    return Team(
+      id: map['id'],
+      tournamentId: map['tournamentId'],
+      teamName: map['teamName'],
+    );
+  }
+
 }

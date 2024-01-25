@@ -57,8 +57,6 @@ class _HomeViewState extends State<HomeView> {
                                 final selectedTournament = tournaments[index];
                                 tournamentNameModel.setSelectedTournament(selectedTournament.name!);
                                 tournamentNameModel.setSelectedTournamentId(selectedTournament.id!);
-                                print(selectedTournament.name);
-                                print(selectedTournament.id);
                                 Navigator.pushNamed(context, RoutesName.addTeams, arguments: selectedTournament.name);
                               },
                               child: Card(

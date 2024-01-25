@@ -7,7 +7,7 @@ import '../resources/components/floating_button.dart';
 import '../resources/utils/responsive.dart';
 import '../resources/utils/text_styles.dart';
 import 'myTournament/table_view.dart';
-import 'myTournament/tournament_matches.dart';
+import 'myTournament/tournament_schedule.dart';
 import 'myTournament/tournament_teams.dart';
 
 class AddTeams extends StatefulWidget {
@@ -26,7 +26,7 @@ class _AddTeamsState extends State<AddTeams> {
         Provider.of<TournamentNameViewModel>(context, listen: false);
     final navBar = Provider.of<NavbarViewModel>(context);
     final String tournamentName = getTournamentName.selectedTournament;
-    currentTab = [const TournamentTeams(), const TournamentMatches(),const TournamentTable()];
+    currentTab = [const TournamentTeams(), const TournamentSchedule(),const TournamentTable()];
     return Scaffold(
         backgroundColor: AppColor.backGroundColor,
         appBar: AppBar(
@@ -58,8 +58,8 @@ class _AddTeamsState extends State<AddTeams> {
                   label: 'Teams',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.scoreboard),
-                  label: 'Matches',
+                  icon: Icon(Icons.schedule),
+                  label: 'Schedule',
                 ),
                 BottomNavigationBarItem(icon: Icon(Icons.table_view),label: 'Table')
               ]);

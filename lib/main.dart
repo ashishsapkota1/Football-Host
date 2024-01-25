@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/routes/routes.dart';
 import 'package:football_host/resources/utils/routes/routes_name.dart';
 import 'package:football_host/view_model/home_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
 import 'package:football_host/view_model/navbar_view_model.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/teamName_view_model.dart';
@@ -28,7 +30,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => NavbarViewModel()),
         ChangeNotifierProvider(create: (context) => TeamViewModel()),
         ChangeNotifierProvider(create: (context) => PlayerViewModel()),
-        ChangeNotifierProvider(create: (context) => TeamNameViewModel())
+        ChangeNotifierProvider(create: (context) => TeamNameViewModel()),
+        ChangeNotifierProvider(create: (context) => MatchViewModel()),
+        ChangeNotifierProvider(create: (context) => ScheduleViewModel())
       ],
       child:  MaterialApp(
         theme: ThemeData(fontFamily: 'Poppins'),
