@@ -5,7 +5,7 @@ class TextStyles {
   static  const TextStyle appBarText = TextStyle(
     color: AppColor.backGroundColor,
     fontSize: 24,
-    fontFamily: 'Poppins'
+    fontFamily: 'Poppins',
   );
 
   static const TextStyle buttonText = TextStyle(

@@ -3,7 +3,6 @@ import 'package:football_host/resources/components/add_player_form.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/teamName_view_model.dart';
 import 'package:provider/provider.dart';
-
 import '../../resources/app_colors.dart';
 import '../../resources/utils/responsive.dart';
 import '../../resources/utils/text_styles.dart';
@@ -28,7 +27,7 @@ class _TeamPlayersState extends State<TeamPlayers> {
       appBar: AppBar(
         backgroundColor: AppColor.appBarColor,
         title:  Text(
-          'Team: $teamName',
+          'Team: $teamName'.toUpperCase(),
           style: TextStyles.appBarText,
         ),
         centerTitle: true,

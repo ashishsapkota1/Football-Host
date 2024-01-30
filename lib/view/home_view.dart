@@ -82,14 +82,11 @@ class _HomeViewState extends State<HomeView> {
               bottom: Responsive.screenHeight(context) * 0.02,
             ),
             child: InkWell(
-              onTap: () {
+              onTap: () async{
                 imageModel.onTapped();
-                Future.delayed(const Duration(milliseconds: 300), () {
-                  Navigator.pushNamed(context, RoutesName.addTournament);
-                });
-                Future.delayed(const Duration(milliseconds: 1500), () {
-                  imageModel.resetTapped();
-                });
+                 await Navigator.pushNamed(context, RoutesName.addTournament);
+
+                 imageModel.resetTapped();
               },
               child: Container(
                 height: Responsive.screenHeight(context) * 0.07,
