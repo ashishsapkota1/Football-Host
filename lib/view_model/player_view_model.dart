@@ -10,7 +10,7 @@ class PlayerViewModel extends ChangeNotifier{
   }
   
   void addPlayer(int teamId, Player player) async{
-    Player newPlayer = await DbHelper().insertPlayer(teamId, player);
+    Player newPlayer = await DbHelper.instance.insertPlayer(teamId, player);
     if(_teamPlayers.containsKey(teamId)){
       _teamPlayers[teamId]!.add(newPlayer);
     }else{

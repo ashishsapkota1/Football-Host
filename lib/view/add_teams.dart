@@ -26,7 +26,7 @@ class _AddTeamsState extends State<AddTeams> {
         Provider.of<TournamentNameViewModel>(context, listen: false);
     final navBar = Provider.of<NavbarViewModel>(context);
     final String tournamentName = getTournamentName.selectedTournament;
-    currentTab = [const TournamentTeams(), const TournamentSchedule(),const TournamentTable()];
+    currentTab = [const TournamentTeams(), TournamentSchedule(),const TournamentTable()];
     return Scaffold(
         backgroundColor: AppColor.backGroundColor,
         appBar: AppBar(

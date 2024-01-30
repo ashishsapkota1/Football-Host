@@ -1,8 +1,11 @@
+import 'package:football_host/data/model/match/match_schedule_model.dart';
 import 'package:football_host/data/model/player_model.dart';
 import 'package:football_host/data/model/team_model.dart';
+import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -14,51 +17,56 @@ class DbHelper {
   final TournamentViewModel _tournamentViewModel = TournamentViewModel();
   final TeamViewModel _teamViewModel = TeamViewModel();
   final PlayerViewModel _playerViewModel = PlayerViewModel();
+  final ScheduleViewModel scheduleViewModel = ScheduleViewModel();
+
+  DbHelper._();
+  static final DbHelper instance = DbHelper._();
 
   Future<Database?> get db async {
     if (_db != null) {
       return _db;
     }
     _db = await initDb();
-    return null;
+    return _db;
   }
 
   initDb() async {
-    String path = join(await getDatabasesPath(), dbName);
-    var db = await openDatabase(path, version: 12, onCreate: _createDb);
+    var databasePath = await getApplicationDocumentsDirectory();
+    String path = join(databasePath.path, dbName);
+    var db = await openDatabase(path, version: 1, onCreate: _createDb);
     return db;
   }
 
   _createDb(Database db, int version) async {
-    await db.execute("CREATE TABLE IF NOT EXISTS TOURNAMENT("
+    await db.execute("CREATE TABLE TOURNAMENT("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         " name TEXT NOT NULL)");
 
-    await db.execute(
-        "CREATE TABLE IF NOT EXISTS TEAM(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
+    await db.execute("CREATE TABLE TEAM(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
         " teamName TEXT NOT NULL, "
         "tournamentId INTEGER NOT NULL,"
         "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(id) ON DELETE CASCADE)");
 
     await db.execute(
-        "CREATE TABLE IF NOT EXISTS Schedule(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "CREATE TABLE Schedule(id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "tournamentId INTEGER NOT NULL,"
         "team1Id INTEGER NOT NULL,"
         "team2Id INTEGER NOT NULL,"
+        "team1Name TEXT,"
+        "team2Name TEXT,"
         "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(id) ON DELETE CASCADE,"
         "FOREIGN KEY(team1Id) REFERENCES TEAM(id),"
         "FOREIGN KEY(team2Id) REFERENCES TEAM(id))");
 
-    await db.execute(
-        "CREATE TABLE IF NOT EXISTS PLAYER(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
-        "playerName TEXT NOT NULL, "
-        "position TEXT NOT NULL, "
-        "jerseyNo INTEGER, "
-        "teamId INTEGER NOT NULL,"
-        "FOREIGN KEY(teamId) REFERENCES TEAM(id) ON DELETE CASCADE)");
+    await db
+        .execute("CREATE TABLE PLAYER(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
+            "playerName TEXT NOT NULL, "
+            "position TEXT NOT NULL, "
+            "jerseyNo INTEGER, "
+            "teamId INTEGER NOT NULL,"
+            "FOREIGN KEY(teamId) REFERENCES TEAM(id) ON DELETE CASCADE)");
 
-    await db.execute(
-        "CREATE TABLE IF NOT EXISTS MATCH(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
+    await db.execute("CREATE TABLE MATCH(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
         "tournamentId INTEGER NOT NULL,"
         "team1Id INTEGER NOT NULL,"
         "team2Id INTEGER NOT NULL,"
@@ -97,6 +105,21 @@ class DbHelper {
     }
   }
 
+  Future<MatchSchedule> insertSchedule(int tournamentId, int team1Id,
+      int team2Id,String team1Name , String team2Name, MatchSchedule schedule) async {
+    var dbClient = await db;
+    int? id = await dbClient?.insert(
+        'Schedule', schedule.toMap(tournamentId, team1Id, team2Id));
+    if (id != null && id > 0) {
+      MatchSchedule updatedSchedule = schedule.copyWith(id: id);
+      scheduleViewModel.addSchedule(
+          tournamentId, team1Id, team2Id,team1Name,team2Name, updatedSchedule);
+      return updatedSchedule;
+    } else {
+      throw Exception('failed to insert schedule');
+    }
+  }
+
   Future<Player> insertPlayer(int teamId, Player player) async {
     var dbClient = await db;
     int? id = await dbClient?.insert('PLAYER', player.toMap(teamId));
@@ -110,20 +133,20 @@ class DbHelper {
     }
   }
 
-  Future<List<Team>> getTournamentTeams(int tournamentId) async {
-    final dbClient = await db;
-    final List<Map<String, dynamic>> maps = await dbClient!.query(
+  Future getTeamNameById(int teamId) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient!.query(
       'TEAM',
-      where: 'tournamentId = ?',
-      whereArgs: [tournamentId],
+      columns: ['teamName'],
+      where: 'id = ?',
+      whereArgs: [teamId],
     );
-    return List.generate(maps.length, (index) {
-      return Team(
-        id: maps[index]['id'],
-        teamName: maps[index]['teamName'],
-        tournamentId: maps[index]['tournamentId'],
-      );
-    });
+
+    if (result.isNotEmpty) {
+      return result.first['teamName'];
+    } else {
+      return [];
+    }
   }
 
   Future<int> delete(int id) async {

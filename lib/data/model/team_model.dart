@@ -1,5 +1,4 @@
 
-
 class Team{
   int? id;
   final int? tournamentId;
@@ -22,12 +21,5 @@ class Team{
     };
   }
 
-  factory Team.fromMap(Map<String, dynamic> map) {
-    return Team(
-      id: map['id'],
-      tournamentId: map['tournamentId'],
-      teamName: map['teamName'],
-    );
-  }
 
 }

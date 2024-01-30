@@ -39,8 +39,6 @@ class _TeamPlayersState extends State<TeamPlayers> {
             child: Consumer<PlayerViewModel>(
               builder: (context, viewModel, _) {
                 final playerList = viewModel.getPlayerList(teamId!);
-
-
                 return ListView.builder(
                     itemCount: playerList.length,
                     itemBuilder: (context, index) {
@@ -61,6 +59,8 @@ class _TeamPlayersState extends State<TeamPlayers> {
                                 // teamNameModel.setSelectedTeamId(selectedTeamId!);
                                 // Navigator.pushNamed(context, RoutesName.teamPlayers,arguments: selectedTeamName);
                                 // print(teamList[index].tournamentId);
+                                print(playerList[index].playerName);
+                                print(playerList[index].id);
                               },
                               child: Card(
                                 elevation: 2,

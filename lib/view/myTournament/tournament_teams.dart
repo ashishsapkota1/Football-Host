@@ -43,7 +43,7 @@ class TournamentTeams extends StatelessWidget {
                               teamNameModel.setSelectedTeam(selectedTeamName!);
                               final selectedTeamId = teamList[index].id;
                               teamNameModel.setSelectedTeamId(selectedTeamId!);
-                              // Navigator.pushNamed(context, RoutesName.teamPlayers,arguments: selectedTeamName);
+                              Navigator.pushNamed(context, RoutesName.teamPlayers,arguments: selectedTeamName);
                               print(selectedTeamId);
                             },
                             child: Card(

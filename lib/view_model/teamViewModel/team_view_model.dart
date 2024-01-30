@@ -10,8 +10,8 @@ class TeamViewModel extends ChangeNotifier{
   List<Team> getTournamentTeams(int tournamentId){
     return _tournamentTeams[tournamentId] ?? [];
   }
-  void addTeam(int tournamentId, Team teams) async{
-    Team newTeam = await DbHelper().insertTeams(tournamentId, teams);
+  Future<void> addTeam(int tournamentId, Team teams) async{
+    Team newTeam = await DbHelper.instance.insertTeams(tournamentId, teams);
     if(_tournamentTeams.containsKey(tournamentId)){
       _tournamentTeams[tournamentId]!.add(newTeam);
     }else{
@@ -19,6 +19,5 @@ class TeamViewModel extends ChangeNotifier{
     }
     notifyListeners();
   }
-
 
 }

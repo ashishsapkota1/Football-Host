@@ -54,7 +54,6 @@ _displayTextField(BuildContext context) {
               bottom: Responsive.screenWidth(context) * 0.2),
           child: SingleChildScrollView(
             child: AlertDialog(
-              clipBehavior: Clip.hardEdge,
               elevation: 2,
               backgroundColor: AppColor.backGroundColor,
               title: const Text(
@@ -108,25 +107,13 @@ _displayTextField(BuildContext context) {
                             teamId: teamId);
 
                         playerProvider.addPlayer(teamId!, player);
-                        await Utils.toastMessage("Player added successfully");
                         Navigator.pop(context);
+                        await Utils.toastMessage("Player added successfully");
+
                         playerNameController.clear();
                         playerJerseyNo.clear();
                         playerPosition.clear();
                       }
-                      // final String teamName = controller.text.trim();
-                      // final  int? tournamentId = tournamentNameProvider.selectedTournamentId;
-                      //
-                      // if(teamName.isNotEmpty){
-                      //   Team team = Team(teamName: teamName, tournamentId: tournamentId);
-                      //   teamProvider.addTeam(tournamentId!, team);
-                      //   await Utils.toastMessage('teams added');
-                      //   Navigator.pop(context);
-                      //   controller.clear();
-                      //   print(team.teamName);
-                      //   print(team.tournamentId);
-                      //
-                      // }
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
