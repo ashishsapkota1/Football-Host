@@ -7,16 +7,6 @@ class Player{
 
   Player({ this.id, this.playerName, this.position, this.jerseyNo, this.teamId});
 
-  Player copyWith({int? id,int? teamId, String? playerName, String? position, int? jerseyNo}) {
-    return Player(
-      id: id ?? this.id,
-      playerName: playerName ?? this.playerName,
-      position: position ?? this.position,
-      jerseyNo: jerseyNo ?? this.jerseyNo,
-      teamId:  this.teamId,
-    );
-  }
-
   Map<String, dynamic> toMap(int teamId){
     return{
       'playerName':playerName,
@@ -25,6 +15,14 @@ class Player{
       'teamId': teamId
     };
   }
+
+  Player.fromMap(Map<String, dynamic> map)
+    : id = map['id'],
+      playerName = map['playerName'],
+      position = map['position'],
+      jerseyNo = map['jerseyNo'],
+      teamId = map['teamId'];
+
 
 
 }

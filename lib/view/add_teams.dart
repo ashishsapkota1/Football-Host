@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/view/myTournament/tournament_matches.dart';
 import 'package:football_host/view_model/navbar_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
@@ -6,13 +7,11 @@ import '../resources/app_colors.dart';
 import '../resources/components/floating_button.dart';
 import '../resources/utils/responsive.dart';
 import '../resources/utils/text_styles.dart';
-import 'myTournament/table_view.dart';
 import 'myTournament/tournament_schedule.dart';
 import 'myTournament/tournament_teams.dart';
 
 class AddTeams extends StatefulWidget {
-  final String? tournamentName;
-  const AddTeams({super.key, required this.tournamentName});
+  const AddTeams({super.key,});
 
   @override
   State<AddTeams> createState() => _AddTeamsState();
@@ -26,7 +25,7 @@ class _AddTeamsState extends State<AddTeams> {
         Provider.of<TournamentNameViewModel>(context, listen: false);
     final navBar = Provider.of<NavbarViewModel>(context);
     final String tournamentName = getTournamentName.selectedTournament;
-    currentTab = [const TournamentTeams(), const TournamentSchedule(),const TournamentTable()];
+    currentTab = [const TournamentTeams(), const TournamentMatches(),const TournamentSchedule(),];
     return Scaffold(
         backgroundColor: AppColor.backGroundColor,
         appBar: AppBar(
@@ -37,12 +36,12 @@ class _AddTeamsState extends State<AddTeams> {
           ),
           centerTitle: true,
         ),
-        floatingActionButton: Padding(
+        floatingActionButton:navBar.selectedItem ==0 ? Padding(
           padding:
               EdgeInsets.only(bottom: Responsive.screenHeight(context) * 0.1),
           child: const FloatingButton(),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        ): null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
         bottomNavigationBar:
             Consumer<NavbarViewModel>(builder: (context, navBar, _) {
           currentTab[navBar.selectedItem];
@@ -58,12 +57,15 @@ class _AddTeamsState extends State<AddTeams> {
                   label: 'Teams',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.schedule),
-                  label: 'Schedule',
+                  icon: Icon(Icons.group),
+                  label: 'Matches',
                 ),
-                BottomNavigationBarItem(icon: Icon(Icons.table_view),label: 'Table')
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.schedule),
+                    label: 'Schedule'
+                )
               ]);
-
+    
         }),body: currentTab[navBar.selectedItem],);
   }
 }

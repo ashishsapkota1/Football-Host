@@ -7,15 +7,18 @@ import '../resources/utils/responsive.dart';
 import '../resources/utils/text_styles.dart';
 import '../resources/utils/utils.dart';
 
-class AddTournament extends StatelessWidget {
+class AddTournament extends StatefulWidget {
   const AddTournament({super.key});
 
+  @override
+  State<AddTournament> createState() => _AddTournamentState();
+}
 
-
+class _AddTournamentState extends State<AddTournament> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController tournamentNameController = TextEditingController();
-    TournamentViewModel tournamentViewModel = Provider.of<TournamentViewModel>(context);
+    TextEditingController _controller = TextEditingController();
+    TournamentViewModel tournamentViewModel = Provider.of<TournamentViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.appBarColor,
@@ -30,21 +33,23 @@ class AddTournament extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
-              controller: tournamentNameController,
-              decoration: InputDecoration(
-                hintText: 'Tournament Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12)
+                controller: _controller,
+                onChanged: (value){
+                  print(value);
+                },
+                decoration: InputDecoration(
+                    hintText: 'Tournament Name',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)
+                    )
                 )
-              )
             ),
           ),
           InkWell(
             onTap: () async{
-              String tournamentName = tournamentNameController.text.trim();
+              String tournamentName = _controller.text.trim();
               if(tournamentName.isNotEmpty){
-                Tournament tournament = Tournament(name: tournamentName);
-                await tournamentViewModel.addTournament(tournament);
+                await tournamentViewModel.addTournament(tournamentName, '');
                 await Utils.toastMessage('Tournament added');
                 Navigator.pop(context);
               }
@@ -59,9 +64,9 @@ class AddTournament extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12)),
               child: const Center(
                   child: Text(
-                      'Add Tournament',
-                      style: TextStyles.buttonText,
-                    )
+                    'Add Tournament',
+                    style: TextStyles.buttonText,
+                  )
 
               ),
             ),

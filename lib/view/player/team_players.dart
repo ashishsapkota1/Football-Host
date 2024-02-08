@@ -37,43 +37,49 @@ class _TeamPlayersState extends State<TeamPlayers> {
           Expanded(
             child: Consumer<PlayerViewModel>(
               builder: (context, viewModel, _) {
-                final playerList = viewModel.getPlayerList(teamId!);
-                return ListView.builder(
-                    itemCount: playerList.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: Responsive.screenWidth(context) * 0.02,
-                              right: Responsive.screenWidth(context) * 0.02,
-                              top: Responsive.screenHeight(context) * 0.01,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                // final teamNameModel = Provider.of<TeamNameViewModel>(context, listen: false);
-                                // final selectedTeamName = [index].teamName;
-                                // teamNameModel.setSelectedTeam(selectedTeamName!);
-                                // final selectedTeamId = teamList[index].id;
-                                // teamNameModel.setSelectedTeamId(selectedTeamId!);
-                                // Navigator.pushNamed(context, RoutesName.teamPlayers,arguments: selectedTeamName);
-                                // print(teamList[index].tournamentId);
-                                print(playerList[index].playerName);
-                                print(playerList[index].id);
-                              },
-                              child: Card(
-                                elevation: 2,
-                                color: AppColor.cardGrey,
-                                child: ListTile(
-                                  title: Text('Name :${playerList[index].playerName!}', style: TextStyles.teamCardText,),
-                                  subtitle: Text('Position: ${playerList[index].position!}',style: TextStyles.teamCardText,),
+                viewModel.getPlayers(teamId!);
+                final playerList = viewModel.playerList;
+                if(playerList.isEmpty){
+                  return const Center(child: Text('Please add players',style: TextStyles.cardText,));
+                }else {
+                  return ListView.builder(
+                      itemCount: playerList.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: Responsive.screenWidth(context) * 0.02,
+                                right: Responsive.screenWidth(context) * 0.02,
+                                top: Responsive.screenHeight(context) * 0.01,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                },
+                                child: Card(
+                                  elevation: 2,
+                                  child: ListTile(
+                                    leading: const CircleAvatar(
+                                        radius: 50,
+                                        child: Icon(Icons.person)
+                                    ),
+                                    title: Text(
+                                      'Name : ${playerList[index].playerName!
+                                          .toUpperCase()}',
+                                      style: TextStyles.teamCardText,),
+                                    subtitle: Text(
+                                      'Position : ${playerList[index].position!
+                                          .toUpperCase()}',
+                                      style: TextStyles.teamCardText,),
+
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    });
+                          ],
+                        );
+                      });
+                }
               },
             ),
           ),

@@ -21,7 +21,11 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final imageModel = Provider.of<HomeViewModel>(context);
-
+    TournamentViewModel tournament = Provider.of<TournamentViewModel>(context);
+     setState(() {
+       tournament.getTournaments();
+     });
+     final tournaments = tournament.tournamentList;
     return Scaffold(
       backgroundColor: AppColor.backGroundColor,
       appBar: AppBar(
@@ -35,45 +39,37 @@ class _HomeViewState extends State<HomeView> {
       body: Column(
         children: [
           Expanded(
-            flex: 3,
-            child: Consumer<TournamentViewModel>(
-              builder: (context, viewModel, _) {
-                final tournaments = viewModel.tournamentList;
-
-                return ListView.builder(
-                    itemCount: tournaments.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: Responsive.screenWidth(context) * 0.02,
-                                right: Responsive.screenWidth(context) * 0.02,
-                                top: Responsive.screenHeight(context) * 0.01,
-                                ),
-                            child: GestureDetector(
-                              onTap: () {
-                                final tournamentNameModel = Provider.of<TournamentNameViewModel>(context, listen: false);
-                                final selectedTournament = tournaments[index];
-                                tournamentNameModel.setSelectedTournament(selectedTournament.name!);
-                                tournamentNameModel.setSelectedTournamentId(selectedTournament.id!);
-                                Navigator.pushNamed(context, RoutesName.addTeams, arguments: selectedTournament.name);
-                                print(selectedTournament.id);
-                              },
-                              child: Card(
-                                elevation: 2,
-                                color: AppColor.cardGrey,
-                                child: ListTile(
-                                  title: Text(tournaments[index].name!, style: TextStyles.cardText,),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-              },
-            ),
+            child:  ListView.builder(
+          itemCount: tournaments.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: Responsive.screenWidth(context) * 0.02,
+                    right: Responsive.screenWidth(context) * 0.02,
+                    top: Responsive.screenHeight(context) * 0.01,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      final tournamentNameModel = Provider.of<TournamentNameViewModel>(context, listen: false);
+                      final selectedTournament = tournaments[index];
+                      tournamentNameModel.setSelectedTournament(selectedTournament.name!);
+                      tournamentNameModel.setSelectedTournamentId(selectedTournament.id!);
+                      Navigator.pushNamed(context, RoutesName.addTeams, arguments: selectedTournament.name);
+                    },
+                    child: Card(
+                      elevation: 2,
+                      color: AppColor.cardGrey,
+                      child: ListTile(
+                        title: Text(tournaments[index].name ?? '', style: TextStyles.cardText,),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          })
           ),
           Padding(
             padding: EdgeInsets.only(

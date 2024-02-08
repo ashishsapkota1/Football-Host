@@ -1,21 +1,28 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:football_host/data/database_Helper/database_helper.dart';
 import '../../data/model/match/match_schedule_model.dart';
 
 
 class ScheduleViewModel extends ChangeNotifier{
-  final Map<int, List<MatchSchedule>> _schedule = {};
- List<MatchSchedule> getScheduleList(int tournamentId) {
-   return _schedule[tournamentId] ?? [];
- }
+  late List<Schedule> _scheduleList = [];
+  List<Schedule> get scheduleList => _scheduleList;
 
-void addSchedule(int tournamentId, int team1Id, int team2Id,String team1Name, String team2Name, MatchSchedule schedule) async{
-  MatchSchedule newSchedule = await DbHelper.instance.insertSchedule(tournamentId, team1Id, team2Id,team1Name,team2Name, schedule);
-  if(_schedule.containsKey(tournamentId)){
-    _schedule[tournamentId]!.add(newSchedule);
+Future<void> addSchedule(int tournamentId, Schedule schedule) async{
+  final int? scheduleId = await DbHelper.instance.insertSchedule(tournamentId, schedule);
+  if(scheduleId != null){
+    final newSchedule = Schedule(id: scheduleId);
+    _scheduleList.add(newSchedule);
+    notifyListeners();
   }else{
-    _schedule[tournamentId] = [newSchedule];
+    print('failed');
   }
+}
+
+Future<void> getSchedule(int tournamentId) async{
+  List<Schedule> schedule = await DbHelper.instance.getSchedule(tournamentId);
+  _scheduleList = schedule;
   notifyListeners();
 }
 

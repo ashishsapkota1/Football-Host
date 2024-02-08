@@ -22,4 +22,13 @@ class TextStyles {
     color: AppColor.appBarColor,
     fontSize: 18
   );
+  static const TextStyle scheduleText = TextStyle(
+    color: AppColor.appBarColor,
+    fontSize: 20,
+    fontWeight: FontWeight.bold
+  );
+  static const TextStyle roundNameText = TextStyle(
+      color: AppColor.textGreen,
+      fontSize: 16,
+  );
 }

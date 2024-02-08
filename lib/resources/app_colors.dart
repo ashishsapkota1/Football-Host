@@ -5,4 +5,6 @@ class AppColor{
   static const backGroundColor = Color(0xFFF5F5F5);
   static const black = Color(0xFF180018);
   static const cardGrey = Color(0xFFE5E4E2);
+  static const textGreen = Color(0xFF03C03C);
+  static const lineUpColor = Color(0xFF32CD32);
 }

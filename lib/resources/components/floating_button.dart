@@ -55,8 +55,7 @@ _displayTextField(BuildContext context, TextEditingController controller) {
                 final  int? tournamentId = tournamentNameProvider.selectedTournamentId;
 
                 if(teamName.isNotEmpty){
-                  Team team = Team(teamName: teamName, tournamentId: tournamentId);
-                  teamProvider.addTeam(tournamentId!, team);
+                  teamProvider.addTeam(tournamentId!, teamName);
                   Navigator.pop(context);
                   await Utils.toastMessage('teams added');
 

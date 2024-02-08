@@ -33,8 +33,7 @@ class Routes {
 
       case RoutesName.addTeams:
         return PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation){
-          final tournament = ModalRoute.of(context)!.settings.arguments as String?;
-          return   AddTeams(tournamentName: tournament,);
+          return   const AddTeams();
         },
             transitionsBuilder: (context, animation, secondaryAnimation, child){
               const begin = Offset(1, 1);
@@ -67,8 +66,7 @@ class Routes {
 
       case RoutesName.startMatch:
         return PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation){
-          final teamName = ModalRoute.of(context)!.settings.arguments as String?;
-          return const StartMatch();
+          return  const StartMatch();
         },
             transitionsBuilder: (context, animation, secondaryAnimation, child){
               const begin = Offset(0, 0);

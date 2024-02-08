@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class TournamentNameViewModel extends ChangeNotifier{
 
 
-  late int? _selectedTournamentId ;
+  static  int? _selectedTournamentId ;
 
   int? get selectedTournamentId => _selectedTournamentId;
 

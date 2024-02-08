@@ -3,21 +3,26 @@ import 'package:football_host/data/database_Helper/database_helper.dart';
 
 import '../../data/model/team_model.dart';
 
+class TeamViewModel extends ChangeNotifier {
+  late List<Team> _tournamentTeams = [];
+  List<Team> get tournamentTeams => _tournamentTeams;
 
-class TeamViewModel extends ChangeNotifier{
-
-  final Map<int, List<Team>> _tournamentTeams = {};
-  List<Team> getTournamentTeams(int tournamentId){
-    return _tournamentTeams[tournamentId] ?? [];
-  }
-  Future<void> addTeam(int tournamentId, Team teams) async{
-    Team newTeam = await DbHelper.instance.insertTeams(tournamentId, teams);
-    if(_tournamentTeams.containsKey(tournamentId)){
-      _tournamentTeams[tournamentId]!.add(newTeam);
-    }else{
-      _tournamentTeams[tournamentId] = [newTeam];
+  Future<void> addTeam(int tournamentId, String teamName) async {
+    final team = Team(teamName: teamName);
+    final int? teamId = await DbHelper.instance.insertTeams(tournamentId, team);
+    if (teamId != null) {
+      final newTeam = Team(id: teamId, teamName: teamName);
+      _tournamentTeams.add(newTeam);
+      notifyListeners();
+    } else {
+      print('failed');
     }
+  }
+
+  Future<void> getTournamentTeams(int tournamentId) async {
+    final List<Team> teams =
+        await DbHelper.instance.getTeams(tournamentId);
+    _tournamentTeams = teams;
     notifyListeners();
   }
-
 }

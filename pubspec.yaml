@@ -43,6 +43,7 @@ dependencies:
   fluttertoast: ^8.2.4
   uuid: ^4.3.3
   sqflite: ^2.3.0
+  another_flushbar: ^1.12.30
 
 dev_dependencies:
   hive_generator: ^2.0.1
@@ -74,8 +75,8 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: assets/Font/Poppins-Black.ttf
-        - asset: assets/Font/Poppins-Italic.ttf
+        - asset: assets/Font/Poppins-Regular.ttf
+        - asset: assets/Font/Poppins-SemiBold.ttf
 
 
   # To add assets to your application, add an assets section, like this:

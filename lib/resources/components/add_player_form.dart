@@ -100,13 +100,7 @@ _displayTextField(BuildContext context) {
                       if (playerName.isNotEmpty &&
                           jerseyNo.isNotEmpty &&
                           position.isNotEmpty) {
-                        Player player = Player(
-                            playerName: playerName,
-                            position: position,
-                            jerseyNo: int.parse(jerseyNo),
-                            teamId: teamId);
-
-                        playerProvider.addPlayer(teamId!, player);
+                        playerProvider.addPlayer(teamId!, playerName, position, int.tryParse(jerseyNo)!);
                         Navigator.pop(context);
                         await Utils.toastMessage("Player added successfully");
 
