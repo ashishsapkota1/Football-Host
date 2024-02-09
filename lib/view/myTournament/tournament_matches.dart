@@ -8,7 +8,6 @@ import '../../resources/utils/text_styles.dart';
 import '../../view_model/tournamentName_view_model.dart';
 
 class TournamentMatches extends StatefulWidget {
-
   const TournamentMatches({super.key});
 
   @override
@@ -26,7 +25,8 @@ class _TournamentMatchesState extends State<TournamentMatches> {
         Expanded(
           child: Consumer<MatchViewModel>(
             builder: (context, viewModel, _) {
-              final matchesList = viewModel.getMatchesList(tournamentId!);
+              viewModel.getMatches(tournamentId!);
+              final matchesList = viewModel.matches;
               if (matchesList.isEmpty) {
                 return const Center(
                     child: Text(
@@ -49,15 +49,14 @@ class _TournamentMatchesState extends State<TournamentMatches> {
                               onTap: () {
                                 print(matchesList[index].team1Name);
                                 Navigator.pushNamed(
-                                    context, RoutesName.startMatch
-                                );
+                                    context, RoutesName.startMatch);
                               },
                               child: Card(
                                 elevation: 2,
                                 color: AppColor.cardGrey,
                                 child: ListTile(
                                   title: Text(
-                                    '${matchesList[index].team1Name!.toUpperCase()} vs ${matchesList[index].team2Name!.toUpperCase()}',
+                                    '${matchesList[index].team1Name ?? ''.toUpperCase()} vs ${matchesList[index].team2Name ?? ''.toUpperCase()}',
                                     style: TextStyles.teamCardText,
                                   ),
                                 ),

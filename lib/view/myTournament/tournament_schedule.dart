@@ -40,11 +40,6 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
 
     return Column(
       children: [
-        Row(
-          children: [
-
-          ],
-        ),
         Expanded(
           child: Consumer<ScheduleViewModel>(
             builder: (context, viewModel, _) {
@@ -97,9 +92,9 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                               } else {
                                                 AlertDialog alert = AlertDialog(
                                                   title: const Text(
-                                                      'Add to matches'),
+                                                      'Add to matches',style: TextStyles.scheduleText,),
                                                   content: const Text(
-                                                      'confirm to add'),
+                                                      'confirm to add', style: TextStyles.teamCardText,),
                                                   actions: [
                                                     Row(
                                                       children: [
@@ -135,14 +130,14 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                                                       matches);
                                                             },
                                                             child: const Text(
-                                                                'Confirm')),
+                                                                'Confirm', style: TextStyles.confirmText)),
                                                         TextButton(
                                                             onPressed: () {
                                                               Navigator.pop(
                                                                   context);
                                                             },
                                                             child: const Text(
-                                                                'Cancel'))
+                                                                'Cancel', style: TextStyles.cancelText))
                                                       ],
                                                     )
                                                   ],
@@ -210,6 +205,8 @@ Future<void> generateSchedule(
   int a = (noOfTeams ~/ 2).toInt();
   List<String> pole1 = allTeams.sublist(0, a);
   List<String> pole2 = allTeams.sublist(a);
+  pole1.shuffle();
+  pole2.shuffle();
   int remainingRound = noOfRounds - 1;
 
   // Preliminary Round

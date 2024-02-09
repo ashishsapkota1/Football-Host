@@ -34,9 +34,6 @@ class _AddTournamentState extends State<AddTournament> {
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
                 controller: _controller,
-                onChanged: (value){
-                  print(value);
-                },
                 decoration: InputDecoration(
                     hintText: 'Tournament Name',
                     border: OutlineInputBorder(
@@ -49,9 +46,9 @@ class _AddTournamentState extends State<AddTournament> {
             onTap: () async{
               String tournamentName = _controller.text.trim();
               if(tournamentName.isNotEmpty){
+                Navigator.pop(context);
                 await tournamentViewModel.addTournament(tournamentName, '');
                 await Utils.toastMessage('Tournament added');
-                Navigator.pop(context);
               }
 
 

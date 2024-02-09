@@ -39,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
       body: Column(
         children: [
           Expanded(
+            flex: 3,
             child:  ListView.builder(
           itemCount: tournaments.length,
           itemBuilder: (context, index) {
@@ -71,48 +72,41 @@ class _HomeViewState extends State<HomeView> {
             );
           })
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: Responsive.screenWidth(context) * 0.04,
-              right: Responsive.screenWidth(context) * 0.04,
-              bottom: Responsive.screenHeight(context) * 0.02,
-            ),
-            child: InkWell(
-              onTap: () async{
-                imageModel.onTapped();
-                 await Navigator.pushNamed(context, RoutesName.addTournament);
+          InkWell(
+            onTap: () async{
+              imageModel.onTapped();
+               await Navigator.pushNamed(context, RoutesName.addTournament);
 
-                 imageModel.resetTapped();
-              },
-              child: Container(
-                height: Responsive.screenHeight(context) * 0.07,
-                width: Responsive.screenWidth(context) * 1,
-                decoration: BoxDecoration(
-                  color: AppColor.appBarColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      verticalSpacing(space: 6),
-                      Image.asset(
-                        imageModel.isTapped
-                            ? Images.tappedWhistle
-                            : Images.unTappedWhistle,
-                        scale: 0.1,
-                        height: Responsive.screenHeight(context) * 0.045,
-                        color: imageModel.isTapped
-                            ? Colors.grey
-                            : AppColor.backGroundColor,
-                      ),
-                      verticalSpacing(space: 8),
-                      const Text(
-                        'Start a New Tournament',
-                        style: TextStyles.buttonText,
-                      ),
-                    ],
-                  ),
+               imageModel.resetTapped();
+            },
+            child: Container(
+              height: Responsive.screenHeight(context) * 0.07,
+              width: Responsive.screenWidth(context) * 1,
+              decoration: BoxDecoration(
+                color: AppColor.appBarColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    verticalSpacing(space: 6),
+                    Image.asset(
+                      imageModel.isTapped
+                          ? Images.tappedWhistle
+                          : Images.unTappedWhistle,
+                      scale: 0.1,
+                      height: Responsive.screenHeight(context) * 0.045,
+                      color: imageModel.isTapped
+                          ? Colors.grey
+                          : AppColor.backGroundColor,
+                    ),
+                    verticalSpacing(space: 8),
+                    const Text(
+                      'Start a New Tournament',
+                      style: TextStyles.buttonText,
+                    ),
+                  ],
                 ),
               ),
             ),

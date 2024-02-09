@@ -138,6 +138,20 @@ class DbHelper {
     return dbClient?.insert('Schedule', schedule.toMap(tournamentId));
   }
 
+
+  // Insert Schedule
+  Future<Tournament> insertPoles(Tournament tournament, String poleFormation) async {
+    var dbClient = await db;
+    try {
+      await dbClient!.update('TOURNAMENT', {'pole': poleFormation},
+          where: "id = ?", whereArgs: [tournament.id]);
+      Tournament updatedTournament = tournament.copyWith(pole: poleFormation);
+      return updatedTournament;
+    } catch(e) {
+      throw Exception('failed to add poles.');
+    }
+  }
+
   // Get Schedule
   Future<List<Schedule>> getSchedule(int tournamentId) async{
     var dbClient = await db;
@@ -151,29 +165,20 @@ class DbHelper {
 
   }
 
-  Future<Tournament> insertPoles(Tournament tournament, String poleFormation) async {
+  // Insert Matches
+  Future<int?> insertMatches(int tournamentId, Matches matches) async {
     var dbClient = await db;
-    try {
-      await dbClient!.update('TOURNAMENT', {'pole': poleFormation},
-          where: "id = ?", whereArgs: [tournament.id]);
-      Tournament updatedTournament = tournament.copyWith(pole: poleFormation);
-      return updatedTournament;
-    } catch(e) {
-      throw Exception('failed to add poles.');
-    }
-
+    return  dbClient?.insert('MATCH', matches.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<Matches> insertMatches(int tournamentId, Matches matches) async {
+  // Get Matches
+  Future<List<Matches>> getMatches(int tournamentId) async{
     var dbClient = await db;
-    int? id = await dbClient?.insert('MATCH', matches.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    if (id != null && id > 0) {
-      Matches updatedMatch = matches.copyWith(id: id);
-      return updatedMatch;
-    } else {
-      throw Exception('failed to insert match');
-    }
+    final List<Map<String, dynamic>>? maps = await dbClient?.query('MATCH', where: 'tournamentId = ?', whereArgs: [tournamentId]);
+    return List.generate(maps!.length, (index) {
+      return Matches.fromMap(maps[index]);
+    });
   }
 
 
