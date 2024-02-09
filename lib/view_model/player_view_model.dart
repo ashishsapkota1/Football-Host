@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:football_host/data/database_Helper/database_helper.dart';
 import 'package:football_host/data/model/player_model.dart';
 
@@ -21,7 +21,9 @@ class PlayerViewModel extends ChangeNotifier {
       _playerList.add(newPlayer);
       notifyListeners();
     } else {
-      print('failed');
+      if (kDebugMode) {
+        print('failed');
+      }
     }
   }
 

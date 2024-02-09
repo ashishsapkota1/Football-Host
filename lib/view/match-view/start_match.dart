@@ -38,11 +38,6 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin{
           centerTitle: true,
           backgroundColor: AppColor.appBarColor,
           title: const Text("Match"),
-          flexibleSpace: Container(
-            height: 100,
-            width: 100,
-            child: Text('container'),
-          ),
           bottom: TabBar(
             controller: _tabController,
             labelStyle: TextStyles.tabBarStyle,
