@@ -3,9 +3,7 @@ import 'package:football_host/view/match-view/formation/3-4-3.dart';
 import 'package:football_host/view/match-view/formation/4-3-2-1.dart';
 import 'package:football_host/view/match-view/formation/4-3-3.dart';
 import 'package:football_host/view/match-view/formation/4-4-2.dart';
-
 import '../../resources/app_colors.dart';
-import '../../resources/utils/responsive.dart';
 import '../../resources/utils/text_styles.dart';
 
 class LineUp extends StatefulWidget {

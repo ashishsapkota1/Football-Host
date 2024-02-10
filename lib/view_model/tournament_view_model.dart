@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import '../data/database_Helper/database_helper.dart';
 import '../data/model/tournament_model.dart';
 
@@ -33,6 +33,17 @@ class TournamentViewModel with ChangeNotifier {
     _tournamentList.remove(oldTournament);
     _tournamentList.add(newTournament);
     notifyListeners();
+  }
+
+  Future<void> deleteTournament(int tournamentId) async{
+  try{
+    await DbHelper.instance.deleteTournament(tournamentId);
+    notifyListeners();
+  }catch(e){
+    if (kDebugMode) {
+      print(e);
+    }
+  }
   }
 
 

@@ -2,9 +2,6 @@ import 'package:football_host/data/model/match/match_schedule_model.dart';
 import 'package:football_host/data/model/player_model.dart';
 import 'package:football_host/data/model/team_model.dart';
 import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
-import 'package:football_host/view_model/player_view_model.dart';
-import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
-import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -199,9 +196,9 @@ class DbHelper {
     }
   }
 
-  Future<int> delete(int id) async {
+  Future<int> deleteTournament(int id) async {
     var dbClient = await db;
     return await dbClient!
-        .delete("TOURNAMENT", where: "id =?", whereArgs: [id]);
+        .delete("TOURNAMENT", where: "id = ?", whereArgs: [id]);
   }
 }

@@ -29,9 +29,9 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
   Widget build(BuildContext context) {
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     final tournamentId = getTournamentId.selectedTournamentId;
-    final teamViewModel = Provider.of<TeamViewModel>(context, listen: true);
+    final teamViewModel = Provider.of<TeamViewModel>(context, listen: false);
     final scheduleViewModel =
-        Provider.of<ScheduleViewModel>(context, listen: true);
+        Provider.of<ScheduleViewModel>(context, listen: false);
     final matchViewModel = Provider.of<MatchViewModel>(context);
     final teamNameViewModel = Provider.of<TeamNameViewModel>(context);
      teamViewModel.getTournamentTeams(tournamentId!);
