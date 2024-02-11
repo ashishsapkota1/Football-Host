@@ -50,7 +50,7 @@ class _LineUpState extends State<LineUp> {
                   ? const FormationNo2(quarterTurn: 4)
                   : dropDownValue1 == '4-4-2'
                       ? const FormationNo3(quarterTurn: 4)
-                      : const FormationNo4(),
+                      : const FormationNo4(quarterTurn: 4,),
           DropdownButton(
             value: dropDownValue2,
             style: TextStyles.cardText,
@@ -75,7 +75,7 @@ class _LineUpState extends State<LineUp> {
               ? const FormationNo2(quarterTurn: 2)
               : dropDownValue2 == '4-4-2'
               ? const FormationNo3(quarterTurn: 2)
-              : const FormationNo4(),
+              : const FormationNo4(quarterTurn: 2,),
         ],
       ),
     );

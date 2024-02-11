@@ -57,7 +57,7 @@ class _TournamentTeamsState extends State<TournamentTeams> {
                             .setSelectedTeamId(selectedTeamId!);
                         Navigator.pushNamed(
                             context, RoutesName.teamPlayers,
-                            arguments: selectedTeamName);
+                            );
                         print(selectedTeamId);
                       },
                       child: Card(

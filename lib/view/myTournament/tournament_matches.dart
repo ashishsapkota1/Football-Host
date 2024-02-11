@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/resources/utils/arg.dart';
 import 'package:football_host/resources/utils/routes/routes_name.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +48,13 @@ class _TournamentMatchesState extends State<TournamentMatches> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                print(matchesList[index].team1Name);
                                 Navigator.pushNamed(
-                                    context, RoutesName.startMatch);
+                                    context, RoutesName.startMatch,
+                                    arguments: MatchArguments(
+                                        team1Id: matchesList[index].team1Id,
+                                        team1Name: matchesList[index].team1Name,
+                                        team2Id: matchesList[index].team2Id,
+                                        team2Name: matchesList[index].team2Name));
                               },
                               child: Card(
                                 elevation: 2,

@@ -8,8 +8,7 @@ import '../../resources/utils/responsive.dart';
 import '../../resources/utils/text_styles.dart';
 
 class TeamPlayers extends StatefulWidget {
-  final String? teamName;
-  const TeamPlayers({super.key, this.teamName});
+  const TeamPlayers({super.key});
 
   @override
   State<TeamPlayers> createState() => _TeamPlayersState();
