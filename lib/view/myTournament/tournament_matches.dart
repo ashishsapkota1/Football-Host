@@ -54,7 +54,8 @@ class _TournamentMatchesState extends State<TournamentMatches> {
                                         team1Id: matchesList[index].team1Id,
                                         team1Name: matchesList[index].team1Name,
                                         team2Id: matchesList[index].team2Id,
-                                        team2Name: matchesList[index].team2Name));
+                                        team2Name:
+                                            matchesList[index].team2Name));
                               },
                               child: Card(
                                 elevation: 2,

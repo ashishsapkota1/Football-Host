@@ -7,6 +7,10 @@ class PlayerViewModel extends ChangeNotifier {
 
   List<Player> get playerList => _playerList;
 
+  late  List<Player> _player2List = [];
+
+  List<Player> get playerList2 => _player2List;
+
   void addPlayer(
       int teamId, String playerName, String position, int jerseyNo) async {
     final players =
@@ -30,6 +34,11 @@ class PlayerViewModel extends ChangeNotifier {
   Future<void> getPlayers(int teamId) async{
     final List<Player> players = await DbHelper.instance.getPlayers(teamId);
     _playerList = players;
+    notifyListeners();
+  }
+  Future<void> get2Players(int teamId) async{
+    final List<Player> players = await DbHelper.instance.getPlayers(teamId);
+    _player2List = players;
     notifyListeners();
   }
 }

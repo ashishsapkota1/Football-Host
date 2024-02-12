@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/model/player_model.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/utils/responsive.dart';
+import '../../../resources/utils/utils.dart';
 
-class FormationNo3 extends StatelessWidget {
+
+class FormationNo1 extends StatelessWidget {
   final int quarterTurn;
-  const FormationNo3({super.key, required this.quarterTurn});
+  final List<Offset> position;
+  const FormationNo1({super.key, required this.quarterTurn, required this.position});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,6 @@ class FormationNo3 extends StatelessWidget {
                                     border: Border.all(
                                       color: AppColor.backGroundColor,
                                     )),
-                                child: const Center(child: CircleAvatar()),
                               ),
                             ),
                             Center(
@@ -52,22 +55,6 @@ class FormationNo3 extends StatelessWidget {
                                     )),
                               ),
                             ),
-                            Positioned(
-                                left: Responsive.screenWidth(context)*0.05,
-                                top: Responsive.screenHeight(context)*0.10,
-                                child: CircleAvatar()),
-                            Positioned(
-                                left: Responsive.screenWidth(context)*0.3,
-                                top: Responsive.screenHeight(context)*0.10,
-                                child: CircleAvatar()),
-                            Positioned(
-                                left: Responsive.screenWidth(context)*0.55,
-                                top: Responsive.screenHeight(context)*0.10,
-                                child: CircleAvatar()),
-                            Positioned(
-                                left: Responsive.screenWidth(context)*0.8,
-                                top: Responsive.screenHeight(context)*0.10,
-                                child: CircleAvatar()),
 
                           ],
                         ),
@@ -84,30 +71,17 @@ class FormationNo3 extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Positioned(
-                      left: Responsive.screenWidth(context)*0.06,
-                      top: Responsive.screenHeight(context)*0.20,
-                      child: CircleAvatar()),
-                  Positioned(
-                      left: Responsive.screenWidth(context)*0.3,
-                      top: Responsive.screenHeight(context)*0.20,
-                      child: CircleAvatar()),
-                  Positioned(
-                      left: Responsive.screenWidth(context)*0.58,
-                      top: Responsive.screenHeight(context)*0.20,
-                      child: CircleAvatar()),
-                  Positioned(
-                      left: Responsive.screenWidth(context)*0.8,
-                      top: Responsive.screenHeight(context)*0.20,
-                      child: CircleAvatar()),
-                  Positioned(
-                      left: Responsive.screenWidth(context)*0.25,
-                      top: Responsive.screenHeight(context)*0.30,
-                      child: CircleAvatar()),
-                  Positioned(
-                      left: Responsive.screenWidth(context)*0.65,
-                      top: Responsive.screenHeight(context)*0.30,
-                      child: CircleAvatar()),
+                  DragTarget<Player>(
+                    onAccept: (data) => data,
+
+
+                    builder: (context, can, rej){
+
+                    return Stack(
+                      children: _buildAvatar(context),
+                    );}
+                  )
+
                 ],
               ),
             ),
@@ -117,4 +91,30 @@ class FormationNo3 extends StatelessWidget {
       ],
     );
   }
+  List<Widget> _buildAvatar(BuildContext context) {
+    List<Widget> avatar = [];
+
+    for (var i = 0; i < position.length; i++) {
+      final positions = position[i];
+      final left = Responsive.screenWidth(context) * positions.dx;
+      final top = Responsive.screenHeight(context) * positions.dy;
+
+      avatar.add(
+        Positioned(
+          left: left,
+          top: top,
+          child: const CircleAvatar(
+            radius: 20,
+
+          ),
+        ),
+      );
+    }
+
+    return avatar;
+  }
 }
+
+
+
+

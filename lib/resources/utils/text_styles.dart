@@ -18,8 +18,10 @@ class TextStyles {
   );
   static const TextStyle teamCardText =
       TextStyle(color: AppColor.appBarColor, fontSize: 18);
+
   static const TextStyle scheduleText = TextStyle(
       color: AppColor.appBarColor, fontSize: 20, fontWeight: FontWeight.bold);
+
   static const TextStyle roundNameText = TextStyle(
     color: AppColor.textGreen,
     fontSize: 16,
@@ -33,5 +35,17 @@ class TextStyles {
 
   static const TextStyle tabBarStyle = TextStyle(
     color: AppColor.backGroundColor,
+  );
+
+  static const TextStyle matchStyle = TextStyle(
+
+    fontSize: 24,
+    fontWeight: FontWeight.w600
+  );
+
+  static const TextStyle scoreStyle = TextStyle(
+
+      fontSize: 28,
+      fontWeight: FontWeight.w700
   );
 }
