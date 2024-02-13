@@ -15,13 +15,15 @@ class PlayingXiTeam2 extends StatefulWidget {
 }
 
 class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
+
   @override
   Widget build(BuildContext context) {
     final playerViewModel = Provider.of<PlayerViewModel>(context);
     playerViewModel.get2Players(widget.teamId!);
+
     final playerList = playerViewModel.playerList2;
     return SizedBox(
-      height: Responsive.screenHeight(context) * 0.15,
+      height: Responsive.screenHeight(context) * 0.10,
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0,right: 8),
         child: ListView.builder(
@@ -29,6 +31,7 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
             itemCount: playerList.length,
             itemBuilder: (context, index){
               return LongPressDraggable<Player>(
+                data: playerList[index],
                 childWhenDragging: Container(),
                 feedback: Column(
                   children: [
@@ -36,25 +39,28 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
                       radius: 20,
                       child: Column(
                         children: [
-                          Text(playerList[index].jerseyNo!.toString()),
+                          Text(playerList[index].position!),
                         ],
                       ),
                     ),
-                    Text(playerList[index].playerName!, style: TextStyles.cardText,)
+                    Text(playerList[index].playerName!.split(RegExp('\\s+'))[0], style: TextStyles.draggedStyle,)
                   ],
                 ),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 20,
-                      child: Column(
-                        children: [
-                          Text(playerList[index].jerseyNo!.toString()),
-                        ],
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        child: Column(
+                          children: [
+                            Text(playerList[index].jerseyNo!.toString()),
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(playerList[index].playerName!)
-                  ],
+                      Text(playerList[index].playerName!.split(RegExp('\\s+'))[0])
+                    ],
+                  ),
                 ),
               );
 

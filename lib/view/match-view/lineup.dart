@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam1.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam2.dart';
+import '../../data/model/player_model.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/utils/text_styles.dart';
 
@@ -77,12 +79,13 @@ class _LineUpState extends State<LineUp> {
       Offset(0.8, 0.18),
       Offset(0.22, 0.26),
       Offset(0.65, 0.26),
-      Offset(0.42, 0.32),
+      Offset(0.42, 0.30),
     ],
   };
 
   @override
   Widget build(BuildContext context) {
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -101,6 +104,7 @@ class _LineUpState extends State<LineUp> {
               return DropdownMenuItem<String>(value: value, child: Text(value));
             }).toList(),
           ),
+          horizontalSpacing(space: 8),
           PlayingXiTeam1(teamId: widget.team1Id),
           _buildFormation1(dropDownValue1),
           DropdownButton(
@@ -118,6 +122,7 @@ class _LineUpState extends State<LineUp> {
               return DropdownMenuItem<String>(value: value, child: Text(value));
             }).toList(),
           ),
+          horizontalSpacing(space: 8),
           PlayingXiTeam2(teamId: widget.team2Id),
           _buildFormation2(dropDownValue2),
         ],
@@ -128,22 +133,22 @@ class _LineUpState extends State<LineUp> {
   Widget _buildFormation1(String value1) {
     List<Offset> positions = formationPositions[value1] ?? [];
     return value1 == '4-3-3'
-        ?  FormationNo1(quarterTurn: 4, position: positions,)
+        ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
         : value1 == '3-4-3'
-        ?  FormationNo1(quarterTurn: 4, position: positions,)
+        ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
         : value1 == '4-4-2'
-        ?  FormationNo1(quarterTurn: 4, position: positions,)
-        :  FormationNo1(quarterTurn: 4, position: positions,);
+        ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
+        :  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,);
   }
 
   Widget _buildFormation2(String value2) {
     List<Offset> positions = formationPositions[value2] ?? [];
     return value2 == '4-3-3'
-        ?  FormationNo1(quarterTurn: 2, position: positions,)
+        ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
         : value2 == '3-4-3'
-        ?  FormationNo1(quarterTurn: 2, position: positions,)
+        ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
         : value2 == '4-4-2'
-        ?  FormationNo1(quarterTurn: 2, position: positions,)
-        :  FormationNo1(quarterTurn: 2, position: positions,);
+        ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
+        :  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,);
   }
 }

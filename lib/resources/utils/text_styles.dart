@@ -48,4 +48,16 @@ class TextStyles {
       fontSize: 28,
       fontWeight: FontWeight.w700
   );
+
+  static const TextStyle positionStyle = TextStyle(
+    color: AppColor.positionNameColor,
+    fontSize: 12,
+    fontWeight: FontWeight.bold
+  );
+
+  static const TextStyle draggedStyle = TextStyle(
+    color: AppColor.positionNameColor,
+    fontSize: 14
+  );
+
 }

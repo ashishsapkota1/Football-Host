@@ -7,4 +7,5 @@ class AppColor{
   static const cardGrey = Color(0xFFE5E4E2);
   static const textGreen = Color(0xFF03C03C);
   static const lineUpColor = Color(0xFF32CD32);
+  static const positionNameColor = Color(0xFF3457D5);
 }
