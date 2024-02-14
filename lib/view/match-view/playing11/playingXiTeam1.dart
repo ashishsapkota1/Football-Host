@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:provider/provider.dart';
@@ -32,10 +33,17 @@ class _PlayingXiTeam1State extends State<PlayingXiTeam1> {
             return LongPressDraggable<Player>(
               data: playerList[index],
               childWhenDragging: Container(),
+              onDragCompleted: (){
+                setState(() {
+                  playerList.remove(playerList[index]);
+                });
+
+              },
               feedback:Column(
                 children: [
                   CircleAvatar(
-                    radius: 20,
+                    radius: 30,
+                    backgroundColor: Colors.purple,
                     child: Column(
                       children: [
                         Text(playerList[index].position!),

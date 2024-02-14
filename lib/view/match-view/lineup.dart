@@ -3,7 +3,6 @@ import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam1.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam2.dart';
-import '../../data/model/player_model.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/utils/text_styles.dart';
 

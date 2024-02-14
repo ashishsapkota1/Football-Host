@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:football_host/data/database_Helper/database_helper.dart';
 
 import '../../data/model/team_model.dart';
@@ -24,5 +25,17 @@ class TeamViewModel extends ChangeNotifier {
         await DbHelper.instance.getTeams(tournamentId);
     _tournamentTeams = teams;
     notifyListeners();
+  }
+
+  Future<void> deleteTeam(int teamId) async{
+    try{
+      await DbHelper.instance.deleteTeam(teamId);
+      notifyListeners();
+    }catch(e){
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:provider/provider.dart';
-
 import '../../../data/model/player_model.dart';
 import '../../../resources/utils/text_styles.dart';
 
@@ -33,6 +32,11 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
               return LongPressDraggable<Player>(
                 data: playerList[index],
                 childWhenDragging: Container(),
+                onDragCompleted: (){
+                  setState(() {
+                    playerList.remove(playerList[index]);
+                  });
+                },
                 feedback: Column(
                   children: [
                     CircleAvatar(

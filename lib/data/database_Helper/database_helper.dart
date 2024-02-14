@@ -201,4 +201,9 @@ class DbHelper {
     return await dbClient!
         .delete("TOURNAMENT", where: "id = ?", whereArgs: [id]);
   }
+
+  Future<int> deleteTeam(int id) async {
+    var dbClient = await db;
+    return await dbClient!.delete('TEAM', where: "id =?", whereArgs: [id]);
+  }
 }
