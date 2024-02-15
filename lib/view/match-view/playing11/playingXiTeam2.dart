@@ -14,7 +14,6 @@ class PlayingXiTeam2 extends StatefulWidget {
 }
 
 class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
-
   @override
   Widget build(BuildContext context) {
     final playerViewModel = Provider.of<PlayerViewModel>(context);
@@ -24,15 +23,15 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
     return SizedBox(
       height: Responsive.screenHeight(context) * 0.10,
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0,right: 8),
+        padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: playerList.length,
-            itemBuilder: (context, index){
+            itemBuilder: (context, index) {
               return LongPressDraggable<Player>(
                 data: playerList[index],
                 childWhenDragging: Container(),
-                onDragCompleted: (){
+                onDragCompleted: () {
                   setState(() {
                     playerList.remove(playerList[index]);
                   });
@@ -40,14 +39,20 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
                 feedback: Column(
                   children: [
                     CircleAvatar(
-                      radius: 20,
+                      radius: 30,
+                      backgroundColor: Colors.purple,
                       child: Column(
                         children: [
-                          Text(playerList[index].position!),
+                          Center(
+                              child: Text(
+                                  playerList[index].position!.substring(0, 3))),
                         ],
                       ),
                     ),
-                    Text(playerList[index].playerName!.split(RegExp('\\s+'))[0], style: TextStyles.draggedStyle,)
+                    Text(
+                      playerList[index].playerName!.split(RegExp('\\s+'))[0],
+                      style: TextStyles.draggedStyle,
+                    )
                   ],
                 ),
                 child: Padding(
@@ -62,12 +67,13 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
                           ],
                         ),
                       ),
-                      Text(playerList[index].playerName!.split(RegExp('\\s+'))[0])
+                      Text(playerList[index]
+                          .playerName!
+                          .split(RegExp('\\s+'))[0])
                     ],
                   ),
                 ),
               );
-
             }),
       ),
     );

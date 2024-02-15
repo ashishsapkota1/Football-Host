@@ -6,10 +6,12 @@ import '../../../resources/utils/responsive.dart';
 
 class FormationNo1 extends StatefulWidget {
   final int quarterTurn;
+  final int? teamId;
   final int avatarQuarterTurn;
   final List<Offset> positions;
   const FormationNo1(
       {super.key,
+        this.teamId,
       required this.quarterTurn,
       required this.positions,
       required this.avatarQuarterTurn});
@@ -107,11 +109,13 @@ class _FormationNo1State extends State<FormationNo1> {
           top: top,
           child: DragTarget<Player>(
             onAccept: (data) {
-              setState(() {
+              if(data.teamId == widget.teamId) {
+                setState(() {
                 droppedPlayers
                     .add({'player': data, 'position': widget.positions[i]});
                 _isDropped = true;
               });
+              }
             },
             builder: (context, candidateData, rejectedData) {
               var droppedPlayer = droppedPlayers.firstWhere(

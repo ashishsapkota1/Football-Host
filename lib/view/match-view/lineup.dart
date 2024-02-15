@@ -132,7 +132,7 @@ class _LineUpState extends State<LineUp> {
   Widget _buildFormation1(String value1) {
     List<Offset> positions = formationPositions[value1] ?? [];
     return value1 == '4-3-3'
-        ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
+        ?  FormationNo1(teamId: widget.team1Id,quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
         : value1 == '3-4-3'
         ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
         : value1 == '4-4-2'
@@ -143,7 +143,7 @@ class _LineUpState extends State<LineUp> {
   Widget _buildFormation2(String value2) {
     List<Offset> positions = formationPositions[value2] ?? [];
     return value2 == '4-3-3'
-        ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
+        ?  FormationNo1(teamId: widget.team2Id,quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
         : value2 == '3-4-3'
         ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
         : value2 == '4-4-2'
