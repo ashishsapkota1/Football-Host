@@ -134,10 +134,10 @@ class _LineUpState extends State<LineUp> {
     return value1 == '4-3-3'
         ?  FormationNo1(teamId: widget.team1Id,quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
         : value1 == '3-4-3'
-        ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
+        ?  FormationNo1(teamId: widget.team1Id,quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
         : value1 == '4-4-2'
-        ?  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
-        :  FormationNo1(quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,);
+        ?  FormationNo1(teamId: widget.team1Id,quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,)
+        :  FormationNo1(teamId: widget.team1Id,quarterTurn: 4, positions: positions, avatarQuarterTurn: 4,);
   }
 
   Widget _buildFormation2(String value2) {
@@ -145,9 +145,9 @@ class _LineUpState extends State<LineUp> {
     return value2 == '4-3-3'
         ?  FormationNo1(teamId: widget.team2Id,quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
         : value2 == '3-4-3'
-        ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
+        ?  FormationNo1(teamId: widget.team2Id,quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
         : value2 == '4-4-2'
-        ?  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
-        :  FormationNo1(quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,);
+        ?  FormationNo1(teamId: widget.team2Id,quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,)
+        :  FormationNo1(teamId: widget.team2Id,quarterTurn: 2, positions: positions, avatarQuarterTurn: 2,);
   }
 }

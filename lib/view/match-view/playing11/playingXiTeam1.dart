@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:provider/provider.dart';
-
 import '../../../data/model/player_model.dart';
+import '../../../resources/app_colors.dart';
 import '../../../resources/utils/text_styles.dart';
 
 class PlayingXiTeam1 extends StatefulWidget {
@@ -33,17 +32,11 @@ class _PlayingXiTeam1State extends State<PlayingXiTeam1> {
             return LongPressDraggable<Player>(
               data: playerList[index],
               childWhenDragging: Container(),
-              onDragCompleted: (){
-                setState(() {
-                  playerList.remove(playerList[index]);
-                });
-
-              },
               feedback:Column(
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.purple,
+                    backgroundColor: AppColor.lineUpColor,
                     child: Column(
                       children: [
                         Text(playerList[index].position!),

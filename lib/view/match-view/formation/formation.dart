@@ -3,6 +3,7 @@ import 'package:football_host/resources/utils/text_styles.dart';
 import '../../../data/model/player_model.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/utils/responsive.dart';
+import '../../../resources/utils/utils.dart';
 
 class FormationNo1 extends StatefulWidget {
   final int quarterTurn;
@@ -110,13 +111,21 @@ class _FormationNo1State extends State<FormationNo1> {
           child: DragTarget<Player>(
             onAccept: (data) {
               if(data.teamId == widget.teamId) {
+                bool isDroppedAlready = droppedPlayers.any((element) => element['player'].id == data.id);
+          if(!isDroppedAlready){
                 setState(() {
                 droppedPlayers
                     .add({'player': data, 'position': widget.positions[i]});
                 _isDropped = true;
               });
+          }else{
+            Utils.flushBarErrorMessage('Player already dropped', context);
+          }
+              }else{
+                Utils.flushBarErrorMessage('Can\'t dropped to another team', context);
               }
             },
+
             builder: (context, candidateData, rejectedData) {
               var droppedPlayer = droppedPlayers.firstWhere(
                 (element) => element['position'] == widget.positions[i],
