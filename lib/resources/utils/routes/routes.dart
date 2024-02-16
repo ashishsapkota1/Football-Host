@@ -82,10 +82,7 @@ class Routes {
         return PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) {
               return StartMatch(
-                team1Id: args.team1Id,
-                team2Id: args.team2Id,
-                team1Name: args.team1Name,
-                team2Name: args.team2Name,
+                matches: args.matches,
               );
             },
             transitionsBuilder:

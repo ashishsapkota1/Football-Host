@@ -51,11 +51,7 @@ class _TournamentMatchesState extends State<TournamentMatches> {
                                 Navigator.pushNamed(
                                     context, RoutesName.startMatch,
                                     arguments: MatchArguments(
-                                        team1Id: matchesList[index].team1Id,
-                                        team1Name: matchesList[index].team1Name,
-                                        team2Id: matchesList[index].team2Id,
-                                        team2Name:
-                                            matchesList[index].team2Name));
+                                        matches: matchesList[index]));
                               },
                               child: Card(
                                 elevation: 2,

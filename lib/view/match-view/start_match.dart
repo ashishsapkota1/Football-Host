@@ -3,24 +3,16 @@ import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/lineup.dart';
+import '../../data/model/match/match_model.dart';
 import '../../resources/utils/text_styles.dart';
 
 class StartMatch extends StatefulWidget {
-  final int? team1Id;
-  final String? team1Name;
-  final int? team2Id;
-  final String? team2Name;
-  const StartMatch(
-      {super.key,
-      required this.team1Id,
-      required this.team2Id,
-      required this.team1Name,
-      required this.team2Name});
+  final Matches matches;
+  const StartMatch({super.key, required this.matches});
 
   @override
   State<StartMatch> createState() => _StartMatchState();
 }
-
 
 class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   late List<Widget> tabs;
@@ -35,7 +27,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> tabs = [LineUp(team1Id: widget.team1Id, team2Id: widget.team2Id)];
+    List<Widget> tabs = [
+      LineUp(team1Id: widget.matches.team1Id, team2Id: widget.matches.team2Id)
+    ];
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -47,7 +41,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
             centerTitle: true,
             backgroundColor: AppColor.appBarColor,
             title: Text(
-              "${widget.team1Name?.toUpperCase()} vs ${widget.team2Name?.toUpperCase()}",
+              "${widget.matches.team1Name?.toUpperCase()} vs ${widget.matches.team2Name?.toUpperCase()}",
               style: TextStyles.appBarText,
             ),
             flexibleSpace: FlexibleSpaceBar(
@@ -55,24 +49,26 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.team1Name!.toUpperCase(),
+                    widget.matches.team1Name!.toUpperCase(),
                     style: TextStyles.matchStyle,
                   ),
                   verticalSpacing(
                       space: Responsive.screenWidth(context) * 0.08),
-                  const Text(
-                    '0',
+                  Text(
+                    widget.matches.team1Score.toString(),
                     style: TextStyles.scoreStyle,
                   ),
-                  verticalSpacing(space: Responsive.screenWidth(context) * 0.1),
-                  const Text(
-                    '0',
+                  verticalSpacing(space: Responsive.screenWidth(context) * 0.04),
+                  const Text('-',style: TextStyles.scoreStyle,),
+                  verticalSpacing(space: Responsive.screenWidth(context) * 0.04),
+                  Text(
+                    widget.matches.team2Score.toString(),
                     style: TextStyles.scoreStyle,
                   ),
                   verticalSpacing(
                       space: Responsive.screenWidth(context) * 0.08),
                   Text(
-                    widget.team2Name!.toUpperCase(),
+                    widget.matches.team2Name!.toUpperCase(),
                     style: TextStyles.matchStyle,
                   ),
                 ],
