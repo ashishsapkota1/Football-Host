@@ -3,6 +3,7 @@ import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:provider/provider.dart';
 import '../../../data/model/player_model.dart';
+import '../../../resources/app_colors.dart';
 import '../../../resources/utils/text_styles.dart';
 
 class PlayingXiTeam2 extends StatefulWidget {
@@ -40,7 +41,7 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
                   children: [
                     CircleAvatar(
                       radius: 30,
-                      backgroundColor: Colors.purple,
+                      backgroundColor: AppColor.lineUpColor,
                       child: Column(
                         children: [
                           Center(

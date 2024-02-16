@@ -39,7 +39,7 @@ class _PlayingXiTeam1State extends State<PlayingXiTeam1> {
                     backgroundColor: AppColor.lineUpColor,
                     child: Column(
                       children: [
-                        Text(playerList[index].position!),
+                        Text(playerList[index].position!.substring(0, 3)),
                       ],
                     ),
                   ),

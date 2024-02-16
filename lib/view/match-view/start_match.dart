@@ -3,7 +3,6 @@ import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/lineup.dart';
-
 import '../../resources/utils/text_styles.dart';
 
 class StartMatch extends StatefulWidget {
