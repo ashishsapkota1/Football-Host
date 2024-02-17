@@ -26,7 +26,7 @@ class _TeamPlayersState extends State<TeamPlayers> {
       appBar: AppBar(
         backgroundColor: AppColor.appBarColor,
         title:  Text(
-          'Team: $teamName'.toUpperCase(),
+          teamName,
           style: TextStyles.appBarText,
         ),
         centerTitle: true,
@@ -59,17 +59,16 @@ class _TeamPlayersState extends State<TeamPlayers> {
                                   elevation: 2,
                                   child: ListTile(
                                     leading: const CircleAvatar(
-                                        radius: 50,
+                                        radius: 30,
                                         child: Icon(Icons.person)
                                     ),
                                     title: Text(
-                                      'Name : ${playerList[index].playerName!
-                                          .toUpperCase()}',
+                                      playerList[index].playerName!,
                                       style: TextStyles.teamCardText,),
                                     subtitle: Text(
-                                      'Position : ${playerList[index].position!
-                                          .toUpperCase()}',
-                                      style: TextStyles.teamCardText,),
+                                      playerList[index].position!
+                                          .toUpperCase(),
+                                      style: TextStyles.teamCardText2,),
 
                                   ),
                                 ),

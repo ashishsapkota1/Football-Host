@@ -27,14 +27,14 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: playerList.length,
+            itemCount: playerList.length ,
             itemBuilder: (context, index) {
               return LongPressDraggable<Player>(
                 data: playerList[index],
                 childWhenDragging: Container(),
                 onDragCompleted: () {
                   setState(() {
-                    playerList.remove(playerList[index]);
+                    playerList.removeAt(index);
                   });
                 },
                 feedback: Column(

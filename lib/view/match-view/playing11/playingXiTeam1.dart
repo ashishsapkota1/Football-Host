@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/view_model/player_view_model.dart';
@@ -15,6 +17,7 @@ class PlayingXiTeam1 extends StatefulWidget {
 }
 
 class _PlayingXiTeam1State extends State<PlayingXiTeam1> {
+  int x =0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +30,16 @@ class _PlayingXiTeam1State extends State<PlayingXiTeam1> {
         padding: const EdgeInsets.only(left: 8.0,right: 8),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-            itemCount: playerList.length,
+            itemCount: playerList.length ,
             itemBuilder: (context, index){
             return LongPressDraggable<Player>(
               data: playerList[index],
               childWhenDragging: Container(),
+              onDragCompleted: (){
+                setState(() {
+                  playerList.removeAt(index);
+                });
+              },
               feedback:Column(
                 children: [
                   CircleAvatar(

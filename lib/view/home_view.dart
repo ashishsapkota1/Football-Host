@@ -79,13 +79,14 @@ class _HomeViewState extends State<HomeView> {
                             child: Card(
                               color: AppColor.appBarColor,
                               child: Slidable(
-                                startActionPane: ActionPane(
+                                endActionPane: ActionPane(
                                   extentRatio: 0.5,
                                   motion: const DrawerMotion(),
                                   children: [
                                     SlidableAction(
                                       onPressed: (BuildContext context) {
                                         AlertDialog alert = AlertDialog(
+                                          insetPadding: EdgeInsets.zero,
                                           title: const Text(
                                             'Delete Tournament',
                                             style: TextStyles.scheduleText,

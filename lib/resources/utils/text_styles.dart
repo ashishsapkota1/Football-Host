@@ -4,7 +4,7 @@ import 'package:football_host/resources/app_colors.dart';
 class TextStyles {
   static const TextStyle appBarText = TextStyle(
     color: AppColor.backGroundColor,
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: 'Poppins',
   );
 
@@ -18,6 +18,9 @@ class TextStyles {
   );
   static const TextStyle teamCardText =
       TextStyle(color: AppColor.appBarColor, fontSize: 18);
+
+  static const TextStyle teamCardText2 =
+  TextStyle(color: Colors.black54, fontSize: 14);
 
   static const TextStyle scheduleText = TextStyle(
       color: AppColor.appBarColor, fontSize: 20, fontWeight: FontWeight.bold);
