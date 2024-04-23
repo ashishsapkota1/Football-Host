@@ -8,6 +8,7 @@ import '../../resources/utils/text_styles.dart';
 
 class StartMatch extends StatefulWidget {
   final Matches matches;
+
   const StartMatch({super.key, required this.matches});
 
   @override
@@ -28,7 +29,11 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
-      LineUp(team1Id: widget.matches.team1Id, team2Id: widget.matches.team2Id)
+      LineUp(
+          team1Id: widget.matches.team1Id,
+          team2Id: widget.matches.team2Id,
+          team1Name: widget.matches.team1Name,
+          team2Name: widget.matches.team2Name)
     ];
     return DefaultTabController(
       length: tabs.length,
@@ -58,9 +63,14 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                     widget.matches.team1Score.toString(),
                     style: TextStyles.scoreStyle,
                   ),
-                  verticalSpacing(space: Responsive.screenWidth(context) * 0.04),
-                  const Text('-',style: TextStyles.scoreStyle,),
-                  verticalSpacing(space: Responsive.screenWidth(context) * 0.04),
+                  verticalSpacing(
+                      space: Responsive.screenWidth(context) * 0.04),
+                  const Text(
+                    '-',
+                    style: TextStyles.scoreStyle,
+                  ),
+                  verticalSpacing(
+                      space: Responsive.screenWidth(context) * 0.04),
                   Text(
                     widget.matches.team2Score.toString(),
                     style: TextStyles.scoreStyle,

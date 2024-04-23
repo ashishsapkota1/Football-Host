@@ -10,9 +10,10 @@ class FormationNo1 extends StatefulWidget {
   final int? teamId;
   final int avatarQuarterTurn;
   final List<Offset> positions;
+
   const FormationNo1(
       {super.key,
-        this.teamId,
+      this.teamId,
       required this.quarterTurn,
       required this.positions,
       required this.avatarQuarterTurn});
@@ -24,12 +25,13 @@ class FormationNo1 extends StatefulWidget {
 class _FormationNo1State extends State<FormationNo1> {
   List<Map<String, dynamic>> droppedPlayers = [];
   bool _isDropped = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
-          height: Responsive.screenHeight(context) * 0.4,
+          height: Responsive.screenHeight(context) * 0.5,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: RotatedBox(
@@ -44,6 +46,18 @@ class _FormationNo1State extends State<FormationNo1> {
                             color: AppColor.backGroundColor, width: 2)),
                     child: Column(
                       children: [
+                        Container(
+                          height: Responsive.screenHeight(context) * 0.06,
+                          decoration: BoxDecoration(
+                            color: AppColor.upperLineUpContainerColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(widget.teamId.toString())
+                            ],
+                          ),
+                        ),
                         Stack(
                           children: [
                             Center(
@@ -110,22 +124,23 @@ class _FormationNo1State extends State<FormationNo1> {
           top: top,
           child: DragTarget<Player>(
             onAccept: (data) {
-              if(data.teamId == widget.teamId) {
-                bool isDroppedAlready = droppedPlayers.any((element) => element['player'].id == data.id);
-          if(!isDroppedAlready){
-                setState(() {
-                droppedPlayers
-                    .add({'player': data, 'position': widget.positions[i]});
-                _isDropped = true;
-              });
-          }else{
-            Utils.flushBarErrorMessage('Player already dropped', context);
-          }
-              }else{
-                Utils.flushBarErrorMessage('Can\'t dropped to another team', context);
+              if (data.teamId == widget.teamId) {
+                bool isDroppedAlready = droppedPlayers
+                    .any((element) => element['player'].id == data.id);
+                if (!isDroppedAlready) {
+                  setState(() {
+                    droppedPlayers
+                        .add({'player': data, 'position': widget.positions[i]});
+                    _isDropped = true;
+                  });
+                } else {
+                  Utils.flushBarErrorMessage('Player already dropped', context);
+                }
+              } else {
+                Utils.flushBarErrorMessage(
+                    'Can\'t dropped to another team', context);
               }
             },
-
             builder: (context, candidateData, rejectedData) {
               var droppedPlayer = droppedPlayers.firstWhere(
                 (element) => element['position'] == widget.positions[i],
