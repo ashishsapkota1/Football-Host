@@ -83,6 +83,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
               expandedTitleScale: 2,
             ),
             bottom: TabBar(

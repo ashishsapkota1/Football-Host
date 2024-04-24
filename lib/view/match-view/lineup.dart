@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
@@ -44,9 +45,9 @@ class _LineUpState extends State<LineUp> {
       Offset(0.09, 0.27),
       Offset(0.42, 0.27),
       Offset(0.75, 0.27),
-      Offset(0.09, 0.34),
-      Offset(0.42, 0.34),
-      Offset(0.75, 0.34),
+      Offset(0.09, 0.36),
+      Offset(0.42, 0.36),
+      Offset(0.75, 0.36),
     ],
     '3-4-3': const [
       Offset(0.42, 0.09),
@@ -57,9 +58,9 @@ class _LineUpState extends State<LineUp> {
       Offset(0.3, 0.27),
       Offset(0.58, 0.27),
       Offset(0.8, 0.27),
-      Offset(0.09, 0.34),
-      Offset(0.42, 0.34),
-      Offset(0.8, 0.34),
+      Offset(0.09, 0.36),
+      Offset(0.42, 0.36),
+      Offset(0.8, 0.36),
     ],
     '4-4-2': const [
       Offset(0.42, 0.09),
@@ -71,8 +72,8 @@ class _LineUpState extends State<LineUp> {
       Offset(0.3, 0.27),
       Offset(0.58, 0.27),
       Offset(0.8, 0.27),
-      Offset(0.25, 0.34),
-      Offset(0.65, 0.34),
+      Offset(0.25, 0.36),
+      Offset(0.65, 0.36),
     ],
     '4-3-2-1': const [
       Offset(0.42, 0.09),
@@ -91,10 +92,11 @@ class _LineUpState extends State<LineUp> {
 
   @override
   Widget build(BuildContext context) {
+    final  AudioPlayer audioPlayer = AudioPlayer();
     return SingleChildScrollView(
       child: Column(
         children: [
-          Text(widget.team1Name!),
+          const Text('Select formation'),
           DropdownButton(
             style: TextStyles.cardText,
             elevation: 4,
@@ -113,7 +115,7 @@ class _LineUpState extends State<LineUp> {
           horizontalSpacing(space: 8),
           PlayingXiTeam1(teamId: widget.team1Id),
           _buildFormation1(dropDownValue1),
-          Text(widget.team2Name!),
+          const Text('Select formation'),
           DropdownButton(
             value: dropDownValue2,
             style: TextStyles.cardText,
@@ -132,6 +134,21 @@ class _LineUpState extends State<LineUp> {
           horizontalSpacing(space: 8),
           PlayingXiTeam2(teamId: widget.team2Id),
           _buildFormation2(dropDownValue2),
+          horizontalSpacing(space: 14),
+          TextButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AppColor.appBarColor),
+              ),
+              onPressed: () async{
+                const path = "sound/whistle.mp3";
+                await audioPlayer.play(AssetSource(path));
+              },
+              child: const Text(
+                'Start match',
+                style: TextStyles.tabBarStyle,
+              )),
+          horizontalSpacing(space: 8)
         ],
       ),
     );
@@ -143,28 +160,36 @@ class _LineUpState extends State<LineUp> {
         ? FormationNo1(
             teamId: widget.team1Id,
             quarterTurn: 4,
+            upperContainerQTurn: 4,
             positions: positions,
             avatarQuarterTurn: 4,
+            teamName: widget.team1Name,
           )
         : value1 == '3-4-3'
             ? FormationNo1(
                 teamId: widget.team1Id,
                 quarterTurn: 4,
+                upperContainerQTurn: 4,
                 positions: positions,
                 avatarQuarterTurn: 4,
+                teamName: widget.team1Name,
               )
             : value1 == '4-4-2'
                 ? FormationNo1(
                     teamId: widget.team1Id,
                     quarterTurn: 4,
+                    upperContainerQTurn: 4,
                     positions: positions,
                     avatarQuarterTurn: 4,
+                    teamName: widget.team1Name,
                   )
                 : FormationNo1(
                     teamId: widget.team1Id,
                     quarterTurn: 4,
+                    upperContainerQTurn: 4,
                     positions: positions,
                     avatarQuarterTurn: 4,
+                    teamName: widget.team1Name,
                   );
   }
 
@@ -174,28 +199,36 @@ class _LineUpState extends State<LineUp> {
         ? FormationNo1(
             teamId: widget.team2Id,
             quarterTurn: 2,
+            upperContainerQTurn: 2,
             positions: positions,
             avatarQuarterTurn: 2,
+            teamName: widget.team2Name,
           )
         : value2 == '3-4-3'
             ? FormationNo1(
                 teamId: widget.team2Id,
                 quarterTurn: 2,
+                upperContainerQTurn: 2,
                 positions: positions,
                 avatarQuarterTurn: 2,
+                teamName: widget.team2Name,
               )
             : value2 == '4-4-2'
                 ? FormationNo1(
                     teamId: widget.team2Id,
                     quarterTurn: 2,
+                    upperContainerQTurn: 2,
                     positions: positions,
                     avatarQuarterTurn: 2,
+                    teamName: widget.team2Name,
                   )
                 : FormationNo1(
                     teamId: widget.team2Id,
                     quarterTurn: 2,
+                    upperContainerQTurn: 2,
                     positions: positions,
                     avatarQuarterTurn: 2,
+                    teamName: widget.team2Name,
                   );
   }
 }

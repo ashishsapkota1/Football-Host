@@ -53,7 +53,7 @@ class TextStyles {
   );
 
   static const TextStyle positionStyle = TextStyle(
-    color: AppColor.positionNameColor,
+    color: Colors.white,
     fontSize: 12,
     fontWeight: FontWeight.bold
   );
@@ -61,6 +61,11 @@ class TextStyles {
   static const TextStyle draggedStyle = TextStyle(
     color: AppColor.positionNameColor,
     fontSize: 14
+  );
+
+  static const TextStyle lineUpTeamNameStyle = TextStyle(
+    color: Colors.white,
+    fontSize: 20
   );
 
 }

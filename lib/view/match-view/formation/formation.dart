@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/resources/utils/text_styles.dart';
 import '../../../data/model/player_model.dart';
 import '../../../resources/app_colors.dart';
@@ -8,15 +9,18 @@ import '../../../resources/utils/utils.dart';
 class FormationNo1 extends StatefulWidget {
   final int quarterTurn;
   final int? teamId;
+  final String? teamName;
+  final int? upperContainerQTurn;
   final int avatarQuarterTurn;
   final List<Offset> positions;
 
   const FormationNo1(
       {super.key,
       this.teamId,
+      required this.teamName,
       required this.quarterTurn,
       required this.positions,
-      required this.avatarQuarterTurn});
+      required this.avatarQuarterTurn, this.upperContainerQTurn});
 
   @override
   State<FormationNo1> createState() => _FormationNo1State();
@@ -46,16 +50,19 @@ class _FormationNo1State extends State<FormationNo1> {
                             color: AppColor.backGroundColor, width: 2)),
                     child: Column(
                       children: [
-                        Container(
-                          height: Responsive.screenHeight(context) * 0.06,
-                          decoration: BoxDecoration(
-                            color: AppColor.upperLineUpContainerColor,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(widget.teamId.toString())
-                            ],
+                        RotatedBox(
+                          quarterTurns: widget.upperContainerQTurn!,
+                          child: Container(
+                            height: Responsive.screenHeight(context) * 0.06,
+                            decoration: BoxDecoration(
+                              color: AppColor.upperLineUpContainerColor,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              children: [
+                                verticalSpacing(space: 20),
+                                Text(widget.teamName!, style: TextStyles.lineUpTeamNameStyle,)],
+                            ),
                           ),
                         ),
                         Stack(
