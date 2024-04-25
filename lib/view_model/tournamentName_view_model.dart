@@ -20,5 +20,13 @@ class TournamentNameViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  static int? _selectedMatchId;
+  int? get selectedMatchId => _selectedMatchId;
+
+  void setSelectedMatchId(int? matchId) {
+    _selectedMatchId = matchId;
+    notifyListeners();
+  }
+
 
 }

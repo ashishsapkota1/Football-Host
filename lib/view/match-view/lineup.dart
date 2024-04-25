@@ -1,9 +1,13 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:football_host/data/model/match/match_model.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam1.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam2.dart';
+import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
+import 'package:football_host/view_model/tournamentName_view_model.dart';
+import 'package:provider/provider.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/utils/text_styles.dart';
 
@@ -26,6 +30,7 @@ class LineUp extends StatefulWidget {
 }
 
 class _LineUpState extends State<LineUp> {
+  final TextEditingController timeController = TextEditingController();
   static const List<String> list = <String>[
     '4-3-3',
     '3-4-3',
@@ -93,6 +98,11 @@ class _LineUpState extends State<LineUp> {
   @override
   Widget build(BuildContext context) {
     final  AudioPlayer audioPlayer = AudioPlayer();
+    final matchViewModel = Provider.of<MatchViewModel>(context);
+    final getTournamentId = Provider.of<TournamentNameViewModel>(context);
+    int? tournamentId = getTournamentId.selectedTournamentId;
+    int? matchId = getTournamentId.selectedMatchId;
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -135,13 +145,33 @@ class _LineUpState extends State<LineUp> {
           PlayingXiTeam2(teamId: widget.team2Id),
           _buildFormation2(dropDownValue2),
           horizontalSpacing(space: 14),
+          const Text('Enter the match time in minutes:'),
+          SizedBox(
+            width: 100,
+            height: 40,
+            child: TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              controller: timeController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8)
+                )
+              ),
+            ),
+          ),
+          horizontalSpacing(space: 8),
           TextButton(
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(AppColor.appBarColor),
               ),
               onPressed: () async{
+                print(tournamentId);
+                print(matchId);
                 const path = "sound/whistle.mp3";
+                int matchTime = int.parse(timeController.text);
+                await matchViewModel.addMatchTime(matchId!, matchTime);
                 await audioPlayer.play(AssetSource(path));
               },
               child: const Text(

@@ -17,6 +17,7 @@ class DbHelper {
   final MatchViewModel matchViewModel = MatchViewModel();
 
   DbHelper._();
+
   static final DbHelper instance = DbHelper._();
 
   Future<Database?> get db async {
@@ -38,8 +39,7 @@ class DbHelper {
     await db.execute("CREATE TABLE TOURNAMENT("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         " name TEXT NOT NULL,"
-        "pole TEXT)"
-    );
+        "pole TEXT)");
 
     await db.execute("CREATE TABLE TEAM(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
         " teamName TEXT NOT NULL, "
@@ -71,14 +71,17 @@ class DbHelper {
             "FOREIGN KEY(teamId) REFERENCES TEAM(id) ON DELETE CASCADE)");
 
     await db.execute("CREATE TABLE MATCH(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
-        "tournamentId INTEGER NOT NULL,"
-        "team1Id INTEGER NOT NULL,"
-        "team2Id INTEGER NOT NULL,"
+        "tournamentId INTEGER,"
+        "team1Id INTEGER,"
+        "team2Id INTEGER,"
         "team1Name TEXT,"
         "team2Name TEXT,"
         "team1Score INTEGER,"
         "team2Score INTEGER,"
         "penaltyScore INTEGER,"
+        "goalScorer Text,"
+        "matchTime INTEGER,"
+        "assistedBy Text,"
         "scheduleId INTEGER,"
         "FOREIGN KEY(scheduleId) REFERENCES Schedule(id),"
         "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(id) ON DELETE CASCADE,"
@@ -99,14 +102,14 @@ class DbHelper {
   }
 
   // Get Teams
-  Future<List<Team>> getTeams(int tournamentId) async{
+  Future<List<Team>> getTeams(int tournamentId) async {
     var dbClient = await db;
-    final List<Map<String, dynamic>>? maps = await dbClient?.query('TEAM', where: 'tournamentId = ?' , whereArgs: [tournamentId] );
+    final List<Map<String, dynamic>>? maps = await dbClient
+        ?.query('TEAM', where: 'tournamentId = ?', whereArgs: [tournamentId]);
     return List.generate(maps!.length, (index) {
       return Team.fromMap(maps[index]);
-    } );
+    });
   }
-
 
   // Insert Teams
   Future<int?> insertTeams(int tournamentId, Team team) async {
@@ -121,9 +124,10 @@ class DbHelper {
   }
 
   // Get Players
-  Future<List<Player>> getPlayers(int teamId) async{
+  Future<List<Player>> getPlayers(int teamId) async {
     var dbClient = await db;
-    final List<Map<String, dynamic>>? maps = await dbClient?.query('PLAYER', where: 'teamId = ?', whereArgs: [teamId]);
+    final List<Map<String, dynamic>>? maps = await dbClient
+        ?.query('PLAYER', where: 'teamId = ?', whereArgs: [teamId]);
     return List.generate(maps!.length, (index) {
       return Player.fromMap(maps[index]);
     });
@@ -135,50 +139,52 @@ class DbHelper {
     return dbClient?.insert('Schedule', schedule.toMap(tournamentId));
   }
 
-
   // Insert Schedule
-  Future<Tournament> insertPoles(Tournament tournament, String poleFormation) async {
+  Future<Tournament> insertPoles(
+      Tournament tournament, String poleFormation) async {
     var dbClient = await db;
     try {
       await dbClient!.update('TOURNAMENT', {'pole': poleFormation},
           where: "id = ?", whereArgs: [tournament.id]);
       Tournament updatedTournament = tournament.copyWith(pole: poleFormation);
       return updatedTournament;
-    } catch(e) {
+    } catch (e) {
       throw Exception('failed to add poles.');
     }
   }
 
   // Get Schedule
-  Future<List<Schedule>> getSchedule(int tournamentId) async{
+  Future<List<Schedule>> getSchedule(int tournamentId) async {
     var dbClient = await db;
-    final List<Map<String, dynamic>>? maps = await dbClient?.query(
-        'Schedule',
-        where: 'tournamentId = ? ',
-        whereArgs: [tournamentId]);
+    final List<Map<String, dynamic>>? maps = await dbClient?.query('Schedule',
+        where: 'tournamentId = ? ', whereArgs: [tournamentId]);
     return List.generate(maps!.length, (index) {
       return Schedule.fromMap(maps[index]);
     });
-
   }
 
   // Insert Matches
   Future<int?> insertMatches(int tournamentId, Matches matches) async {
     var dbClient = await db;
-    return  dbClient?.insert('MATCH', matches.toMap(),
+    return dbClient?.insert('MATCH', matches.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  // Get Matches
-  Future<List<Matches>> getMatches(int tournamentId) async{
+  //Insert time
+  Future<int?> insertMatchTime(int matchId, int matchTime) async {
     var dbClient = await db;
-    final List<Map<String, dynamic>>? maps = await dbClient?.query('MATCH', where: 'tournamentId = ?', whereArgs: [tournamentId]);
+    return dbClient?.insert("MATCH", {'matchTime' : matchTime});
+  }
+
+  // Get Matches
+  Future<List<Matches>> getMatches(int tournamentId) async {
+    var dbClient = await db;
+    final List<Map<String, dynamic>>? maps = await dbClient
+        ?.query('MATCH', where: 'tournamentId = ?', whereArgs: [tournamentId]);
     return List.generate(maps!.length, (index) {
       return Matches.fromMap(maps[index]);
     });
   }
-
-
 
   Future getTeamNameById(int teamId) async {
     var dbClient = await db;

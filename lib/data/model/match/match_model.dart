@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Matches {
   int? id;
   int? tournamentId;
@@ -9,6 +11,10 @@ class Matches {
   int? team1Score;
   int? team2Score;
   String? penaltyScore;
+  String? goalScorer;
+  String? assistedBy;
+  int? matchTime;
+
   Matches(
       {this.id,
       this.tournamentId,
@@ -19,7 +25,10 @@ class Matches {
       this.team2Name,
       this.team1Score,
       this.team2Score,
-      this.penaltyScore});
+      this.penaltyScore,
+      this.goalScorer,
+      this.assistedBy,
+      this.matchTime});
 
   Map<String, dynamic> toMap() {
     return {
@@ -31,7 +40,10 @@ class Matches {
       "team2Name": team2Name,
       "team1Score": team1Score,
       "team2Score": team2Score,
-      "penaltyScore": penaltyScore
+      "penaltyScore": penaltyScore,
+      "goalScorer": goalScorer,
+      "assistedBy": assistedBy,
+      "matchTime": matchTime
     };
   }
 
@@ -45,5 +57,8 @@ class Matches {
         team2Name = map['team2Name'],
         team1Score = map['team1Score'],
         team2Score = map['team2Score'],
-        penaltyScore = map['penaltyScore'];
+        penaltyScore = map['penaltyScore'],
+        goalScorer = map['goalScorer'],
+        assistedBy = map['assistedBy'],
+        matchTime = map['matchTime'];
 }

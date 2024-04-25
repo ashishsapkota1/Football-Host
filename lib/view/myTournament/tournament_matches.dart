@@ -21,6 +21,7 @@ class _TournamentMatchesState extends State<TournamentMatches> {
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     final tournamentId = getTournamentId.selectedTournamentId;
 
+
     return Column(
       children: [
         Expanded(
@@ -48,6 +49,7 @@ class _TournamentMatchesState extends State<TournamentMatches> {
                             ),
                             child: GestureDetector(
                               onTap: () {
+                                getTournamentId.setSelectedMatchId(matchesList[index].scheduleId);
                                 Navigator.pushNamed(
                                     context, RoutesName.startMatch,
                                     arguments: MatchArguments(

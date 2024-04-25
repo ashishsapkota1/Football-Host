@@ -73,6 +73,7 @@ flutter:
 
   assets:
     - assets/sound/whistle.mp3
+    - assets/
 
   fonts:
     - family: Poppins

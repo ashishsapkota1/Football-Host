@@ -33,7 +33,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
           team1Id: widget.matches.team1Id,
           team2Id: widget.matches.team2Id,
           team1Name: widget.matches.team1Name,
-          team2Name: widget.matches.team2Name)
+          team2Name: widget.matches.team2Name),
+
+
     ];
     return DefaultTabController(
       length: tabs.length,
@@ -91,13 +93,13 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
               labelStyle: TextStyles.tabBarStyle,
               tabs: const [
                 Tab(
-                  text: 'Playing 11',
-                ),
-                Tab(
-                  text: 'Formation',
-                ),
-                Tab(
                   text: 'LineUp',
+                ),
+                Tab(
+                  text: 'Timer',
+                ),
+                Tab(
+                  text: 'Add Goal',
                 )
               ],
             ),
