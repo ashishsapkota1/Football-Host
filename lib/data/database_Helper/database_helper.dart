@@ -173,7 +173,8 @@ class DbHelper {
   //Insert time
   Future<int?> insertMatchTime(int matchId, int matchTime) async {
     var dbClient = await db;
-    return dbClient?.update("MATCH", {'matchTime' : matchTime}, where: 'id = ?', whereArgs: [matchId]);
+    return dbClient?.update("MATCH", {'matchTime': matchTime},
+        where: 'id = ?', whereArgs: [matchId]);
   }
 
   // Get Matches

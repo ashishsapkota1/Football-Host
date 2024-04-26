@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:football_host/data/model/match/match_model.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam1.dart';
@@ -97,7 +96,7 @@ class _LineUpState extends State<LineUp> {
 
   @override
   Widget build(BuildContext context) {
-    final  AudioPlayer audioPlayer = AudioPlayer();
+    final AudioPlayer audioPlayer = AudioPlayer();
     final matchViewModel = Provider.of<MatchViewModel>(context);
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     int? matchId = getTournamentId.selectedMatchId;
@@ -153,10 +152,8 @@ class _LineUpState extends State<LineUp> {
               keyboardType: TextInputType.number,
               controller: timeController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8)
-                )
-              ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8))),
             ),
           ),
           horizontalSpacing(space: 8),
@@ -165,7 +162,7 @@ class _LineUpState extends State<LineUp> {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(AppColor.appBarColor),
               ),
-              onPressed: () async{
+              onPressed: () async {
                 const path = "sound/whistle.mp3";
                 int matchTime = int.parse(timeController.text);
                 await matchViewModel.addMatchTime(matchId!, matchTime);
