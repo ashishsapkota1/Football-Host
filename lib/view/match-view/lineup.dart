@@ -100,7 +100,6 @@ class _LineUpState extends State<LineUp> {
     final  AudioPlayer audioPlayer = AudioPlayer();
     final matchViewModel = Provider.of<MatchViewModel>(context);
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
-    int? tournamentId = getTournamentId.selectedTournamentId;
     int? matchId = getTournamentId.selectedMatchId;
 
     return SingleChildScrollView(
@@ -167,8 +166,6 @@ class _LineUpState extends State<LineUp> {
                     MaterialStateProperty.all<Color>(AppColor.appBarColor),
               ),
               onPressed: () async{
-                print(tournamentId);
-                print(matchId);
                 const path = "sound/whistle.mp3";
                 int matchTime = int.parse(timeController.text);
                 await matchViewModel.addMatchTime(matchId!, matchTime);
