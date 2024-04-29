@@ -8,6 +8,9 @@ class MatchViewModel extends ChangeNotifier {
   late List<Matches> _matches = [];
   List<Matches> get matches => _matches;
 
+   late int _matchTime = 0 ;
+  int get matchTime => _matchTime;
+
  Future<void> addMatches(int tournamentId, Matches matches) async{
    final int? matchId = await DbHelper.instance.insertMatches(tournamentId, matches);
    if(matchId != null){
@@ -21,6 +24,7 @@ class MatchViewModel extends ChangeNotifier {
 
   Future<void> addMatchTime(int matchId, int matchTime) async{
     await DbHelper.instance.insertMatchTime(matchId, matchTime);
+    _matchTime = matchTime;
       notifyListeners();
 
   }

@@ -6,9 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:football_host/resources/app_colors.dart';
 
 class Utils{
-  static toastMessage(String msg){
+  static toastMessage(String msg, Color? color){
     Fluttertoast.showToast(msg: msg,
-    backgroundColor: AppColor.appBarColor,
+    backgroundColor: color ?? AppColor.appBarColor,
     textColor: AppColor.backGroundColor
     );
   }

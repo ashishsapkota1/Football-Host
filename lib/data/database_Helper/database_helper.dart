@@ -187,6 +187,20 @@ class DbHelper {
     });
   }
 
+  // Get matchTime
+  // Future<int> getMatchTime(int matchId) async{
+  //   var dbClient = await db;
+  //   final List<Map<String, dynamic>>? maps = await dbClient?.query('MATCH', where: 'id = ?', whereArgs: [matchId]);
+  //
+  //   if (maps!.isNotEmpty){
+  //     return maps.first['matchTime'];
+  //   }
+  //   else {
+  //     return 0;
+  //   }
+  //
+  // }
+
   Future getTeamNameById(int teamId) async {
     var dbClient = await db;
     List<Map<String, dynamic>> result = await dbClient!.query(

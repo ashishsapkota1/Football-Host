@@ -48,7 +48,7 @@ class _AddTournamentState extends State<AddTournament> {
               if(tournamentName.isNotEmpty){
                 Navigator.pop(context);
                 await tournamentViewModel.addTournament(tournamentName, '');
-                await Utils.toastMessage('Tournament added');
+                await Utils.toastMessage('Tournament added', AppColor.backGroundColor);
               }
 
 

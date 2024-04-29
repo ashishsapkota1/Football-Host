@@ -5,6 +5,9 @@ import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/add_goal.dart';
 import 'package:football_host/view/match-view/lineup.dart';
 import 'package:football_host/view/match-view/timer.dart';
+
+import 'package:football_host/view_model/tournamentName_view_model.dart';
+import 'package:provider/provider.dart';
 import '../../data/model/match/match_model.dart';
 import '../../resources/utils/text_styles.dart';
 
@@ -21,8 +24,13 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   late List<Widget> tabs;
 
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    final tournamentNameViewModel = Provider.of<TournamentNameViewModel>(context);
+    int? matchId = tournamentNameViewModel.selectedMatchId;
     List<Widget> tabs = [
       LineUp(
           team1Id: widget.matches.team1Id,

@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/spacing.dart';
+import 'package:football_host/resources/utils/utils.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam1.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam2.dart';
@@ -94,6 +95,8 @@ class _LineUpState extends State<LineUp> {
     ],
   };
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final AudioPlayer audioPlayer = AudioPlayer();
@@ -147,13 +150,23 @@ class _LineUpState extends State<LineUp> {
           SizedBox(
             width: 100,
             height: 40,
-            child: TextField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              controller: timeController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8))),
+            child: Form(
+              key: _formKey,
+              child: TextFormField(
+
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return Utils.toastMessage('Please enter the time', Colors.red);
+                  }
+                  return null;
+                },
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                controller: timeController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8))),
+              ),
             ),
           ),
           horizontalSpacing(space: 8),
@@ -163,10 +176,13 @@ class _LineUpState extends State<LineUp> {
                     MaterialStateProperty.all<Color>(AppColor.appBarColor),
               ),
               onPressed: () async {
-                const path = "sound/whistle.mp3";
-                int matchTime = int.parse(timeController.text);
-                await matchViewModel.addMatchTime(matchId!, matchTime);
-                await audioPlayer.play(AssetSource(path));
+                if(_formKey.currentState!.validate()){
+                  const path = "sound/whistle.mp3";
+                  int matchTime = int.parse(timeController.text);
+                  await matchViewModel.addMatchTime(matchId!, matchTime);
+                  await audioPlayer.play(AssetSource(path));
+                }
+
               },
               child: const Text(
                 'Start match',
