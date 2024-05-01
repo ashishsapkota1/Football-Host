@@ -68,4 +68,9 @@ class TextStyles {
     fontSize: 20
   );
 
+  static const TextStyle timerStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 24
+  );
+
 }

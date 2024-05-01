@@ -1,33 +1,26 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:provider/provider.dart';
 
-class MatchTimer extends StatefulWidget {
+import '../../resources/utils/text_styles.dart';
+
+class MatchTimer extends StatelessWidget {
   const MatchTimer({super.key});
 
   @override
-  State<MatchTimer> createState() => _MatchTimerState();
-}
-
-class _MatchTimerState extends State<MatchTimer> {
-
-
-  int _remainingTimeInSec = 0;
-
-
-
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
-    int matchTime = matchViewModel.matchTime;
-    return Text(matchTime.toString());
+    final timerProvider = Provider.of<MatchTimerViewModel>(context);
+    return Column(
+      children: [
+        const Text(
+          "Time remaining:",
+          style: TextStyles.timerStyle,
+        ),
+        Text(
+          timerProvider.remainingTime,
+          style: TextStyles.timerStyle,
+        ),
+      ],
+    );
   }
 }

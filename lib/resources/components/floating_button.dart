@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:football_host/data/model/team_model.dart';
 import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/utils.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';

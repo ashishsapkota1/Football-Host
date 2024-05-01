@@ -5,6 +5,7 @@ import 'package:football_host/resources/utils/utils.dart';
 import 'package:football_host/view/match-view/formation/formation.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam1.dart';
 import 'package:football_host/view/match-view/playing11/playingXiTeam2.dart';
+import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,7 @@ class LineUp extends StatefulWidget {
 
 class _LineUpState extends State<LineUp> {
   final TextEditingController timeController = TextEditingController();
+  bool matchStarted = false;
   static const List<String> list = <String>[
     '4-3-3',
     '3-4-3',
@@ -103,6 +105,8 @@ class _LineUpState extends State<LineUp> {
     final matchViewModel = Provider.of<MatchViewModel>(context);
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     int? matchId = getTournamentId.selectedMatchId;
+    final matchTimerViewModel = Provider.of<MatchTimerViewModel>(context);
+
 
     return SingleChildScrollView(
       child: Column(
@@ -146,48 +150,64 @@ class _LineUpState extends State<LineUp> {
           PlayingXiTeam2(teamId: widget.team2Id),
           _buildFormation2(dropDownValue2),
           horizontalSpacing(space: 14),
-          const Text('Enter the match time in minutes:'),
-          SizedBox(
-            width: 100,
-            height: 40,
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return Utils.toastMessage('Please enter the time', Colors.red);
-                  }
-                  return null;
-                },
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                controller: timeController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8))),
-              ),
+          Offstage(
+            offstage: matchStarted,
+            child: Column(
+              children: [
+                const Text('Enter the match time in minutes:'),
+                SizedBox(
+                  width: 100,
+                  height: 40,
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return Utils.toastMessage(
+                              'Please enter the time', Colors.red);
+                        }
+                        return null;
+                      },
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      controller: timeController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8))),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          horizontalSpacing(space: 8),
-          TextButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColor.appBarColor),
-              ),
-              onPressed: () async {
-                if(_formKey.currentState!.validate()){
-                  const path = "sound/whistle.mp3";
-                  int matchTime = int.parse(timeController.text);
-                  await matchViewModel.addMatchTime(matchId!, matchTime);
-                  await audioPlayer.play(AssetSource(path));
-                }
 
-              },
-              child: const Text(
-                'Start match',
-                style: TextStyles.tabBarStyle,
-              )),
+          horizontalSpacing(space: 8),
+          Offstage(
+            offstage: matchStarted,
+            child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(AppColor.appBarColor),
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    const path = "sound/whistle.mp3";
+                    int matchTime1 = int.parse(timeController.text);
+                    setState(() {
+                      matchStarted = true;
+                    });
+                    matchViewModel.matchStartedAlready(matchStarted);
+                    await matchViewModel.addMatchTime(matchId!, matchTime1);
+                    matchTimerViewModel.startTimer((matchTime1 / 2).ceil());
+                    await audioPlayer.play(AssetSource(path));
+                    Utils.toastMessage('Match has started', AppColor.appBarColor);
+                  }
+                },
+                child: const Text(
+                  'Start match',
+                  style: TextStyles.tabBarStyle,
+                )),
+          ),
           horizontalSpacing(space: 8)
         ],
       ),
