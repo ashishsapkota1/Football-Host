@@ -5,6 +5,7 @@ import 'package:football_host/view_model/home_view_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/score_view_model.dart';
 import 'package:football_host/view_model/navbar_view_model.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/teamName_view_model.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => MatchViewModel()),
         ChangeNotifierProvider(create: (context) => ScheduleViewModel()),
         ChangeNotifierProvider(create: (context) => MatchTimerViewModel()),
+        ChangeNotifierProvider(create: (context) => ScoreViewModel())
       ],
       child:  MaterialApp(
         theme: ThemeData(fontFamily: 'Poppins'),

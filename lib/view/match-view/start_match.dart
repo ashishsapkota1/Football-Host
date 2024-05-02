@@ -6,6 +6,7 @@ import 'package:football_host/view/match-view/add_goal.dart';
 import 'package:football_host/view/match-view/lineup.dart';
 import 'package:football_host/view/match-view/timer.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/score_view_model.dart';
 import 'package:provider/provider.dart';
 import '../../data/model/match/match_model.dart';
 import '../../resources/utils/text_styles.dart';
@@ -26,14 +27,22 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context);
     bool matchStarted = matchViewModel.matchStarted;
+    final scoreViewModel = Provider.of<ScoreViewModel>(context);
+    int team1Score = scoreViewModel.team1Score;
+    int team2Score = scoreViewModel.team2Score;
     List<Widget> tabs = [
       LineUp(
           team1Id: widget.matches.team1Id,
           team2Id: widget.matches.team2Id,
           team1Name: widget.matches.team1Name,
           team2Name: widget.matches.team2Name),
-      MatchTimer(),
-      AddGoal()
+      const MatchTimer(),
+      AddGoal(
+        matchId: widget.matches.id,
+          team1Id: widget.matches.team1Id,
+          team2Id: widget.matches.team2Id,
+          team1Name: widget.matches.team1Name,
+          team2Name: widget.matches.team2Name)
     ];
     return PopScope(
       canPop: !matchStarted,
@@ -72,7 +81,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.08),
                           Text(
-                            widget.matches.team1Score.toString(),
+                            team1Score.toString(),
                             style: TextStyles.scoreStyle,
                           ),
                           verticalSpacing(
@@ -84,7 +93,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.04),
                           Text(
-                            widget.matches.team2Score.toString(),
+                           team2Score.toString(),
                             style: TextStyles.scoreStyle,
                           ),
                           verticalSpacing(

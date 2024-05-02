@@ -11,7 +11,9 @@ import 'myTournament/tournament_schedule.dart';
 import 'myTournament/tournament_teams.dart';
 
 class AddTeams extends StatefulWidget {
-  const AddTeams({super.key,});
+  const AddTeams({
+    super.key,
+  });
 
   @override
   State<AddTeams> createState() => _AddTeamsState();
@@ -19,53 +21,59 @@ class AddTeams extends StatefulWidget {
 
 class _AddTeamsState extends State<AddTeams> {
   late List<Widget> currentTab;
+
   @override
   Widget build(BuildContext context) {
     final getTournamentName =
         Provider.of<TournamentNameViewModel>(context, listen: false);
     final navBar = Provider.of<NavbarViewModel>(context);
     final String tournamentName = getTournamentName.selectedTournament;
-    currentTab = [const TournamentTeams(), const TournamentMatches(),const TournamentSchedule(),];
+    currentTab = [
+      const TournamentTeams(),
+      const TournamentMatches(),
+      const TournamentSchedule(),
+    ];
     return Scaffold(
-        backgroundColor: AppColor.backGroundColor,
-        appBar: AppBar(
-          backgroundColor: AppColor.appBarColor,
-          title: Text(
-            tournamentName.toUpperCase(),
-            style: TextStyles.appBarText,
-          ),
-          centerTitle: true,
+      backgroundColor: AppColor.backGroundColor,
+      appBar: AppBar(
+        backgroundColor: AppColor.appBarColor,
+        title: Text(
+          tournamentName.toUpperCase(),
+          style: TextStyles.appBarText,
         ),
-        floatingActionButton:navBar.selectedItem ==0 ? Padding(
-          padding:
-              EdgeInsets.only(bottom: Responsive.screenHeight(context) * 0.1),
-          child: const FloatingButton(),
-        ): null,
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
-        bottomNavigationBar:
-            Consumer<NavbarViewModel>(builder: (context, navBar, _) {
-          currentTab[navBar.selectedItem];
-          return BottomNavigationBar(
-              selectedItemColor: AppColor.appBarColor,
-              currentIndex: navBar.selectedItem,
-              onTap: (index) {
-                navBar.setSelectedItem = index;
-              },
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.group),
-                  label: 'Teams',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.group),
-                  label: 'Matches',
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.schedule),
-                    label: 'Schedule'
-                )
-              ]);
-    
-        }),body: currentTab[navBar.selectedItem],);
+        centerTitle: true,
+      ),
+      floatingActionButton: navBar.selectedItem == 0
+          ? Padding(
+              padding: EdgeInsets.only(
+                  bottom: Responsive.screenHeight(context) * 0.1),
+              child: const FloatingButton(),
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
+      bottomNavigationBar:
+          Consumer<NavbarViewModel>(builder: (context, navBar, _) {
+        currentTab[navBar.selectedItem];
+        return BottomNavigationBar(
+            selectedItemColor: AppColor.appBarColor,
+            currentIndex: navBar.selectedItem,
+            onTap: (index) {
+              navBar.setSelectedItem = index;
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.group),
+                label: 'Teams',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.group),
+                label: 'Matches',
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.schedule), label: 'Schedule')
+            ]);
+      }),
+      body: currentTab[navBar.selectedItem],
+    );
   }
 }

@@ -102,7 +102,7 @@ _displayTextField(BuildContext context) {
                           position.isNotEmpty) {
                         playerProvider.addPlayer(teamId!, playerName, position, int.tryParse(jerseyNo)!);
                         Navigator.pop(context);
-                        await Utils.toastMessage("Player added successfully", AppColor.backGroundColor);
+                        await Utils.toastMessage("Player added successfully", AppColor.appBarColor);
 
                         playerNameController.clear();
                         playerJerseyNo.clear();

@@ -1,15 +1,110 @@
 import 'package:flutter/material.dart';
+import 'package:football_host/resources/utils/spacing.dart';
+import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/score_view_model.dart';
+import 'package:provider/provider.dart';
+
+import '../../resources/app_colors.dart';
+import '../../resources/utils/text_styles.dart';
 
 class AddGoal extends StatefulWidget {
-  const AddGoal({super.key});
+  final int? matchId;
+  final int? team1Id;
+  final int? team2Id;
+  final String? team1Name;
+  final String? team2Name;
+
+  const AddGoal(
+      {super.key,
+        required this.matchId,
+      required this.team1Id,
+      required this.team2Id,
+      required this.team1Name,
+      required this.team2Name});
 
   @override
   State<AddGoal> createState() => _AddGoalState();
 }
 
 class _AddGoalState extends State<AddGoal> {
+  bool isTeam1Selected = false;
+  bool isTeam2Selected = false;
+
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final matchViewModel = Provider.of<MatchViewModel>(context);
+    bool matchStarted = matchViewModel.matchStarted;
+    final scoreViewModel = Provider.of<ScoreViewModel>(context);
+    int team1Score = scoreViewModel.team1Score;
+    int team2Score = scoreViewModel.team2Score;
+    return matchStarted
+        ? Column(
+            children: [
+              const Text(
+                "Select scoring team",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+              horizontalSpacing(space: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                      value: isTeam1Selected,
+                      onChanged: (value) {
+                        setState(() {
+                          isTeam1Selected = value ?? false;
+                          isTeam2Selected = !isTeam1Selected;
+                        });
+                      }),
+                  Text(
+                    widget.team1Name!,
+                    style: TextStyles.cardText,
+                  ),
+                ],
+              ),
+              horizontalSpacing(space: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                      value: isTeam2Selected,
+                      onChanged: (value) {
+                        setState(() {
+                          isTeam2Selected = value ?? false;
+                          isTeam1Selected = !isTeam2Selected;
+                        });
+                      }),
+                  Text(
+                    widget.team2Name!,
+                    style: TextStyles.cardText,
+                  ),
+                ],
+              ),
+              TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(AppColor.appBarColor),
+                  ),
+                  onPressed: () async{
+                    if(isTeam1Selected){
+                      await scoreViewModel.addTeam1Goal(widget.matchId!, team1Score);
+                    } else if(isTeam2Selected){
+                      await scoreViewModel.addTeam2Goal(widget.matchId!, team2Score);
+                    }
+
+                  },
+                  child: const Text(
+                    'Add goal',
+                    style: TextStyles.tabBarStyle,
+                  )),
+            ],
+          )
+        : const Center(
+            child: Text(
+            'Match hasn\'t been started yet',
+            style: TextStyle(fontSize: 16, color: Colors.black),
+          ));
   }
+
 }

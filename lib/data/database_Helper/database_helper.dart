@@ -177,6 +177,18 @@ class DbHelper {
         where: 'id = ?', whereArgs: [matchId]);
   }
 
+  Future<int?> addTeam1Goal(int matchId, int goalNumber) async {
+    var dbClient = await db;
+    return dbClient?.update("MATCH", {'team1Score': goalNumber},
+        where: "id = ?", whereArgs: [matchId]);
+  }
+
+  Future<int?> addTeam2Goal(int matchId, int goalNumber) async {
+    var dbClient = await db;
+    return dbClient?.update("MATCH", {'team2Score': goalNumber},
+        where: "id = ?", whereArgs: [matchId]);
+  }
+
   // Get Matches
   Future<List<Matches>> getMatches(int tournamentId) async {
     var dbClient = await db;
