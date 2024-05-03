@@ -81,7 +81,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.08),
                           Text(
-                            team1Score.toString(),
+                            widget.matches.team1Score != null && widget.matches.team1Score! > 0
+                                ? widget.matches.team1Score!.toString()
+                                : team1Score.toString(),
                             style: TextStyles.scoreStyle,
                           ),
                           verticalSpacing(
@@ -93,7 +95,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.04),
                           Text(
-                           team2Score.toString(),
+                            widget.matches.team2Score != null && widget.matches.team2Score! > 0
+                                ? widget.matches.team2Score!.toString()
+                                : team2Score.toString(),
                             style: TextStyles.scoreStyle,
                           ),
                           verticalSpacing(

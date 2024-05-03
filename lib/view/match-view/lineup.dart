@@ -32,7 +32,7 @@ class LineUp extends StatefulWidget {
 
 class _LineUpState extends State<LineUp> {
   final TextEditingController timeController = TextEditingController();
-  bool matchStarted = false;
+  late bool matchStarted = false;
   static const List<String> list = <String>[
     '4-3-3',
     '3-4-3',
@@ -107,7 +107,6 @@ class _LineUpState extends State<LineUp> {
     int? matchId = getTournamentId.selectedMatchId;
     final matchTimerViewModel = Provider.of<MatchTimerViewModel>(context);
 
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -180,7 +179,6 @@ class _LineUpState extends State<LineUp> {
               ],
             ),
           ),
-
           horizontalSpacing(space: 8),
           Offstage(
             offstage: matchStarted,
@@ -200,7 +198,8 @@ class _LineUpState extends State<LineUp> {
                     await matchViewModel.addMatchTime(matchId!, matchTime1);
                     matchTimerViewModel.startTimer((matchTime1 / 2).ceil());
                     await audioPlayer.play(AssetSource(path));
-                    Utils.toastMessage('Match has started', AppColor.appBarColor);
+                    Utils.toastMessage(
+                        'Match has started', AppColor.appBarColor);
                   }
                 },
                 child: const Text(
