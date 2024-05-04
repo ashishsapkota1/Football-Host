@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Matches {
   int? id;
@@ -11,8 +10,6 @@ class Matches {
   int? team1Score;
   int? team2Score;
   String? penaltyScore;
-  String? goalScorer;
-  String? assistedBy;
   int? matchTime;
 
   Matches(
@@ -26,8 +23,6 @@ class Matches {
       this.team1Score,
       this.team2Score,
       this.penaltyScore,
-      this.goalScorer,
-      this.assistedBy,
       this.matchTime});
 
   Map<String, dynamic> toMap() {
@@ -41,8 +36,6 @@ class Matches {
       "team1Score": team1Score,
       "team2Score": team2Score,
       "penaltyScore": penaltyScore,
-      "goalScorer": goalScorer,
-      "assistedBy": assistedBy,
       "matchTime": matchTime
     };
   }
@@ -58,7 +51,5 @@ class Matches {
         team1Score = map['team1Score'],
         team2Score = map['team2Score'],
         penaltyScore = map['penaltyScore'],
-        goalScorer = map['goalScorer'],
-        assistedBy = map['assistedBy'],
         matchTime = map['matchTime'];
 }
