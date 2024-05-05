@@ -1,3 +1,4 @@
+import 'package:football_host/data/model/match/goal_scored.dart';
 import 'package:football_host/data/model/match/match_schedule_model.dart';
 import 'package:football_host/data/model/player_model.dart';
 import 'package:football_host/data/model/team_model.dart';
@@ -48,27 +49,27 @@ class DbHelper {
 
     await db.execute(
         "CREATE TABLE Schedule(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "tournamentId INTEGER NOT NULL,"
-            "team1Id INTEGER,"
-            "team2Id INTEGER,"
-            "team1Name TEXT,"
-            "team2Name TEXT,"
-            "team1DependsOn INTEGER,"
-            "team2DependsOn INTEGER,"
-            "matchNumber INTEGER,"
-            "roundNumber INTEGER,"
-            "roundName TEXT,"
-            "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(id) ON DELETE CASCADE,"
-            "FOREIGN KEY(team1Id) REFERENCES TEAM(id),"
-            "FOREIGN KEY(team2Id) REFERENCES TEAM(id))");
+        "tournamentId INTEGER NOT NULL,"
+        "team1Id INTEGER,"
+        "team2Id INTEGER,"
+        "team1Name TEXT,"
+        "team2Name TEXT,"
+        "team1DependsOn INTEGER,"
+        "team2DependsOn INTEGER,"
+        "matchNumber INTEGER,"
+        "roundNumber INTEGER,"
+        "roundName TEXT,"
+        "FOREIGN KEY(tournamentId) REFERENCES TOURNAMENT(id) ON DELETE CASCADE,"
+        "FOREIGN KEY(team1Id) REFERENCES TEAM(id),"
+        "FOREIGN KEY(team2Id) REFERENCES TEAM(id))");
 
     await db
         .execute("CREATE TABLE PLAYER(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
-        "playerName TEXT NOT NULL, "
-        "position TEXT NOT NULL, "
-        "jerseyNo INTEGER, "
-        "teamId INTEGER NOT NULL,"
-        "FOREIGN KEY(teamId) REFERENCES TEAM(id) ON DELETE CASCADE)");
+            "playerName TEXT NOT NULL, "
+            "position TEXT NOT NULL, "
+            "jerseyNo INTEGER, "
+            "teamId INTEGER NOT NULL,"
+            "FOREIGN KEY(teamId) REFERENCES TEAM(id) ON DELETE CASCADE)");
 
     await db.execute("CREATE TABLE MATCH("
         "id INTEGER PRIMARY KEY AUTOINCREMENT ,"
@@ -88,13 +89,12 @@ class DbHelper {
         "FOREIGN KEY(team2Id) REFERENCES TEAM(id))");
 
     await db.execute(
-        "CREATE TABLE GOALSCORED(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
-            "matchId INTEGER,"
-            "scorerId INTEGER,"
-            "assistId INTEGER,"
-            "goalTime INTEGER,"
-            "FOREIGN KEY(matchId) REFERENCES MATCH(id)"
-    );
+        "CREATE TABLE GOALSCORER(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
+        "matchId INTEGER,"
+        "scorerId INTEGER,"
+        "goalTime INTEGER,"
+        "FOREIGN KEY(matchId) REFERENCES MATCH(id),"
+        "FOREIGN KEY(scorerId) REFERENCES PLAYER(id))");
   }
 
   // Insert Tournaments
@@ -107,6 +107,12 @@ class DbHelper {
   Future<List<Map<String, dynamic>>?> getTournaments() async {
     var dbClient = await db;
     return await dbClient?.query('TOURNAMENT');
+  }
+
+  //Insert GoalScorer
+  Future<int?> addGoalScorer(GoalScorer goalScorer) async {
+    var dbClient = await db;
+    return await dbClient?.insert('GOALSCORER', goalScorer.toMap());
   }
 
   // Get Teams
@@ -148,8 +154,8 @@ class DbHelper {
   }
 
   // Insert Schedule
-  Future<Tournament> insertPoles(Tournament tournament,
-      String poleFormation) async {
+  Future<Tournament> insertPoles(
+      Tournament tournament, String poleFormation) async {
     var dbClient = await db;
     try {
       await dbClient!.update('TOURNAMENT', {'pole': poleFormation},

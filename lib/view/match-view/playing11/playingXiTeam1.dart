@@ -51,7 +51,7 @@ class _PlayingXiTeam1State extends State<PlayingXiTeam1> {
                               children: [
                                 Text(playerList[index]
                                     .position!
-                                    .substring(0, 3)),
+                                    .substring(0, 1)),
                               ],
                             ),
                           ),

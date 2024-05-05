@@ -53,7 +53,7 @@ class _PlayingXiTeam2State extends State<PlayingXiTeam2> {
                                 Center(
                                     child: Text(playerList[index]
                                         .position!
-                                        .substring(0, 3))),
+                                        .substring(0, 1))),
                               ],
                             ),
                           ),
