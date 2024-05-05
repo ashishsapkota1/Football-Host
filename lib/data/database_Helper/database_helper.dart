@@ -91,6 +91,7 @@ class DbHelper {
     await db.execute(
         "CREATE TABLE GOALSCORER(id INTEGER PRIMARY KEY AUTOINCREMENT ,"
         "matchId INTEGER,"
+        "teamId INTEGER,"
         "scorerId INTEGER,"
         "goalTime INTEGER,"
         "FOREIGN KEY(matchId) REFERENCES MATCH(id),"

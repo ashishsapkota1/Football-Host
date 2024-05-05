@@ -8,15 +8,20 @@ class GoalScorerViewModel extends ChangeNotifier {
 
   List<GoalScorer> get goalScorer => _goalScorer;
 
-  Future<void> addGoalScorer(int matchId, int scorerId, int goalTime) async {
-    final goalScorer =
-        GoalScorer(matchId: matchId, scorerId: scorerId, goalTime: goalTime);
+  Future<void> addGoalScorer(
+      int matchId, int teamId, int scorerId, int goalTime) async {
+    final goalScorer = GoalScorer(
+        matchId: matchId,
+        teamId: teamId,
+        scorerId: scorerId,
+        goalTime: goalTime);
     final int? goalScorerId = await DbHelper.instance.addGoalScorer(goalScorer);
 
     if (goalScorerId != null) {
       final newGoalScorer = GoalScorer(
           id: goalScorerId,
           matchId: matchId,
+          teamId: teamId,
           scorerId: scorerId,
           goalTime: goalTime);
       _goalScorer.add(newGoalScorer);

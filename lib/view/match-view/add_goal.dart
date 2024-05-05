@@ -33,7 +33,9 @@ class AddGoal extends StatefulWidget {
 class _AddGoalState extends State<AddGoal> {
   bool isTeam1Selected = false;
   bool isTeam2Selected = false;
-  String? selectedPlayer;
+  bool isPlayerSelected = false;
+   int selectedPlayerIndex = -1;
+  late int goalScorerId;
   final List<Player> emptyList = [];
 
   @override
@@ -107,12 +109,18 @@ class _AddGoalState extends State<AddGoal> {
                           AppColor.appBarColor),
                     ),
                     onPressed: () async {
-                      if(isTeam1Selected){
-                        await scoreViewModel.addTeam1Goal(widget.matchId!, team1Score);
-                      } else if(isTeam2Selected){
-                        await scoreViewModel.addTeam2Goal(widget.matchId!, team2Score);
+                      if (isTeam1Selected) {
+                        await scoreViewModel.addTeam1Goal(
+                            widget.matchId!, team1Score);
+                      } else if (isTeam2Selected) {
+                        await scoreViewModel.addTeam2Goal(
+                            widget.matchId!, team2Score);
                       }
-                      await goalScorerViewModel.addGoalScorer(widget.matchId!, int.parse(selectedPlayer!), 2);
+                      await goalScorerViewModel.addGoalScorer(
+                          widget.matchId!,
+                          isTeam1Selected ? widget.team1Id! : widget.team2Id!,
+                          goalScorerId,
+                          2);
                     },
                     child: const Text(
                       'Add goal',
@@ -128,38 +136,42 @@ class _AddGoalState extends State<AddGoal> {
           ));
   }
 
-
   Widget _listView(List<Player> player) {
     return SizedBox(
       height: Responsive.screenHeight(context) * 0.09,
       child: ListView.builder(
-        padding: const EdgeInsets.only(left: 8.0, right: 8),
+          padding: const EdgeInsets.only(left: 8.0, right: 8),
           itemCount: player.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 4),
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: AppColor.lineUpColor,
-                child: Center(
-                  child: Text(player[index]
-                      .jerseyNo!.toString()
+            final isSelected = index == selectedPlayerIndex;
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 4),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedPlayerIndex = index;
+                      });
+                      goalScorerId = player[index].id!;
+                    },
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: isSelected ? Colors.blue : AppColor.lineUpColor,
+                      child: Center(
+                        child: Text(player[index].jerseyNo!.toString()),
                       ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Text(
-              player[index]
-                  .playerName!
-                  .split(RegExp('\\s+'))[0],
-              style: TextStyles.draggedStyle,
-            )
-          ],
-        );
-      }),
+                Text(
+                  player[index].playerName!.split(RegExp('\\s+'))[0],
+                  style: TextStyles.draggedStyle,
+                )
+              ],
+            );
+          }),
     );
   }
 }
