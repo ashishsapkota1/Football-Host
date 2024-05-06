@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:football_host/data/model/player_model.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view_model/matchViewModel/goal_scorer_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/matchViewModel/score_view_model.dart';
 import 'package:football_host/view_model/player_view_model.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/utils/responsive.dart';
 import '../../resources/utils/text_styles.dart';
+import '../../resources/utils/utils.dart';
 
 class AddGoal extends StatefulWidget {
   final int? matchId;
@@ -33,8 +35,8 @@ class AddGoal extends StatefulWidget {
 class _AddGoalState extends State<AddGoal> {
   bool isTeam1Selected = false;
   bool isTeam2Selected = false;
-  bool isPlayerSelected = false;
-   int selectedPlayerIndex = -1;
+  int selectedPlayer1Index = -1;
+  int selectedPlayer2Index = -1;
   late int goalScorerId;
   final List<Player> emptyList = [];
 
@@ -45,6 +47,7 @@ class _AddGoalState extends State<AddGoal> {
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     final playerViewModel = Provider.of<PlayerViewModel>(context);
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
+    final timerModel = Provider.of<MatchTimerViewModel>(context);
     playerViewModel.getPlayers(widget.team1Id!);
     playerViewModel.get2Players(widget.team2Id!);
     final List<Player> player1 = playerViewModel.playerList;
@@ -76,6 +79,7 @@ class _AddGoalState extends State<AddGoal> {
                           setState(() {
                             isTeam1Selected = value ?? false;
                             isTeam2Selected = !isTeam1Selected;
+                            selectedPlayer2Index = -1;
                           });
                         }),
                     Text(
@@ -94,6 +98,7 @@ class _AddGoalState extends State<AddGoal> {
                           setState(() {
                             isTeam2Selected = value ?? false;
                             isTeam1Selected = !isTeam2Selected;
+                            selectedPlayer1Index = -1;
                           });
                         }),
                     Text(
@@ -103,29 +108,40 @@ class _AddGoalState extends State<AddGoal> {
                   ],
                 ),
                 listView,
-                TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          AppColor.appBarColor),
-                    ),
-                    onPressed: () async {
-                      if (isTeam1Selected) {
-                        await scoreViewModel.addTeam1Goal(
-                            widget.matchId!, team1Score);
-                      } else if (isTeam2Selected) {
-                        await scoreViewModel.addTeam2Goal(
-                            widget.matchId!, team2Score);
-                      }
-                      await goalScorerViewModel.addGoalScorer(
-                          widget.matchId!,
-                          isTeam1Selected ? widget.team1Id! : widget.team2Id!,
-                          goalScorerId,
-                          2);
-                    },
-                    child: const Text(
-                      'Add goal',
-                      style: TextStyles.tabBarStyle,
-                    )),
+                isTeam1Selected || isTeam2Selected
+                    ? TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppColor.appBarColor),
+                        ),
+                        onPressed: () async {
+                          if (isTeam1Selected) {
+                            await scoreViewModel.addTeam1Goal(
+                                widget.matchId!, team1Score);
+                          } else if (isTeam2Selected) {
+                            await scoreViewModel.addTeam2Goal(
+                                widget.matchId!, team2Score);
+                          }
+                          await goalScorerViewModel.addGoalScorer(
+                              widget.matchId!,
+                              isTeam1Selected
+                                  ? widget.team1Id!
+                                  : widget.team2Id!,
+                              goalScorerId,
+                              timerModel.timeOnTimer);
+                          Utils.toastMessage(
+                              'Goal added Successfully', Colors.red);
+
+                          setState(() {
+                            isTeam1Selected = false;
+                            isTeam2Selected = false;
+                          });
+                        },
+                        child: const Text(
+                          'Add goal',
+                          style: TextStyles.tabBarStyle,
+                        ))
+                    : const SizedBox()
               ],
             ),
           )
@@ -144,7 +160,9 @@ class _AddGoalState extends State<AddGoal> {
           itemCount: player.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            final isSelected = index == selectedPlayerIndex;
+            final isPlayerSelected = isTeam1Selected
+                ? index == selectedPlayer1Index
+                : index == selectedPlayer2Index;
             return Column(
               children: [
                 Padding(
@@ -152,13 +170,18 @@ class _AddGoalState extends State<AddGoal> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedPlayerIndex = index;
+                        if (isTeam1Selected) {
+                          selectedPlayer1Index = index;
+                        } else if (isTeam2Selected) {
+                          selectedPlayer2Index = index;
+                        }
                       });
                       goalScorerId = player[index].id!;
                     },
                     child: CircleAvatar(
                       radius: 20,
-                      backgroundColor: isSelected ? Colors.blue : AppColor.lineUpColor,
+                      backgroundColor:
+                          isPlayerSelected ? Colors.blue : AppColor.lineUpColor,
                       child: Center(
                         child: Text(player[index].jerseyNo!.toString()),
                       ),

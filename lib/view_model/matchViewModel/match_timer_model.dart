@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 class MatchTimerViewModel extends ChangeNotifier {
   late Timer _timer;
   var _remainingTimeInSec = 0;
+  var _timeOnTimer = 0;
+
+  int get timeOnTimer => _timeOnTimer;
 
   void startTimer(int matchTimeInMinutes) {
     _remainingTimeInSec = matchTimeInMinutes * 60; // Convert minutes to seconds
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingTimeInSec > 0) {
-        _remainingTimeInSec -= 1;
+       var currentTime = _remainingTimeInSec -= 1;
+       if(currentTime != _timeOnTimer) {
+         _timeOnTimer = (currentTime / 60 ).ceil();
+         notifyListeners();
+       }
       } else {
         timer.cancel();
       }
