@@ -1,4 +1,3 @@
-
 class Matches {
   int? id;
   int? tournamentId;
@@ -9,6 +8,8 @@ class Matches {
   String? team2Name;
   int? team1Score;
   int? team2Score;
+  bool? isFirstHalf;
+  bool? isSecondHalf;
   String? penaltyScore;
   int? matchTime;
 
@@ -22,6 +23,8 @@ class Matches {
       this.team2Name,
       this.team1Score,
       this.team2Score,
+      this.isFirstHalf ,
+      this.isSecondHalf,
       this.penaltyScore,
       this.matchTime});
 
@@ -35,6 +38,8 @@ class Matches {
       "team2Name": team2Name,
       "team1Score": team1Score,
       "team2Score": team2Score,
+      "isFirstHalf": isFirstHalf,
+      "isSecondHalf": isSecondHalf,
       "penaltyScore": penaltyScore,
       "matchTime": matchTime
     };
@@ -50,6 +55,8 @@ class Matches {
         team2Name = map['team2Name'],
         team1Score = map['team1Score'],
         team2Score = map['team2Score'],
+        isFirstHalf = map['isFirstHalf'] == 1,
+        isSecondHalf = map['isSecondHalf'] == 1,
         penaltyScore = map['penaltyScore'],
         matchTime = map['matchTime'];
 }

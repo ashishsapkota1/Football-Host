@@ -8,9 +8,14 @@ class MatchViewModel extends ChangeNotifier {
 
   List<Matches> get matches => _matches;
 
-  late bool _matchStarted = false;
+  late bool _isFirstHalf = false;
 
-  bool get matchStarted => _matchStarted;
+  bool get isFirstHalf => _isFirstHalf;
+
+  late bool _isSecondHalf = false;
+
+  bool get isSecondHalf => _isSecondHalf;
+
 
   late int _matchTime = 0;
 
@@ -49,7 +54,15 @@ class MatchViewModel extends ChangeNotifier {
     return false;
   }
 
-  void matchStartedAlready(bool matchStarted) {
-    _matchStarted = matchStarted;
+  Future<void> firstHalf(int matchId, bool firstHalf) async{
+    await DbHelper.instance.update1stHalf(matchId, firstHalf);
+    _isFirstHalf = firstHalf;
+    notifyListeners();
+  }
+
+  Future<void> secondHalf(int matchId, bool secondHalf) async{
+    await DbHelper.instance.update1stHalf(matchId, secondHalf);
+    _isSecondHalf = secondHalf;
+    notifyListeners();
   }
 }

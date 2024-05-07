@@ -6,7 +6,6 @@ import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
 import '../../view_model/matchViewModel/match_view_model.dart';
 import '../model/match/match_model.dart';
 import '../model/tournament_model.dart';
@@ -80,6 +79,8 @@ class DbHelper {
         "team2Name TEXT,"
         "team1Score INTEGER,"
         "team2Score INTEGER,"
+        "isFirstHalf INTEGER,"
+        "isSecondHalf INTEGER,"
         "penaltyScore INTEGER,"
         "matchTime INTEGER,"
         "scheduleId INTEGER,"
@@ -115,6 +116,8 @@ class DbHelper {
     var dbClient = await db;
     return await dbClient?.insert('GOALSCORER', goalScorer.toMap());
   }
+
+
 
   // Get Teams
   Future<List<Team>> getTeams(int tournamentId) async {
@@ -201,6 +204,20 @@ class DbHelper {
   Future<int?> addTeam2Goal(int matchId, int goalNumber) async {
     var dbClient = await db;
     return dbClient?.update("MATCH", {'team2Score': goalNumber},
+        where: "id = ?", whereArgs: [matchId]);
+  }
+
+  //update 1stHalf
+  Future<int?> update1stHalf(int matchId, bool isFirstHalf) async{
+    var dbClient = await db;
+    return dbClient?.update('MATCH', {'isFirstHalf' : isFirstHalf},
+    where: "id = ?", whereArgs: [matchId]);
+    }
+  //update 2ndHalf
+
+  Future<int?> update2ndHalf(int matchId, bool isSecondHalf) async{
+    var dbClient = await db;
+    return dbClient?.update('MATCH', {'isSecondHalf' : isSecondHalf},
         where: "id = ?", whereArgs: [matchId]);
   }
 

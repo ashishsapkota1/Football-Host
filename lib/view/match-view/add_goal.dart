@@ -43,7 +43,8 @@ class _AddGoalState extends State<AddGoal> {
   @override
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context);
-    bool matchStarted = matchViewModel.matchStarted;
+    bool isFirstHalf = matchViewModel.isFirstHalf;
+    bool isSecondHalf = matchViewModel.isSecondHalf;
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     final playerViewModel = Provider.of<PlayerViewModel>(context);
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
@@ -61,7 +62,7 @@ class _AddGoalState extends State<AddGoal> {
         : isTeam2Selected
             ? _listView(player2)
             : const SizedBox();
-    return matchStarted
+    return isFirstHalf || isSecondHalf
         ? SingleChildScrollView(
             child: Column(
               children: [

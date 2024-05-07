@@ -26,12 +26,14 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context);
-    bool matchStarted = matchViewModel.matchStarted;
+    bool isFirstHalf = matchViewModel.isFirstHalf;
+    bool isSecondHalf = matchViewModel.isSecondHalf;
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     int team1Score = scoreViewModel.team1Score;
     int team2Score = scoreViewModel.team2Score;
     List<Widget> tabs = [
       LineUp(
+        matchId: widget.matches.id,
           team1Id: widget.matches.team1Id,
           team2Id: widget.matches.team2Id,
           team1Name: widget.matches.team1Name,
@@ -45,7 +47,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
           team2Name: widget.matches.team2Name)
     ];
     return PopScope(
-      canPop: !matchStarted,
+      canPop: !isFirstHalf || !isSecondHalf,
       child: DefaultTabController(
           length: tabs.length,
           child: Builder(
@@ -63,7 +65,6 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                   preferredSize:
                       Size.fromHeight(Responsive.screenHeight(context) * 0.3),
                   child: AppBar(
-                    automaticallyImplyLeading: !matchStarted,
                     centerTitle: true,
                     backgroundColor: AppColor.appBarColor,
                     title: Text(

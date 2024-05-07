@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:football_host/data/model/player_model.dart';
 import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/resources/utils/utils.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/teamName_view_model.dart';
-import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
-import '../../view_model/teamViewModel/team_view_model.dart';
 import '../utils/text_styles.dart';
 
 class AddPlayerForm extends StatefulWidget {

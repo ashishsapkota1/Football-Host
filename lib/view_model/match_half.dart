@@ -1,0 +1,4 @@
+enum MatchHalf {
+  firstHalf,
+  secondHalf
+}
