@@ -8,8 +8,8 @@ class Matches {
   String? team2Name;
   int? team1Score;
   int? team2Score;
-  bool? isFirstHalf;
-  bool? isSecondHalf;
+  bool isFirstHalf;
+  bool isSecondHalf;
   String? penaltyScore;
   int? matchTime;
 
@@ -23,8 +23,8 @@ class Matches {
       this.team2Name,
       this.team1Score,
       this.team2Score,
-      this.isFirstHalf ,
-      this.isSecondHalf,
+      this.isFirstHalf = false ,
+      this.isSecondHalf = false,
       this.penaltyScore,
       this.matchTime});
 

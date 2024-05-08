@@ -16,6 +16,9 @@ class MatchViewModel extends ChangeNotifier {
 
   bool get isSecondHalf => _isSecondHalf;
 
+  late bool _hasStarted = false;
+
+  bool get hasStarted => _hasStarted;
 
   late int _matchTime = 0;
 
@@ -54,15 +57,20 @@ class MatchViewModel extends ChangeNotifier {
     return false;
   }
 
-  Future<void> firstHalf(int matchId, bool firstHalf) async{
+  Future<void> firstHalf(int matchId, bool firstHalf) async {
     await DbHelper.instance.update1stHalf(matchId, firstHalf);
     _isFirstHalf = firstHalf;
     notifyListeners();
   }
 
-  Future<void> secondHalf(int matchId, bool secondHalf) async{
+  Future<void> secondHalf(int matchId, bool secondHalf) async {
     await DbHelper.instance.update1stHalf(matchId, secondHalf);
     _isSecondHalf = secondHalf;
+    notifyListeners();
+  }
+
+  Future<void> isStarted(bool hasStarted)async {
+    _hasStarted = hasStarted;
     notifyListeners();
   }
 }

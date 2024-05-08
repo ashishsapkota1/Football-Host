@@ -19,12 +19,13 @@ class LineUp extends StatefulWidget {
   final String? team1Name;
   final String? team2Name;
 
-  const LineUp({Key? key,
-    required this.matchId,
-    required this.team1Id,
-    required this.team2Id,
-    required this.team1Name,
-    required this.team2Name})
+  const LineUp(
+      {Key? key,
+      required this.matchId,
+      required this.team1Id,
+      required this.team2Id,
+      required this.team1Name,
+      required this.team2Name})
       : super(key: key);
 
   @override
@@ -105,6 +106,7 @@ class _LineUpState extends State<LineUp> {
     final matchViewModel = Provider.of<MatchViewModel>(context);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
+    bool hasStarted = matchViewModel.hasStarted;
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     int? matchId = getTournamentId.selectedMatchId;
     final matchTimerViewModel = Provider.of<MatchTimerViewModel>(context);
@@ -152,7 +154,7 @@ class _LineUpState extends State<LineUp> {
           _buildFormation2(dropDownValue2),
           horizontalSpacing(space: 14),
           Offstage(
-            offstage: isFirstHalf ,
+            offstage: hasStarted,
             child: Column(
               children: [
                 const Text('Enter the match time in minutes:'),
@@ -183,24 +185,20 @@ class _LineUpState extends State<LineUp> {
           ),
           horizontalSpacing(space: 8),
           Offstage(
-            offstage: isFirstHalf ,
+            offstage: hasStarted,
             child: TextButton(
                 style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all<Color>(AppColor.appBarColor),
+                      MaterialStateProperty.all<Color>(AppColor.appBarColor),
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     const path = "sound/whistle.mp3";
                     int matchTime1 = int.parse(timeController.text);
-                    if (isFirstHalf == false && isSecondHalf == false) {
-                      matchViewModel.firstHalf(widget.matchId!, true);
-                    } else if(isFirstHalf == true && isSecondHalf == false){
-                      matchViewModel.secondHalf(widget.matchId!, true);
-
-                    }
+                    await matchViewModel.isStarted(true);
                     await matchViewModel.addMatchTime(matchId!, matchTime1);
-                    matchTimerViewModel.startTimer((matchTime1 / 2).ceil());
+                    matchTimerViewModel.startTimer(
+                        (matchTime1 / 2).ceil(), widget.matchId!);
                     await audioPlayer.play(AssetSource(path));
                     Utils.toastMessage(
                         'Match has started', AppColor.appBarColor);
@@ -221,77 +219,77 @@ class _LineUpState extends State<LineUp> {
     List<Offset> positions = formationPositions[value1] ?? [];
     return value1 == '4-3-3'
         ? FormationNo1(
-      teamId: widget.team1Id,
-      quarterTurn: 4,
-      upperContainerQTurn: 4,
-      positions: positions,
-      avatarQuarterTurn: 4,
-      teamName: widget.team1Name,
-    )
+            teamId: widget.team1Id,
+            quarterTurn: 4,
+            upperContainerQTurn: 4,
+            positions: positions,
+            avatarQuarterTurn: 4,
+            teamName: widget.team1Name,
+          )
         : value1 == '3-4-3'
-        ? FormationNo1(
-      teamId: widget.team1Id,
-      quarterTurn: 4,
-      upperContainerQTurn: 4,
-      positions: positions,
-      avatarQuarterTurn: 4,
-      teamName: widget.team1Name,
-    )
-        : value1 == '4-4-2'
-        ? FormationNo1(
-      teamId: widget.team1Id,
-      quarterTurn: 4,
-      upperContainerQTurn: 4,
-      positions: positions,
-      avatarQuarterTurn: 4,
-      teamName: widget.team1Name,
-    )
-        : FormationNo1(
-      teamId: widget.team1Id,
-      quarterTurn: 4,
-      upperContainerQTurn: 4,
-      positions: positions,
-      avatarQuarterTurn: 4,
-      teamName: widget.team1Name,
-    );
+            ? FormationNo1(
+                teamId: widget.team1Id,
+                quarterTurn: 4,
+                upperContainerQTurn: 4,
+                positions: positions,
+                avatarQuarterTurn: 4,
+                teamName: widget.team1Name,
+              )
+            : value1 == '4-4-2'
+                ? FormationNo1(
+                    teamId: widget.team1Id,
+                    quarterTurn: 4,
+                    upperContainerQTurn: 4,
+                    positions: positions,
+                    avatarQuarterTurn: 4,
+                    teamName: widget.team1Name,
+                  )
+                : FormationNo1(
+                    teamId: widget.team1Id,
+                    quarterTurn: 4,
+                    upperContainerQTurn: 4,
+                    positions: positions,
+                    avatarQuarterTurn: 4,
+                    teamName: widget.team1Name,
+                  );
   }
 
   Widget _buildFormation2(String value2) {
     List<Offset> positions = formationPositions[value2] ?? [];
     return value2 == '4-3-3'
         ? FormationNo1(
-      teamId: widget.team2Id,
-      quarterTurn: 2,
-      upperContainerQTurn: 2,
-      positions: positions,
-      avatarQuarterTurn: 2,
-      teamName: widget.team2Name,
-    )
+            teamId: widget.team2Id,
+            quarterTurn: 2,
+            upperContainerQTurn: 2,
+            positions: positions,
+            avatarQuarterTurn: 2,
+            teamName: widget.team2Name,
+          )
         : value2 == '3-4-3'
-        ? FormationNo1(
-      teamId: widget.team2Id,
-      quarterTurn: 2,
-      upperContainerQTurn: 2,
-      positions: positions,
-      avatarQuarterTurn: 2,
-      teamName: widget.team2Name,
-    )
-        : value2 == '4-4-2'
-        ? FormationNo1(
-      teamId: widget.team2Id,
-      quarterTurn: 2,
-      upperContainerQTurn: 2,
-      positions: positions,
-      avatarQuarterTurn: 2,
-      teamName: widget.team2Name,
-    )
-        : FormationNo1(
-      teamId: widget.team2Id,
-      quarterTurn: 2,
-      upperContainerQTurn: 2,
-      positions: positions,
-      avatarQuarterTurn: 2,
-      teamName: widget.team2Name,
-    );
+            ? FormationNo1(
+                teamId: widget.team2Id,
+                quarterTurn: 2,
+                upperContainerQTurn: 2,
+                positions: positions,
+                avatarQuarterTurn: 2,
+                teamName: widget.team2Name,
+              )
+            : value2 == '4-4-2'
+                ? FormationNo1(
+                    teamId: widget.team2Id,
+                    quarterTurn: 2,
+                    upperContainerQTurn: 2,
+                    positions: positions,
+                    avatarQuarterTurn: 2,
+                    teamName: widget.team2Name,
+                  )
+                : FormationNo1(
+                    teamId: widget.team2Id,
+                    quarterTurn: 2,
+                    upperContainerQTurn: 2,
+                    positions: positions,
+                    avatarQuarterTurn: 2,
+                    teamName: widget.team2Name,
+                  );
   }
 }
