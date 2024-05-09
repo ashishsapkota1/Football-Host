@@ -12,7 +12,6 @@ class MatchTimerViewModel extends ChangeNotifier {
 
   void startTimer(int matchTimeInMinutes , int matchId) async{
     _remainingTimeInSec = matchTimeInMinutes * 60; // Convert minutes to seconds
-    await matchViewModel.isStarted(true);
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (_remainingTimeInSec > 0) {
@@ -22,13 +21,7 @@ class MatchTimerViewModel extends ChangeNotifier {
           notifyListeners();
         }
       } else {
-        await matchViewModel.isStarted(false);
-        print(matchViewModel.hasStarted);
-        if(matchViewModel.isFirstHalf == false && matchViewModel.isSecondHalf == false){
-          matchViewModel.firstHalf(matchId, true);
-        } else if(matchViewModel.isFirstHalf == true && matchViewModel.isSecondHalf == false){
-          matchViewModel.secondHalf(matchId, true);
-        }
+        matchViewModel.matchStarted(matchId, false);
         timer.cancel();
       }
       notifyListeners();

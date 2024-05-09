@@ -64,13 +64,19 @@ class MatchViewModel extends ChangeNotifier {
   }
 
   Future<void> secondHalf(int matchId, bool secondHalf) async {
-    await DbHelper.instance.update1stHalf(matchId, secondHalf);
+    await DbHelper.instance.update2ndHalf(matchId, secondHalf);
     _isSecondHalf = secondHalf;
     notifyListeners();
   }
 
-  Future<void> isStarted(bool hasStarted)async {
-    _hasStarted = hasStarted;
+  Future<void> matchStarted(int matchId, bool hasStarted)async {
+    await DbHelper.instance.updateHasStarted(matchId, hasStarted);
+    notifyListeners();
+  }
+
+  Future<void> getHasStarted(int matchId)async{
+    final result = await DbHelper.instance.getHasStarted(matchId);
+    _hasStarted = result != 0;
     notifyListeners();
   }
 }

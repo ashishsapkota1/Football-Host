@@ -46,7 +46,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
           team2Name: widget.matches.team2Name)
     ];
     return PopScope(
-      canPop: hasStarted,
+      canPop: !hasStarted,
       child: DefaultTabController(
           length: tabs.length,
           child: Builder(

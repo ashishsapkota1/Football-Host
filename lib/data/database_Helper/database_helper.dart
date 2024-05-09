@@ -81,6 +81,7 @@ class DbHelper {
         "team2Score INTEGER,"
         "isFirstHalf INTEGER,"
         "isSecondHalf INTEGER,"
+        "hasStarted INTEGER,"
         "penaltyScore INTEGER,"
         "matchTime INTEGER,"
         "scheduleId INTEGER,"
@@ -117,8 +118,6 @@ class DbHelper {
     return await dbClient?.insert('GOALSCORER', goalScorer.toMap());
   }
 
-
-
   // Get Teams
   Future<List<Team>> getTeams(int tournamentId) async {
     var dbClient = await db;
@@ -140,9 +139,6 @@ class DbHelper {
     var dbClient = await db;
     return await dbClient?.insert('PLAYER', player.toMap(teamId));
   }
-
-
-
 
   // Get Players
   Future<List<Player>> getPlayers(int teamId) async {
@@ -211,17 +207,38 @@ class DbHelper {
   }
 
   //update 1stHalf
-  Future<int?> update1stHalf(int matchId, bool isFirstHalf) async{
+  Future<int?> update1stHalf(int matchId, bool isFirstHalf) async {
     var dbClient = await db;
-    return dbClient?.update('MATCH', {'isFirstHalf' : isFirstHalf},
-    where: "id = ?", whereArgs: [matchId]);
-    }
+    return dbClient?.update('MATCH', {'isFirstHalf': isFirstHalf},
+        where: "id = ?", whereArgs: [matchId]);
+  }
+
   //update 2ndHalf
 
-  Future<int?> update2ndHalf(int matchId, bool isSecondHalf) async{
+  Future<int?> update2ndHalf(int matchId, bool isSecondHalf) async {
     var dbClient = await db;
-    return dbClient?.update('MATCH', {'isSecondHalf' : isSecondHalf},
+    return dbClient?.update('MATCH', {'isSecondHalf': isSecondHalf},
         where: "id = ?", whereArgs: [matchId]);
+  }
+
+  //update hasStarted
+  Future<int?> updateHasStarted(int matchId, bool hasStarted) async {
+    var dbClient = await db;
+    return dbClient?.update('MATCH', {'hasStarted': hasStarted},
+        where: "id = ?", whereArgs: [matchId]);
+  }
+
+  //Get hasStarted
+  Future<int?> getHasStarted(int matchId) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient!.query('MATCH',
+        columns: ['hasStarted'], where: 'id = ?', whereArgs: [matchId]);
+    if(result.isNotEmpty){
+      return result.first['hasStarted'];
+    }else{
+      return null;
+    }
+
   }
 
   // Get Matches

@@ -10,6 +10,7 @@ class Matches {
   int? team2Score;
   bool isFirstHalf;
   bool isSecondHalf;
+  bool hasStarted;
   String? penaltyScore;
   int? matchTime;
 
@@ -23,8 +24,9 @@ class Matches {
       this.team2Name,
       this.team1Score,
       this.team2Score,
-      this.isFirstHalf = false ,
+      this.isFirstHalf = false,
       this.isSecondHalf = false,
+      this.hasStarted = false,
       this.penaltyScore,
       this.matchTime});
 
@@ -40,6 +42,7 @@ class Matches {
       "team2Score": team2Score,
       "isFirstHalf": isFirstHalf,
       "isSecondHalf": isSecondHalf,
+      "hasStarted": hasStarted,
       "penaltyScore": penaltyScore,
       "matchTime": matchTime
     };
@@ -57,6 +60,7 @@ class Matches {
         team2Score = map['team2Score'],
         isFirstHalf = map['isFirstHalf'] == 1,
         isSecondHalf = map['isSecondHalf'] == 1,
+        hasStarted = map['hasStarted'] == 1,
         penaltyScore = map['penaltyScore'],
         matchTime = map['matchTime'];
 }

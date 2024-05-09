@@ -106,6 +106,7 @@ class _LineUpState extends State<LineUp> {
     final matchViewModel = Provider.of<MatchViewModel>(context);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
+    matchViewModel.getHasStarted(widget.matchId!);
     bool hasStarted = matchViewModel.hasStarted;
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     int? matchId = getTournamentId.selectedMatchId;
@@ -195,7 +196,7 @@ class _LineUpState extends State<LineUp> {
                   if (_formKey.currentState!.validate()) {
                     const path = "sound/whistle.mp3";
                     int matchTime1 = int.parse(timeController.text);
-                    await matchViewModel.isStarted(true);
+                    await matchViewModel.matchStarted(widget.matchId!, true);
                     await matchViewModel.addMatchTime(matchId!, matchTime1);
                     matchTimerViewModel.startTimer(
                         (matchTime1 / 2).ceil(), widget.matchId!);
