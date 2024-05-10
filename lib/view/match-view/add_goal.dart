@@ -43,6 +43,7 @@ class _AddGoalState extends State<AddGoal> {
   @override
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context);
+    matchViewModel.getHasStarted(widget.matchId!);
     bool hasStarted = matchViewModel.hasStarted;
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     final playerViewModel = Provider.of<PlayerViewModel>(context);

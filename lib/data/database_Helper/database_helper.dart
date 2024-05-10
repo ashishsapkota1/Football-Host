@@ -241,6 +241,29 @@ class DbHelper {
 
   }
 
+  Future<int?> get1stHalf(int matchId) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient!.query('MATCH',
+        columns: ['isFirstHalf'], where: 'id = ?', whereArgs: [matchId]);
+    if(result.isNotEmpty){
+      return result.first['isFirstHalf'];
+    }else{
+      return null;
+    }
+
+  }
+  Future<int?> get2ndHalf(int matchId) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient!.query('MATCH',
+        columns: ['isSecondHalf'], where: 'id = ?', whereArgs: [matchId]);
+    if(result.isNotEmpty){
+      return result.first['isSecondHalf'];
+    }else{
+      return null;
+    }
+
+  }
+
   // Get Matches
   Future<List<Matches>> getMatches(int tournamentId) async {
     var dbClient = await db;

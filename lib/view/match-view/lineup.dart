@@ -205,10 +205,13 @@ class _LineUpState extends State<LineUp> {
                         'Match has started', AppColor.appBarColor);
                   }
                 },
-                child: const Text(
-                  'Start match',
+                child: !isFirstHalf ? const Text(
+                  'Start first half',
                   style: TextStyles.tabBarStyle,
-                )),
+                ) :  const Text(
+                  'Start second half',
+                  style: TextStyles.tabBarStyle,
+                ) )
           ),
           horizontalSpacing(space: 8)
         ],
