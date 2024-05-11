@@ -104,9 +104,9 @@ class _LineUpState extends State<LineUp> {
   Widget build(BuildContext context) {
     final AudioPlayer audioPlayer = AudioPlayer();
     final matchViewModel = Provider.of<MatchViewModel>(context);
+    matchViewModel.getHasStarted(widget.matchId!);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
-    matchViewModel.getHasStarted(widget.matchId!);
     bool hasStarted = matchViewModel.hasStarted;
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     int? matchId = getTournamentId.selectedMatchId;
@@ -196,11 +196,11 @@ class _LineUpState extends State<LineUp> {
                   if (_formKey.currentState!.validate()) {
                     const path = "sound/whistle.mp3";
                     int matchTime1 = int.parse(timeController.text);
+                    await audioPlayer.play(AssetSource(path));
                     await matchViewModel.matchStarted(widget.matchId!, true);
                     await matchViewModel.addMatchTime(matchId!, matchTime1);
                     matchTimerViewModel.startTimer(
                         (matchTime1 / 2).ceil(), widget.matchId!);
-                    await audioPlayer.play(AssetSource(path));
                     Utils.toastMessage(
                         'Match has started', AppColor.appBarColor);
                   }

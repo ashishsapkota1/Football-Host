@@ -43,8 +43,8 @@ class _AddGoalState extends State<AddGoal> {
   @override
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context);
-    matchViewModel.getHasStarted(widget.matchId!);
     bool hasStarted = matchViewModel.hasStarted;
+
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     final playerViewModel = Provider.of<PlayerViewModel>(context);
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
@@ -150,7 +150,7 @@ class _AddGoalState extends State<AddGoal> {
             child: Text(
             'Match hasn\'t been started yet',
             style: TextStyle(fontSize: 16, color: Colors.black),
-          ));
+          )) ;
   }
 
   Widget _listView(List<Player> player) {

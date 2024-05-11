@@ -26,7 +26,6 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context);
-    matchViewModel.getHasStarted(widget.matches.id!);
     bool hasStarted = matchViewModel.hasStarted;
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     int team1Score = scoreViewModel.team1Score;

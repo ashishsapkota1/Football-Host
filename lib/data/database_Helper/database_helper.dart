@@ -103,19 +103,25 @@ class DbHelper {
   // Insert Tournaments
   Future<int?> insert(Tournament tournament) async {
     var dbClient = await db;
-    return await dbClient?.insert('TOURNAMENT', tournament.toMap());
+    return dbClient!.transaction((txn) async {
+      return await txn.insert('TOURNAMENT', tournament.toMap());
+    });
   }
 
   // Get Tournaments
   Future<List<Map<String, dynamic>>?> getTournaments() async {
     var dbClient = await db;
-    return await dbClient?.query('TOURNAMENT');
+    return dbClient!.transaction((txn) async {
+      return await txn.query('TOURNAMENT');
+    });
   }
 
   //Insert GoalScorer
   Future<int?> addGoalScorer(GoalScorer goalScorer) async {
     var dbClient = await db;
-    return await dbClient?.insert('GOALSCORER', goalScorer.toMap());
+    return dbClient!.transaction((txn) async {
+      return await txn.insert('GOALSCORER', goalScorer.toMap());
+    });
   }
 
   // Get Teams
@@ -190,78 +196,88 @@ class DbHelper {
   //Insert time
   Future<int?> insertMatchTime(int matchId, int matchTime) async {
     var dbClient = await db;
-    return dbClient?.update("MATCH", {'matchTime': matchTime},
-        where: 'id = ?', whereArgs: [matchId]);
+    return dbClient!.transaction((txn) async {
+      return await txn.update("MATCH", {'matchTime': matchTime},
+          where: 'id = ?', whereArgs: [matchId]);
+    });
   }
 
   Future<int?> addTeam1Goal(int matchId, int goalNumber) async {
     var dbClient = await db;
-    return dbClient?.update("MATCH", {'team1Score': goalNumber},
-        where: "id = ?", whereArgs: [matchId]);
+    return dbClient!.transaction((txn) async {
+      return await txn.update("MATCH", {'team1Score': goalNumber},
+          where: "id = ?", whereArgs: [matchId]);
+    });
   }
 
   Future<int?> addTeam2Goal(int matchId, int goalNumber) async {
     var dbClient = await db;
-    return dbClient?.update("MATCH", {'team2Score': goalNumber},
-        where: "id = ?", whereArgs: [matchId]);
+    return dbClient!.transaction((txn) async {
+      return await txn.update("MATCH", {'team2Score': goalNumber},
+          where: "id = ?", whereArgs: [matchId]);
+    });
   }
 
   //update 1stHalf
   Future<int?> update1stHalf(int matchId, bool isFirstHalf) async {
     var dbClient = await db;
-    return dbClient?.update('MATCH', {'isFirstHalf': isFirstHalf},
-        where: "id = ?", whereArgs: [matchId]);
+    await dbClient!.transaction((txn) async {
+      await txn.update('MATCH', {'isFirstHalf': isFirstHalf},
+          where: "id = ?", whereArgs: [matchId]);
+    });
+    return null;
   }
 
   //update 2ndHalf
 
   Future<int?> update2ndHalf(int matchId, bool isSecondHalf) async {
     var dbClient = await db;
-    return dbClient?.update('MATCH', {'isSecondHalf': isSecondHalf},
-        where: "id = ?", whereArgs: [matchId]);
+    await dbClient!.transaction((txn) async {
+      await txn.update('MATCH', {'isSecondHalf': isSecondHalf},
+          where: "id = ?", whereArgs: [matchId]);
+    });
+    return null;
   }
 
   //update hasStarted
   Future<int?> updateHasStarted(int matchId, bool hasStarted) async {
     var dbClient = await db;
-    return dbClient?.update('MATCH', {'hasStarted': hasStarted},
-        where: "id = ?", whereArgs: [matchId]);
+    await dbClient!.transaction((txn) async {
+      await txn.update('MATCH', {'hasStarted': hasStarted},
+          where: "id = ?", whereArgs: [matchId]);
+    });
+    return null;
   }
 
   //Get hasStarted
   Future<int?> getHasStarted(int matchId) async {
     var dbClient = await db;
-    List<Map<String, dynamic>> result = await dbClient!.query('MATCH',
-        columns: ['hasStarted'], where: 'id = ?', whereArgs: [matchId]);
-    if(result.isNotEmpty){
-      return result.first['hasStarted'];
-    }else{
-      return null;
-    }
-
+    List<Map<String, dynamic>> result =
+        await dbClient!.transaction((txn) async {
+      return await txn.query('MATCH',
+          columns: ['hasStarted'], where: 'id = ?', whereArgs: [matchId]);
+    });
+    return result.isNotEmpty ? result.first['hasStarted'] : null;
   }
 
   Future<int?> get1stHalf(int matchId) async {
     var dbClient = await db;
-    List<Map<String, dynamic>> result = await dbClient!.query('MATCH',
-        columns: ['isFirstHalf'], where: 'id = ?', whereArgs: [matchId]);
-    if(result.isNotEmpty){
-      return result.first['isFirstHalf'];
-    }else{
-      return null;
-    }
-
+    List<Map<String, dynamic>> result =
+        await dbClient!.transaction((txn) async {
+      return await txn.query('MATCH',
+          columns: ['isFirstHalf'], where: 'id = ?', whereArgs: [matchId]);
+    });
+    return result.isNotEmpty ? result.first['isFirstHalf'] : null;
   }
+
   Future<int?> get2ndHalf(int matchId) async {
     var dbClient = await db;
-    List<Map<String, dynamic>> result = await dbClient!.query('MATCH',
-        columns: ['isSecondHalf'], where: 'id = ?', whereArgs: [matchId]);
-    if(result.isNotEmpty){
-      return result.first['isSecondHalf'];
-    }else{
-      return null;
-    }
-
+    List<Map<String, dynamic>> result =
+        await dbClient!.transaction((txn) async {
+      return await txn.query('MATCH',
+          columns: ['isSecondHalf'], where: 'id = ?', whereArgs: [matchId]);
+    });
+    return result.isNotEmpty ? result.first['isSecondHalf'] : null;
   }
 
   // Get Matches
