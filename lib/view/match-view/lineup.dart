@@ -103,14 +103,18 @@ class _LineUpState extends State<LineUp> {
   @override
   Widget build(BuildContext context) {
     final AudioPlayer audioPlayer = AudioPlayer();
-    final matchViewModel = Provider.of<MatchViewModel>(context);
+    final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
     matchViewModel.getHasStarted(widget.matchId!);
+    matchViewModel.getFirstHalf(widget.matchId!);
+    matchViewModel.getSecondHalf(widget.matchId!);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
     bool hasStarted = matchViewModel.hasStarted;
-    final getTournamentId = Provider.of<TournamentNameViewModel>(context);
+    print(isFirstHalf);
+    print(isSecondHalf);
+    final getTournamentId = Provider.of<TournamentNameViewModel>(context, listen: false);
     int? matchId = getTournamentId.selectedMatchId;
-    final matchTimerViewModel = Provider.of<MatchTimerViewModel>(context);
+    final matchTimerViewModel = Provider.of<MatchTimerViewModel>(context, listen: false);
 
     return SingleChildScrollView(
       child: Column(
@@ -186,33 +190,34 @@ class _LineUpState extends State<LineUp> {
           ),
           horizontalSpacing(space: 8),
           Offstage(
-            offstage: hasStarted,
-            child: TextButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(AppColor.appBarColor),
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    const path = "sound/whistle.mp3";
-                    int matchTime1 = int.parse(timeController.text);
-                    await audioPlayer.play(AssetSource(path));
-                    await matchViewModel.matchStarted(widget.matchId!, true);
-                    await matchViewModel.addMatchTime(matchId!, matchTime1);
-                    matchTimerViewModel.startTimer(
-                        (matchTime1 / 2).ceil(), widget.matchId!);
-                    Utils.toastMessage(
-                        'Match has started', AppColor.appBarColor);
-                  }
-                },
-                child: !isFirstHalf ? const Text(
-                  'Start first half',
-                  style: TextStyles.tabBarStyle,
-                ) :  const Text(
-                  'Start second half',
-                  style: TextStyles.tabBarStyle,
-                ) )
-          ),
+              offstage: hasStarted,
+              child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(AppColor.appBarColor),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      const path = "sound/whistle.mp3";
+                      int matchTime1 = int.parse(timeController.text);
+                      await audioPlayer.play(AssetSource(path));
+                      await matchViewModel.matchStarted(widget.matchId!, true);
+                      await matchViewModel.addMatchTime(matchId!, matchTime1);
+                      matchTimerViewModel.startTimer(
+                          (matchTime1 / 2).ceil(), widget.matchId!);
+                      Utils.toastMessage(
+                          'Match has started', AppColor.appBarColor);
+                    }
+                  },
+                  child: isFirstHalf
+                      ? const Text(
+                          'Start second half',
+                          style: TextStyles.tabBarStyle,
+                        )
+                      : const Text(
+                          'Start first half',
+                          style: TextStyles.tabBarStyle,
+                        ))),
           horizontalSpacing(space: 8)
         ],
       ),

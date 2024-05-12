@@ -18,7 +18,7 @@ class TournamentMatches extends StatefulWidget {
 class _TournamentMatchesState extends State<TournamentMatches> {
   @override
   Widget build(BuildContext context) {
-    final getTournamentId = Provider.of<TournamentNameViewModel>(context);
+    final getTournamentId = Provider.of<TournamentNameViewModel>(context, listen: false);
     final tournamentId = getTournamentId.selectedTournamentId;
 
 
