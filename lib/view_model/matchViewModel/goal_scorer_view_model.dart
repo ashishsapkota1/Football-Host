@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:football_host/data/database_Helper/database_helper.dart';
 import 'package:football_host/data/model/match/goal_scored.dart';
 
 class GoalScorerViewModel extends ChangeNotifier {
-  late List<GoalScorer> _goalScorer = [];
+  late final List<GoalScorer> _goalScorer = [];
 
   List<GoalScorer> get goalScorer => _goalScorer;
 

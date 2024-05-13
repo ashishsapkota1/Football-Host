@@ -73,4 +73,10 @@ class TextStyles {
     fontSize: 24
   );
 
+  static const TextStyle timeLineStyle = TextStyle(
+    color: AppColor.appBarColor,
+    fontSize: 14,
+    fontWeight: FontWeight.bold
+  );
+
 }

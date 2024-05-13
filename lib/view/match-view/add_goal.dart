@@ -7,7 +7,6 @@ import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/matchViewModel/score_view_model.dart';
 import 'package:football_host/view_model/player_view_model.dart';
 import 'package:provider/provider.dart';
-
 import '../../resources/app_colors.dart';
 import '../../resources/utils/responsive.dart';
 import '../../resources/utils/text_styles.dart';
@@ -44,7 +43,6 @@ class _AddGoalState extends State<AddGoal> {
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
     bool hasStarted = matchViewModel.hasStarted;
-   print( ' 1+ $hasStarted');
     final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
     final playerViewModel = Provider.of<PlayerViewModel>(context, listen: false);
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context, listen: false);
@@ -148,7 +146,7 @@ class _AddGoalState extends State<AddGoal> {
           )
         : const Center(
             child: Text(
-            'Match hasn\'t been started yet',
+            'Currently not available',
             style: TextStyle(fontSize: 16, color: Colors.black),
           )) ;
   }

@@ -4,6 +4,7 @@ import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view/match-view/add_goal.dart';
 import 'package:football_host/view/match-view/lineup.dart';
+import 'package:football_host/view/match-view/timeline.dart';
 import 'package:football_host/view/match-view/timer.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/matchViewModel/score_view_model.dart';
@@ -27,25 +28,30 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
     matchViewModel.getHasStarted(widget.matches.id!);
+    matchViewModel.getFirstHalf(widget.matches.id!);
+    matchViewModel.getSecondHalf(widget.matches.id!);
     bool hasStarted = matchViewModel.hasStarted;
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
-    print(' 2 $hasStarted');
     int team1Score = scoreViewModel.team1Score;
     int team2Score = scoreViewModel.team2Score;
     List<Widget> tabs = [
       LineUp(
-        matchId: widget.matches.id,
+          matchId: widget.matches.id,
           team1Id: widget.matches.team1Id,
           team2Id: widget.matches.team2Id,
           team1Name: widget.matches.team1Name,
           team2Name: widget.matches.team2Name),
-      const MatchTimer(),
+      MatchTimer(matchId: widget.matches.id),
       AddGoal(
-        matchId: widget.matches.id,
+          matchId: widget.matches.id,
           team1Id: widget.matches.team1Id,
           team2Id: widget.matches.team2Id,
           team1Name: widget.matches.team1Name,
-          team2Name: widget.matches.team2Name)
+          team2Name: widget.matches.team2Name),
+      TimeLine(
+        team1Name: widget.matches.team1Name,
+        team2name: widget.matches.team2Name,
+      )
     ];
     return PopScope(
       canPop: !hasStarted,
@@ -83,7 +89,8 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.08),
                           Text(
-                            widget.matches.team1Score != null && widget.matches.team1Score! > 0
+                            widget.matches.team1Score != null &&
+                                    widget.matches.team1Score! > 0
                                 ? widget.matches.team1Score!.toString()
                                 : team1Score.toString(),
                             style: TextStyles.scoreStyle,
@@ -97,7 +104,8 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.04),
                           Text(
-                            widget.matches.team2Score != null && widget.matches.team2Score! > 0
+                            widget.matches.team2Score != null &&
+                                    widget.matches.team2Score! > 0
                                 ? widget.matches.team2Score!.toString()
                                 : team2Score.toString(),
                             style: TextStyles.scoreStyle,
@@ -124,6 +132,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                         ),
                         Tab(
                           text: 'Add Goal',
+                        ),
+                        Tab(
+                          text: 'Timeline',
                         )
                       ],
                     ),

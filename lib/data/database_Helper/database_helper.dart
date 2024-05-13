@@ -145,6 +145,21 @@ class DbHelper {
     var dbClient = await db;
     return await dbClient?.insert('PLAYER', player.toMap(teamId));
   }
+  //get playerName
+  Future<String?> getPlayerName(int playerId) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> results = await dbClient!.query(
+      'PLAYER',
+      columns: ['playerName'],
+      where: 'id = ?',
+      whereArgs: [playerId],
+    );
+    if (results.isNotEmpty) {
+      return results.first['playerName'] as String?;
+    } else {
+      return null;
+    }
+  }
 
   // Get Players
   Future<List<Player>> getPlayers(int teamId) async {

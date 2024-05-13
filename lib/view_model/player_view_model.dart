@@ -41,4 +41,8 @@ class PlayerViewModel extends ChangeNotifier {
     _player2List = players;
     notifyListeners();
   }
+
+  Future<String?> getPlayerName (int playerId)async{
+    return await DbHelper.instance.getPlayerName(playerId);
+  }
 }

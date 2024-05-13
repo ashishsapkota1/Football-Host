@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
+import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../resources/utils/text_styles.dart';
 
-class MatchTimer extends StatelessWidget {
-  const MatchTimer({super.key});
+class MatchTimer extends StatefulWidget {
+  final int? matchId;
 
+  const MatchTimer({super.key, required this.matchId});
+
+  @override
+  State<MatchTimer> createState() => _MatchTimerState();
+}
+
+class _MatchTimerState extends State<MatchTimer> {
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<MatchTimerViewModel>(context);
+    final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
+    bool isFirstHalf = matchViewModel.isFirstHalf;
+    bool isSecondHalf = matchViewModel.isSecondHalf;
+    if (timerProvider.timeOnTimer == 0) {
+      matchViewModel.matchStarted(widget.matchId!, false);
+      if(isFirstHalf == false && isSecondHalf == false){
+        matchViewModel.firstHalf(widget.matchId!, true);
+      } else if(isFirstHalf == true && isSecondHalf == false){
+        matchViewModel.secondHalf(widget.matchId!, true);
+      }
+    }
+
     return Column(
       children: [
         const Text(
