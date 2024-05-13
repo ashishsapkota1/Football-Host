@@ -20,7 +20,8 @@ class FormationNo1 extends StatefulWidget {
       required this.teamName,
       required this.quarterTurn,
       required this.positions,
-      required this.avatarQuarterTurn, this.upperContainerQTurn});
+      required this.avatarQuarterTurn,
+      this.upperContainerQTurn});
 
   @override
   State<FormationNo1> createState() => _FormationNo1State();
@@ -61,7 +62,11 @@ class _FormationNo1State extends State<FormationNo1> {
                             child: Row(
                               children: [
                                 verticalSpacing(space: 20),
-                                Text(widget.teamName!, style: TextStyles.lineUpTeamNameStyle,)],
+                                Text(
+                                  widget.teamName!,
+                                  style: TextStyles.lineUpTeamNameStyle,
+                                )
+                              ],
                             ),
                           ),
                         ),
