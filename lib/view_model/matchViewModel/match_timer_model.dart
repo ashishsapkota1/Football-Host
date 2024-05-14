@@ -20,6 +20,7 @@ class MatchTimerViewModel extends ChangeNotifier {
           notifyListeners();
         }
       } else {
+        _timeOnTimer = 0;
         timer.cancel();
       }
       notifyListeners();

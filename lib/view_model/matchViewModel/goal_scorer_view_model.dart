@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:football_host/data/database_Helper/database_helper.dart';
+import 'package:football_host/data/database_Helper/queries/match_queries.dart';
 import 'package:football_host/data/model/match/goal_scored.dart';
 
 class GoalScorerViewModel extends ChangeNotifier {
@@ -14,7 +14,7 @@ class GoalScorerViewModel extends ChangeNotifier {
         teamId: teamId,
         scorerId: scorerId,
         goalTime: goalTime);
-    final int? goalScorerId = await DbHelper.instance.addGoalScorer(goalScorer);
+    final int? goalScorerId = await MatchQueries.addGoalScorer(goalScorer);
 
     if (goalScorerId != null) {
       final newGoalScorer = GoalScorer(

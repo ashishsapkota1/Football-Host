@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:football_host/data/database_Helper/queries/match_queries.dart';
 import 'package:football_host/data/model/match/match_model.dart';
-
-import '../../data/database_Helper/database_helper.dart';
 
 class MatchViewModel extends ChangeNotifier {
   late List<Matches> _matches = [];
@@ -26,7 +25,7 @@ class MatchViewModel extends ChangeNotifier {
 
   Future<void> addMatches(int tournamentId, Matches matches) async {
     final int? matchId =
-        await DbHelper.instance.insertMatches(tournamentId, matches);
+        await MatchQueries.insertMatches(tournamentId, matches);
     if (matchId != null) {
       Matches matches = Matches(id: matchId);
       _matches.add(matches);
@@ -37,13 +36,13 @@ class MatchViewModel extends ChangeNotifier {
   }
 
   Future<void> addMatchTime(int matchId, int matchTime) async {
-    await DbHelper.instance.insertMatchTime(matchId, matchTime);
+    await MatchQueries.insertMatchTime(matchId, matchTime);
     _matchTime = matchTime;
     notifyListeners();
   }
 
   Future<void> getMatches(int tournamentId) async {
-    List<Matches> match = await DbHelper.instance.getMatches(tournamentId);
+    List<Matches> match = await MatchQueries.getMatches(tournamentId);
     _matches = match;
     notifyListeners();
   }
@@ -58,39 +57,49 @@ class MatchViewModel extends ChangeNotifier {
   }
 
   Future<void> firstHalf(int matchId, bool firstHalf) async {
-    await DbHelper.instance.update1stHalf(matchId, firstHalf);
+    await MatchQueries.update1stHalf(matchId, firstHalf);
     _isFirstHalf = firstHalf;
     notifyListeners();
   }
 
   Future<void> secondHalf(int matchId, bool secondHalf) async {
-    await DbHelper.instance.update2ndHalf(matchId, secondHalf);
+    await MatchQueries.update2ndHalf(matchId, secondHalf);
     _isSecondHalf = secondHalf;
     notifyListeners();
   }
 
   Future<void> matchStarted(int matchId, bool hasStarted)async {
-    await DbHelper.instance.updateHasStarted(matchId, hasStarted);
+    await MatchQueries.updateHasStarted(matchId, hasStarted);
     _hasStarted = hasStarted;
     notifyListeners();
   }
 
   Future<void> getHasStarted(int matchId)async{
-    final result = await DbHelper.instance.getHasStarted(matchId);
+    final result = await MatchQueries.getHasStarted(matchId);
     _hasStarted = result != 0;
     notifyListeners();
   }
 
   Future<void> getFirstHalf(int matchId)async{
-    final result = await DbHelper.instance.get1stHalf(matchId);
-    _isFirstHalf = result != 0;
-    notifyListeners();
+    final result = await MatchQueries.get1stHalf(matchId);
+    if(result != null) {
+      _isFirstHalf = result != 0;
+      notifyListeners();
+    } else{
+      _isFirstHalf = false;
+      notifyListeners();
+    }
   }
 
   Future<void> getSecondHalf(int matchId)async{
-    final result = await DbHelper.instance.get2ndHalf(matchId);
-    _isSecondHalf = result != 0;
-    notifyListeners();
+    final result = await MatchQueries.get2ndHalf(matchId);
+    if(result != null) {
+      _isSecondHalf = result != 0;
+      notifyListeners();
+    } else{
+      _isSecondHalf = false;
+      notifyListeners();
+    }
   }
 
 

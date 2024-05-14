@@ -25,7 +25,7 @@ class _MatchTimerState extends State<MatchTimer> {
       matchViewModel.matchStarted(widget.matchId!, false);
       if(isFirstHalf == false && isSecondHalf == false){
         matchViewModel.firstHalf(widget.matchId!, true);
-      } else if(isFirstHalf == true && isSecondHalf == false){
+      }  if(isFirstHalf == true && isSecondHalf == false){
         matchViewModel.secondHalf(widget.matchId!, true);
       }
     }

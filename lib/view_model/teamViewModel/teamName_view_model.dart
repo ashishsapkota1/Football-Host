@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:football_host/data/database_Helper/database_helper.dart';
+import 'package:football_host/data/database_Helper/queries/team_queries.dart';
 
 
 class TeamNameViewModel extends ChangeNotifier{
@@ -30,7 +31,7 @@ class TeamNameViewModel extends ChangeNotifier{
   }
 
   Future<String?> getTeamName(int teamId) async{
-   String? teamName = await DbHelper.instance.getTeamNameById(teamId);
+   String? teamName = await TeamQueries.getTeamNameById(teamId);
    _selectedTeam2 = teamName!;
     notifyListeners();
     return null;

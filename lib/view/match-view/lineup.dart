@@ -157,7 +157,7 @@ class _LineUpState extends State<LineUp> {
             Offstage(
               offstage: viewModel.hasStarted,
               child: !viewModel.isFirstHalf && !viewModel.isSecondHalf
-                  ? Column(
+                  ? viewModel.isFirstHalf ? const SizedBox() :Column(
                 children: [
                   const Text('Enter the match time in minutes:'),
                   SizedBox(
@@ -197,16 +197,31 @@ class _LineUpState extends State<LineUp> {
                               AppColor.appBarColor),
                         ),
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
+                          if(viewModel.isFirstHalf == false) {
+                            if (_formKey.currentState!.validate()) {
+                              const path = "sound/whistle.mp3";
+                              int matchTime1 = int.parse(timeController.text);
+                              await audioPlayer.play(AssetSource(path));
+                              await viewModel.matchStarted(widget.matchId!,
+                                  true);
+                              await viewModel.addMatchTime(
+                                  matchId!, matchTime1);
+                              matchTimerViewModel.startTimer(
+                                  (matchTime1 / 2).ceil(), widget.matchId!);
+                              Utils.toastMessage(
+                                  'FirstHalf has started', AppColor.appBarColor);
+                            }
+                          } else{
                             const path = "sound/whistle.mp3";
-                            int matchTime1 = int.parse(timeController.text);
                             await audioPlayer.play(AssetSource(path));
-                            await viewModel.matchStarted(widget.matchId!, true);
-                            await viewModel.addMatchTime(matchId!, matchTime1);
+                            await viewModel.matchStarted(widget.matchId!,
+                                true);
+                            int matchTime = viewModel.matchTime;
                             matchTimerViewModel.startTimer(
-                                (matchTime1 / 2).ceil(), widget.matchId!);
+                                (matchTime / 2).ceil(), widget.matchId!);
                             Utils.toastMessage(
-                                'Match has started', AppColor.appBarColor);
+                                'SecondHalf has started', AppColor.appBarColor);
+
                           }
                         },
                         child: viewModel.isFirstHalf
