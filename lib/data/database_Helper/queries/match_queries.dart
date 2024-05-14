@@ -81,7 +81,7 @@ class MatchQueries{
   static Future<int?> update1stHalf(int matchId, bool isFirstHalf) async {
     final db = await DbHelper.instance.db;
     await db!.transaction((txn) async {
-      await txn.update('MATCH', {'isFirstHalf': isFirstHalf},
+      await txn.update('MATCH', {'isFirstHalf': isFirstHalf ?1 :0},
           where: "id = ?", whereArgs: [matchId]);
     });
     return null;
@@ -92,7 +92,7 @@ class MatchQueries{
   static Future<int?> update2ndHalf(int matchId, bool isSecondHalf) async {
     final db = await DbHelper.instance.db;
     await db!.transaction((txn) async {
-      await txn.update('MATCH', {'isSecondHalf': isSecondHalf},
+      await txn.update('MATCH', {'isSecondHalf': isSecondHalf ? 1 : 0},
           where: "id = ?", whereArgs: [matchId]);
     });
     return null;
@@ -102,7 +102,7 @@ class MatchQueries{
   static Future<int?> updateHasStarted(int matchId, bool hasStarted) async {
     final db = await DbHelper.instance.db;
     await db!.transaction((txn) async {
-      await txn.update('MATCH', {'hasStarted': hasStarted},
+      await txn.update('MATCH', {'hasStarted': hasStarted ? 1: 0},
           where: "id = ?", whereArgs: [matchId]);
     });
     return null;

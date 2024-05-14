@@ -101,6 +101,16 @@ class _LineUpState extends State<LineUp> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
+    matchViewModel.getHasStarted(widget.matchId!);
+    matchViewModel.getFirstHalf(widget.matchId!);
+    matchViewModel.getSecondHalf(widget.matchId!);
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     final AudioPlayer audioPlayer = AudioPlayer();
     final getTournamentId =

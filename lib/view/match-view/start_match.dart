@@ -25,6 +25,20 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   late List<Widget> tabs;
 
   @override
+  void initState() {
+
+    super.initState();
+    final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
+    matchViewModel.getFirstHalf(widget.matches.id!);
+    matchViewModel.getHasStarted(widget.matches.id!);
+    matchViewModel.getSecondHalf(widget.matches.id!);
+    print(matchViewModel.hasStarted);
+    print(matchViewModel.isFirstHalf);
+    print(matchViewModel.isSecondHalf);
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
     scoreViewModel.getTeam1Score(widget.matches.id!);
@@ -51,9 +65,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
       )
     ];
     return Consumer<MatchViewModel>(builder: (context, viewModel, _){
-      viewModel.getFirstHalf(widget.matches.id!);
-      viewModel.getHasStarted(widget.matches.id!);
-      viewModel.getSecondHalf(widget.matches.id!);
+
 
     return PopScope(
       canPop: !viewModel.hasStarted,

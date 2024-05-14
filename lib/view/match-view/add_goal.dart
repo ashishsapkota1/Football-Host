@@ -43,9 +43,9 @@ class _AddGoalState extends State<AddGoal> {
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
     bool hasStarted = matchViewModel.hasStarted;
-    final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
+    final scoreViewModel = Provider.of<ScoreViewModel>(context);
     final playerViewModel = Provider.of<PlayerViewModel>(context, listen: false);
-    final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context, listen: false);
+    final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
     final timerModel = Provider.of<MatchTimerViewModel>(context, listen: false);
     playerViewModel.getPlayers(widget.team1Id!);
     playerViewModel.get2Players(widget.team2Id!);

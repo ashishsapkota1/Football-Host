@@ -16,19 +16,33 @@ class MatchTimer extends StatefulWidget {
 
 class _MatchTimerState extends State<MatchTimer> {
   @override
-  Widget build(BuildContext context) {
-    final timerProvider = Provider.of<MatchTimerViewModel>(context);
+  void initState() {
+    super.initState();
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
+    final timerProvider =
+        Provider.of<MatchTimerViewModel>(context, listen: false);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
-    if (timerProvider.timeOnTimer == 0) {
-      matchViewModel.matchStarted(widget.matchId!, false);
-      if(isFirstHalf == false && isSecondHalf == false){
+    if (matchViewModel.hasStarted == true && timerProvider.timeOnTimer == 0) {
+      if (isFirstHalf == false && isSecondHalf == false) {
+        matchViewModel.matchStarted(widget.matchId!, false);
         matchViewModel.firstHalf(widget.matchId!, true);
-      }  if(isFirstHalf == true && isSecondHalf == false){
+      } else if (isFirstHalf == true && isSecondHalf == false) {
+        matchViewModel.matchStarted(widget.matchId!, false);
         matchViewModel.secondHalf(widget.matchId!, true);
       }
     }
+    matchViewModel.getHasStarted(widget.matchId!);
+    matchViewModel.getFirstHalf(widget.matchId!);
+    matchViewModel.getSecondHalf(widget.matchId!);
+    print(matchViewModel.hasStarted);
+    print(matchViewModel.isFirstHalf);
+    print(matchViewModel.isSecondHalf);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final timerProvider = Provider.of<MatchTimerViewModel>(context);
 
     return Column(
       children: [

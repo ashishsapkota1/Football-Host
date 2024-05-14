@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class MatchTimerViewModel extends ChangeNotifier {
   late Timer _timer;
-  var _remainingTimeInSec = 0;
+  late var _remainingTimeInSec = 0;
   var _timeOnTimer = 0;
 
   int get timeOnTimer => _timeOnTimer;
