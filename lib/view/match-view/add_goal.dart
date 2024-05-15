@@ -37,7 +37,6 @@ class _AddGoalState extends State<AddGoal> {
   int selectedPlayer1Index = -1;
   int selectedPlayer2Index = -1;
   late int goalScorerId;
-  final List<Player> emptyList = [];
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,16 @@ import '../../view_model/player_view_model.dart';
 
 class TimeLine extends StatefulWidget {
   final String? team1Name;
-  final String? team2name;
-  const TimeLine({super.key, required this.team1Name, required this.team2name});
+  final String? team2Name;
+  final int? team1Id;
+  final int? team2Id;
+
+  const TimeLine(
+      {super.key,
+      required this.team1Name,
+      required this.team2Name,
+      required this.team1Id,
+      required this.team2Id});
 
   @override
   State<TimeLine> createState() => _TimeLineState();
@@ -22,13 +30,15 @@ class _TimeLineState extends State<TimeLine> {
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
     final goalScorers = goalScorerViewModel.goalScorer;
 
-    final team1GoalScorers = goalScorers.where((scorer) => scorer.teamId == 1).toList();
-    final team2GoalScorers = goalScorers.where((scorer) => scorer.teamId == 2).toList();
+    final team1GoalScorers =
+        goalScorers.where((scorer) => scorer.teamId == widget.team1Id).toList();
+    final team2GoalScorers =
+        goalScorers.where((scorer) => scorer.teamId == widget.team2Id).toList();
 
     return Row(
       children: [
         _buildTeamColumn(team1GoalScorers, widget.team1Name!),
-        _buildTeamColumn(team2GoalScorers, widget.team2name!),
+        _buildTeamColumn(team2GoalScorers, widget.team2Name!),
       ],
     );
   }
@@ -43,47 +53,55 @@ class _TimeLineState extends State<TimeLine> {
             Center(
               child: Text(
                 teamName,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             horizontalSpacing(space: 8),
-            const Divider(thickness: 3,),
+            const Divider(
+              thickness: 3,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: goalScorers
                   .map((goalScorer) => Center(
-                child: FutureBuilder<String?>(
-                  future: Provider.of<PlayerViewModel>(context, listen: false).getPlayerName(goalScorer.scorerId!),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Text('...');
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                snapshot.data!,
-                                style: TextStyles.timeLineStyle,
-                              ),
-                              verticalSpacing(space: 10),
-                              Text(
-                                '${goalScorer.goalTime}\'',
-                                style: TextStyles.timeLineStyle,
-                              ),
-                            ],
-                          ),
-                          const Divider(thickness: 1,)
-                        ],
-                      );
-                    } else {
-                      return const Text('No data available');
-                    }
-                  },
-                ),
-              ))
+                        child: FutureBuilder<String?>(
+                          future: Provider.of<PlayerViewModel>(context,
+                                  listen: false)
+                              .getPlayerName(goalScorer.scorerId!),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Text('...');
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        snapshot.data!,
+                                        style: TextStyles.timeLineStyle,
+                                      ),
+                                      verticalSpacing(space: 10),
+                                      Text(
+                                        '${goalScorer.goalTime}\'',
+                                        style: TextStyles.timeLineStyle,
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    thickness: 1,
+                                  )
+                                ],
+                              );
+                            } else {
+                              return const Text('No data available');
+                            }
+                          },
+                        ),
+                      ))
                   .toList(),
             ),
           ],

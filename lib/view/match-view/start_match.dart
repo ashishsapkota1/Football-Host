@@ -32,6 +32,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
     matchViewModel.getFirstHalf(widget.matches.id!);
     matchViewModel.getHasStarted(widget.matches.id!);
     matchViewModel.getSecondHalf(widget.matches.id!);
+    final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
+    scoreViewModel.getTeam1Score(widget.matches.id!);
+    scoreViewModel.getTeam2Score(widget.matches.id!);
     print(matchViewModel.hasStarted);
     print(matchViewModel.isFirstHalf);
     print(matchViewModel.isSecondHalf);
@@ -41,8 +44,6 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
-    scoreViewModel.getTeam1Score(widget.matches.id!);
-    scoreViewModel.getTeam2Score(widget.matches.id!);
     int team1Score = scoreViewModel.team1Score;
     int team2Score = scoreViewModel.team2Score;
     List<Widget> tabs = [
@@ -61,7 +62,9 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
           team2Name: widget.matches.team2Name),
       TimeLine(
         team1Name: widget.matches.team1Name,
-        team2name: widget.matches.team2Name,
+        team2Name: widget.matches.team2Name,
+        team1Id: widget.matches.team1Id,
+        team2Id: widget.matches.team2Id,
       )
     ];
     return Consumer<MatchViewModel>(builder: (context, viewModel, _){
@@ -103,10 +106,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.08),
                           Text(
-                            widget.matches.team1Score != null &&
-                                    widget.matches.team1Score! > 0
-                                ? widget.matches.team1Score!.toString()
-                                : team1Score.toString(),
+                             team1Score.toString(),
                             style: TextStyles.scoreStyle,
                           ),
                           verticalSpacing(
@@ -118,10 +118,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                           verticalSpacing(
                               space: Responsive.screenWidth(context) * 0.04),
                           Text(
-                            widget.matches.team2Score != null &&
-                                    widget.matches.team2Score! > 0
-                                ? widget.matches.team2Score!.toString()
-                                : team2Score.toString(),
+                           team2Score.toString(),
                             style: TextStyles.scoreStyle,
                           ),
                           verticalSpacing(

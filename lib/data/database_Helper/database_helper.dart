@@ -92,7 +92,7 @@ class DbHelper {
         "scorerId INTEGER,"
         "goalTime INTEGER,"
         "FOREIGN KEY(matchId) REFERENCES MATCH(id),"
+        "FOREIGN KEY(teamId) REFERENCES TEAM(id),"
         "FOREIGN KEY(scorerId) REFERENCES PLAYER(id))");
   }
-
 }

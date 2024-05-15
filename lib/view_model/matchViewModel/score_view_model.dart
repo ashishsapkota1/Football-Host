@@ -26,22 +26,20 @@ class ScoreViewModel extends ChangeNotifier {
     int? score = await MatchQueries.getTeam1Score(matchId);
     if(score != null) {
       _team1Score = score;
-      notifyListeners();
     }else{
       _team1Score = 0;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> getTeam2Score (int matchId) async{
     int? score = await MatchQueries.getTeam2Score(matchId);
     if(score != null) {
       _team2Score = score;
-      notifyListeners();
     }else{
       _team2Score = 0;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
 }

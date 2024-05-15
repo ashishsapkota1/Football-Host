@@ -3,8 +3,7 @@ import 'package:football_host/data/database_Helper/queries/match_queries.dart';
 import 'package:football_host/data/model/match/goal_scored.dart';
 
 class GoalScorerViewModel extends ChangeNotifier {
-  late final List<GoalScorer> _goalScorer = [];
-
+  late  List<GoalScorer> _goalScorer = [];
   List<GoalScorer> get goalScorer => _goalScorer;
 
   Future<void> addGoalScorer(
@@ -26,9 +25,8 @@ class GoalScorerViewModel extends ChangeNotifier {
       _goalScorer.add(newGoalScorer);
       notifyListeners();
     } else {
-      if (kDebugMode) {
-        print('failed');
-      }
+     _goalScorer = [];
     }
   }
+
 }
