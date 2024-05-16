@@ -11,14 +11,14 @@ class ScoreViewModel extends ChangeNotifier {
   int get team2Score => _team2Score;
 
   Future<void> addTeam1Goal(int matchId, int goalNumber) async{
-    await MatchQueries.addTeam1Goal(matchId, goalNumber+1);
-    _team1Score = goalNumber +1;
+    await MatchQueries.addTeam1Goal(matchId, goalNumber);
+    _team1Score = goalNumber;
     notifyListeners();
   }
 
   Future<void> addTeam2Goal(int matchId, int goalNumber) async{
-    await MatchQueries.addTeam2Goal(matchId, goalNumber+1);
-    _team2Score = goalNumber +1;
+    await MatchQueries.addTeam2Goal(matchId, goalNumber);
+    _team2Score = goalNumber;
     notifyListeners();
   }
 

@@ -23,7 +23,7 @@ class _MatchTimerState extends State<MatchTimer> {
         Provider.of<MatchTimerViewModel>(context, listen: false);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
-    if (matchViewModel.hasStarted == true && timerProvider.timeOnTimer == 0) {
+    if (matchViewModel.hasStarted == true && timerProvider.remainingTimeInSec == 0) {
       if (isFirstHalf == false && isSecondHalf == false) {
         matchViewModel.matchStarted(widget.matchId!, false);
         matchViewModel.firstHalf(widget.matchId!, true);
@@ -38,6 +38,7 @@ class _MatchTimerState extends State<MatchTimer> {
     print(matchViewModel.hasStarted);
     print(matchViewModel.isFirstHalf);
     print(matchViewModel.isSecondHalf);
+    print(timerProvider.remainingTimeInSec);
   }
 
   @override
@@ -47,7 +48,7 @@ class _MatchTimerState extends State<MatchTimer> {
     return Column(
       children: [
         const Text(
-          "Time remaining:",
+          "Time elapsed:",
           style: TextStyles.timerStyle,
         ),
         Text(

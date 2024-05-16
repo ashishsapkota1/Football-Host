@@ -42,8 +42,11 @@ class _AddGoalState extends State<AddGoal> {
   Widget build(BuildContext context) {
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
     bool hasStarted = matchViewModel.hasStarted;
+    bool isFirstHalf = matchViewModel.isFirstHalf;
+    int matchTime = matchViewModel.matchTime;
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
-    final playerViewModel = Provider.of<PlayerViewModel>(context, listen: false);
+    final playerViewModel =
+        Provider.of<PlayerViewModel>(context, listen: false);
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
     final timerModel = Provider.of<MatchTimerViewModel>(context, listen: false);
     playerViewModel.getPlayers(widget.team1Id!);
@@ -114,11 +117,11 @@ class _AddGoalState extends State<AddGoal> {
                         ),
                         onPressed: () async {
                           if (isTeam1Selected) {
-                            await scoreViewModel.addTeam1Goal(
-                                widget.matchId!, team1Score);
+                            scoreViewModel.addTeam1Goal(
+                                widget.matchId!, team1Score + 1);
                           } else if (isTeam2Selected) {
-                            await scoreViewModel.addTeam2Goal(
-                                widget.matchId!, team2Score);
+                            scoreViewModel.addTeam2Goal(
+                                widget.matchId!, team2Score + 1);
                           }
                           await goalScorerViewModel.addGoalScorer(
                               widget.matchId!,
@@ -126,7 +129,9 @@ class _AddGoalState extends State<AddGoal> {
                                   ? widget.team1Id!
                                   : widget.team2Id!,
                               goalScorerId,
-                              timerModel.timeOnTimer);
+                              !isFirstHalf
+                                  ? timerModel.timeOnTimer +1
+                                  : (matchTime~/2 + timerModel.timeOnTimer));
                           Utils.toastMessage(
                               'Goal added Successfully', Colors.red);
 
@@ -147,7 +152,7 @@ class _AddGoalState extends State<AddGoal> {
             child: Text(
             'Currently not available',
             style: TextStyle(fontSize: 16, color: Colors.black),
-          )) ;
+          ));
   }
 
   Widget _listView(List<Player> player) {

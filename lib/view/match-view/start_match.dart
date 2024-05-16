@@ -35,15 +35,12 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
     final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
     scoreViewModel.getTeam1Score(widget.matches.id!);
     scoreViewModel.getTeam2Score(widget.matches.id!);
-    print(matchViewModel.hasStarted);
-    print(matchViewModel.isFirstHalf);
-    print(matchViewModel.isSecondHalf);
 
   }
 
   @override
   Widget build(BuildContext context) {
-    final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
+    final scoreViewModel = Provider.of<ScoreViewModel>(context);
     int team1Score = scoreViewModel.team1Score;
     int team2Score = scoreViewModel.team2Score;
     List<Widget> tabs = [
