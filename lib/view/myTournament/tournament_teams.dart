@@ -73,7 +73,6 @@ class _TournamentTeamsState extends State<TournamentTeams> {
                         Navigator.pushNamed(
                             context, RoutesName.teamPlayers,
                             );
-                        print(selectedTeamId);
                       },
                       child: Card(
                         color: AppColor.appBarColor,

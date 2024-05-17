@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:football_host/data/model/match/match_model.dart';
-import 'package:football_host/data/model/tournament_model.dart';
 import 'package:football_host/data/model/match/match_schedule_model.dart';
+import 'package:football_host/data/model/tournament_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/teamName_view_model.dart';
 import 'package:football_host/view_model/teamViewModel/team_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:provider/provider.dart';
+
 import '../../data/model/team_model.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/utils/responsive.dart';
@@ -25,6 +27,7 @@ class TournamentSchedule extends StatefulWidget {
 }
 
 class _TournamentScheduleState extends State<TournamentSchedule> {
+
   @override
   Widget build(BuildContext context) {
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
@@ -34,9 +37,10 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
         Provider.of<ScheduleViewModel>(context, listen: false);
     final matchViewModel = Provider.of<MatchViewModel>(context);
     final teamNameViewModel = Provider.of<TeamNameViewModel>(context);
-     teamViewModel.getTournamentTeams(tournamentId!);
-     final teamList = teamViewModel.tournamentTeams;
-    TournamentViewModel tournamentViewModel = Provider.of<TournamentViewModel>(context);
+    teamViewModel.getTournamentTeams(tournamentId!);
+    final teamList = teamViewModel.tournamentTeams;
+    TournamentViewModel tournamentViewModel =
+        Provider.of<TournamentViewModel>(context);
 
     return Column(
       children: [
@@ -92,9 +96,15 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                               } else {
                                                 AlertDialog alert = AlertDialog(
                                                   title: const Text(
-                                                      'Add to matches',style: TextStyles.scheduleText,),
+                                                    'Add to matches',
+                                                    style:
+                                                        TextStyles.scheduleText,
+                                                  ),
                                                   content: const Text(
-                                                      'confirm to add', style: TextStyles.teamCardText,),
+                                                    'confirm to add',
+                                                    style:
+                                                        TextStyles.teamCardText,
+                                                  ),
                                                   actions: [
                                                     Row(
                                                       children: [
@@ -130,14 +140,18 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                                                       matches);
                                                             },
                                                             child: const Text(
-                                                                'Confirm', style: TextStyles.confirmText)),
+                                                                'Confirm',
+                                                                style: TextStyles
+                                                                    .confirmText)),
                                                         TextButton(
                                                             onPressed: () {
                                                               Navigator.pop(
                                                                   context);
                                                             },
                                                             child: const Text(
-                                                                'Cancel', style: TextStyles.cancelText))
+                                                                'Cancel',
+                                                                style: TextStyles
+                                                                    .cancelText))
                                                       ],
                                                     )
                                                   ],
@@ -169,8 +183,13 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        generateSchedule(tournamentId, teamList, teamViewModel,
-                            scheduleViewModel, teamNameViewModel, tournamentViewModel);
+                        generateSchedule(
+                            tournamentId,
+                            teamList,
+                            teamViewModel,
+                            scheduleViewModel,
+                            teamNameViewModel,
+                            tournamentViewModel);
                         setState(() {});
                       },
                       child: const Text('Generate Schedule'),
@@ -214,8 +233,10 @@ Future<void> generateSchedule(
   allRoundTeams["prTeams"] = {'pole1': pole1, 'pole2': pole2};
 
   final tournaments = tournamentViewModel.tournamentList;
-  Tournament thisTournament = tournaments.firstWhere((obj) => obj.id == tournamentId);
-  await tournamentViewModel.insertPolesToTournament(thisTournament, jsonEncode(allRoundTeams["prTeams"]));
+  Tournament thisTournament =
+      tournaments.firstWhere((obj) => obj.id == tournamentId);
+  await tournamentViewModel.insertPolesToTournament(
+      thisTournament, jsonEncode(allRoundTeams["prTeams"]));
 
   allRoundTeams["round1Teams"] = {'pole1': [], 'pole2': []};
   for (int i = 0; i < 2; i++) {

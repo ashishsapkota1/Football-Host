@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:football_host/data/database_Helper/database_helper.dart';
 import 'package:football_host/data/database_Helper/queries/schedule_queries.dart';
+
 import '../../data/model/match/match_schedule_model.dart';
 
 
@@ -23,6 +23,12 @@ Future<void> addSchedule(int tournamentId, Schedule schedule) async{
 
 Future<void> getSchedule(int tournamentId) async{
   List<Schedule> schedule = await ScheduleQueries.getSchedule(tournamentId);
+  _scheduleList = schedule;
+  notifyListeners();
+}
+
+Future<void> updateSchedule() async{
+  List<Schedule> schedule = await ScheduleQueries.updateSchedule();
   _scheduleList = schedule;
   notifyListeners();
 }

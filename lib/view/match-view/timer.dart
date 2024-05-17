@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
+import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../resources/utils/text_styles.dart';
@@ -19,6 +20,7 @@ class _MatchTimerState extends State<MatchTimer> {
   void initState() {
     super.initState();
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
+    final scheduleViewModel = Provider.of<ScheduleViewModel>(context, listen: false);
     final timerProvider =
         Provider.of<MatchTimerViewModel>(context, listen: false);
     bool isFirstHalf = matchViewModel.isFirstHalf;
@@ -30,6 +32,7 @@ class _MatchTimerState extends State<MatchTimer> {
       } else if (isFirstHalf == true && isSecondHalf == false) {
         matchViewModel.matchStarted(widget.matchId!, false);
         matchViewModel.secondHalf(widget.matchId!, true);
+        scheduleViewModel.updateSchedule();
       }
     }
     matchViewModel.getHasStarted(widget.matchId!);
