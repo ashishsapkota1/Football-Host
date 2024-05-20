@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
-import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../resources/utils/text_styles.dart';
@@ -17,31 +16,27 @@ class MatchTimer extends StatefulWidget {
 
 class _MatchTimerState extends State<MatchTimer> {
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     final matchViewModel = Provider.of<MatchViewModel>(context, listen: false);
-    final scheduleViewModel = Provider.of<ScheduleViewModel>(context, listen: false);
+
     final timerProvider =
         Provider.of<MatchTimerViewModel>(context, listen: false);
     bool isFirstHalf = matchViewModel.isFirstHalf;
     bool isSecondHalf = matchViewModel.isSecondHalf;
-    if (matchViewModel.hasStarted == true && timerProvider.remainingTimeInSec == 0) {
+    if (matchViewModel.hasStarted == true &&
+        timerProvider.remainingTimeInSec == 0) {
       if (isFirstHalf == false && isSecondHalf == false) {
-        matchViewModel.matchStarted(widget.matchId!, false);
-        matchViewModel.firstHalf(widget.matchId!, true);
+         matchViewModel.matchStarted(widget.matchId!, false);
+         matchViewModel.firstHalf(widget.matchId!, true);
       } else if (isFirstHalf == true && isSecondHalf == false) {
-        matchViewModel.matchStarted(widget.matchId!, false);
-        matchViewModel.secondHalf(widget.matchId!, true);
-        scheduleViewModel.updateSchedule();
+         matchViewModel.matchStarted(widget.matchId!, false);
+         matchViewModel.secondHalf(widget.matchId!, true);
       }
     }
     matchViewModel.getHasStarted(widget.matchId!);
     matchViewModel.getFirstHalf(widget.matchId!);
     matchViewModel.getSecondHalf(widget.matchId!);
-    print(matchViewModel.hasStarted);
-    print(matchViewModel.isFirstHalf);
-    print(matchViewModel.isSecondHalf);
-    print(timerProvider.remainingTimeInSec);
   }
 
   @override

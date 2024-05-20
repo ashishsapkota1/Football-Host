@@ -29,6 +29,15 @@ class TournamentSchedule extends StatefulWidget {
 class _TournamentScheduleState extends State<TournamentSchedule> {
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final tournamentNameViewModel = Provider.of<TournamentNameViewModel>(context, listen: false);
+    int tournamentId = tournamentNameViewModel.selectedTournamentId!;
+    Provider.of<ScheduleViewModel>(context, listen: false).updateSchedule();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final getTournamentId = Provider.of<TournamentNameViewModel>(context);
     final tournamentId = getTournamentId.selectedTournamentId;

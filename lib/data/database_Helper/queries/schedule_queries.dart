@@ -20,89 +20,65 @@ class ScheduleQueries {
     });
   }
 
-  static Future<List<Schedule>> updateSchedule() async {
+  static Future<void> updateSchedule() async {
     final db = await DbHelper.instance.db;
-    List<Map<String, dynamic>>? maps = await db!.transaction((txn) async {
-      await txn.rawUpdate(
-          '''
-      UPDATE Schedule
-      SET team1Id = (
-        SELECT 
-          CASE
-            WHEN m.team1Score > m.team2Score THEN m.team1Id
-            WHEN m.team2Score > m.team1Score THEN m.team2Id
-            ELSE NULL -- Handle draw or undetermined results
-          END
-        FROM MATCH m
-        WHERE m.scheduleId = Schedule.team1DependsOn
-          AND m.isFirstHalf = 1
-          AND m.isSecondHalf = 1
-      )
-      WHERE team1DependsOn IS NOT NULL;
-      '''
-      );
+    try {
+      await db!.transaction((txn) async {
+        print('Updating team1Id and team1Name...');
+        int team1IdUpdated = await txn.rawUpdate('''
+        UPDATE Schedule
+        SET team1Id = (
+          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Id ELSE m.team2Id END
+          FROM Match m
+          WHERE m.scheduleId = Schedule.team1DependsOn 
+            AND m.isFirstHalf = 1
+            AND m.isSecondHalf = 1
+        )
+        WHERE team1Id IS NULL
+      ''');
+        print('team1Id updated: $team1IdUpdated rows');
 
-      await txn.rawUpdate(
-          '''
-      UPDATE Schedule
-      SET team1Name = (
-        SELECT 
-          CASE
-            WHEN m.team1Score > m.team2Score THEN m.team1Name
-            WHEN m.team2Score > m.team1Score THEN m.team2Name
-            ELSE NULL -- Handle draw or undetermined results
-          END
-        FROM MATCH m
-        WHERE m.scheduleId = Schedule.team1DependsOn
-          AND m.isFirstHalf = 1
-          AND m.isSecondHalf = 1
-      )
-      WHERE team1DependsOn IS NOT NULL;
-      '''
-      );
+        int team1NameUpdated = await txn.rawUpdate('''
+        UPDATE Schedule
+        SET team1Name = (
+          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Name ELSE m.team2Name END
+          FROM Match m
+          WHERE m.scheduleId = Schedule.team1DependsOn 
+            AND m.isFirstHalf = 1
+            AND m.isSecondHalf = 1
+        )
+        WHERE team1Name IS Null
+      ''');
+        print('team1Name updated: $team1NameUpdated rows');
 
-      await txn.rawUpdate(
-          '''
-      UPDATE Schedule
-      SET team2Id = (
-        SELECT 
-          CASE
-            WHEN m.team1Score > m.team2Score THEN m.team1Id
-            WHEN m.team2Score > m.team1Score THEN m.team2Id
-            ELSE NULL -- Handle draw or undetermined results
-          END
-        FROM MATCH m
-        WHERE m.scheduleId = Schedule.team2DependsOn
-          AND m.isFirstHalf = 1
-          AND m.isSecondHalf = 1
-      )
-      WHERE team2DependsOn IS NOT NULL;
-      '''
-      );
+        int team2IdUpdated = await txn.rawUpdate('''
+        UPDATE Schedule
+        SET team2Id = (
+          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Id ELSE m.team2Id END
+          FROM Match m
+         WHERE m.scheduleId = Schedule.team2DependsOn 
+            AND m.isFirstHalf = 1
+            AND m.isSecondHalf = 1
+        )
+        WHERE team2Id IS NULL
+      ''');
+        print('team2Id updated: $team2IdUpdated rows');
 
-      await txn.rawUpdate(
-          '''
-      UPDATE Schedule
-      SET team2Name = (
-        SELECT 
-          CASE
-            WHEN m.team1Score > m.team2Score THEN m.team1Name
-            WHEN m.team2Score > m.team1Score THEN m.team2Name
-            ELSE NULL -- Handle draw or undetermined results
-          END
-        FROM MATCH m
-        WHERE m.scheduleId = Schedule.team2DependsOn
-          AND m.isFirstHalf = 1
-          AND m.isSecondHalf = 1
-      )
-      WHERE team2DependsOn IS NOT NULL;
-      '''
-      );
-      return null;
-    });
-    return List.generate(maps!.length, (index) {
-      return Schedule.fromMap(maps[index]);
-    });
+        int team2NameUpdated = await txn.rawUpdate('''
+        UPDATE Schedule
+        SET team2Name = (
+          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Name ELSE m.team2Name END
+          FROM Match m
+          WHERE m.scheduleId = Schedule.team2DependsOn 
+            AND m.isFirstHalf = 1
+            AND m.isSecondHalf = 1
+        )
+        WHERE team2Name IS NULL
+      ''');
+        print('team1Name updated: $team2NameUpdated rows');
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
-
 }

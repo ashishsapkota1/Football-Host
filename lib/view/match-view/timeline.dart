@@ -97,7 +97,14 @@ class _TimeLineState extends State<TimeLine> {
                                 ],
                               );
                             } else {
-                              return const Text('No data available');
+                              return const Column(
+                                children: [
+                                   Text('No Player Picked'),
+                                  Divider(
+                                    thickness: 1,
+                                  )
+                                ],
+                              );
                             }
                           },
                         ),

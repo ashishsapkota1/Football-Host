@@ -28,8 +28,7 @@ Future<void> getSchedule(int tournamentId) async{
 }
 
 Future<void> updateSchedule() async{
-  List<Schedule> schedule = await ScheduleQueries.updateSchedule();
-  _scheduleList = schedule;
+  await ScheduleQueries.updateSchedule();
   notifyListeners();
 }
 

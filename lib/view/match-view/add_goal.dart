@@ -36,7 +36,7 @@ class _AddGoalState extends State<AddGoal> {
   bool isTeam2Selected = false;
   int selectedPlayer1Index = -1;
   int selectedPlayer2Index = -1;
-  late int goalScorerId;
+  int? goalScorerId;
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +128,10 @@ class _AddGoalState extends State<AddGoal> {
                               isTeam1Selected
                                   ? widget.team1Id!
                                   : widget.team2Id!,
-                              goalScorerId,
+                              goalScorerId == null ? 0 : goalScorerId!,
                               !isFirstHalf
-                                  ? timerModel.timeOnTimer +1
-                                  : (matchTime~/2 + timerModel.timeOnTimer));
+                                  ? timerModel.timeOnTimer + 1
+                                  : (matchTime ~/ 2 + timerModel.timeOnTimer));
                           Utils.toastMessage(
                               'Goal added Successfully', Colors.red);
 
