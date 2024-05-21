@@ -27,11 +27,17 @@ class TournamentSchedule extends StatefulWidget {
 }
 
 class _TournamentScheduleState extends State<TournamentSchedule> {
+  bool isLoading = true;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<ScheduleViewModel>(context, listen: false).updateSchedule();
+    Future.delayed(const Duration(milliseconds: 800), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -64,138 +70,147 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                   groupedSchedules[schedule.roundName ?? '']!.add(schedule);
                 }
 
-                return ListView(
-                  children: groupedSchedules.entries
-                      .map(
-                        (entry) => Padding(
-                          padding: EdgeInsets.only(
-                            left: Responsive.screenWidth(context) * 0.02,
-                            right: Responsive.screenWidth(context) * 0.02,
-                            top: Responsive.screenHeight(context) * 0.01,
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              " ${entry.key}",
-                              style: TextStyles.roundNameText,
-                            ),
-                            subtitle: Column(
-                              children: entry.value
-                                  .map(
-                                    (schedule) => ListView(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        children: [
-                                          const Divider(
-                                            thickness: 2,
-                                          ),
-                                          InkWell(
-                                            highlightColor: AppColor.cardGrey,
-                                            onTap: () async {
-                                              bool alreadyAdded = matchViewModel
-                                                  .matchAlreadyAdded(
-                                                      schedule.id!);
-                                              if (alreadyAdded) {
-                                                Utils.flushBarErrorMessage(
-                                                    'Match already added',
-                                                    context);
-                                              } else {
-                                                AlertDialog alert = AlertDialog(
-                                                  title: const Text(
-                                                    'Add to matches',
+                return isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView(
+                        children: groupedSchedules.entries
+                            .map(
+                              (entry) => Padding(
+                                padding: EdgeInsets.only(
+                                  left: Responsive.screenWidth(context) * 0.02,
+                                  right: Responsive.screenWidth(context) * 0.02,
+                                  top: Responsive.screenHeight(context) * 0.01,
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    " ${entry.key}",
+                                    style: TextStyles.roundNameText,
+                                  ),
+                                  subtitle: Column(
+                                    children: entry.value
+                                        .map(
+                                          (schedule) => ListView(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              children: [
+                                                const Divider(
+                                                  thickness: 2,
+                                                ),
+                                                InkWell(
+                                                  highlightColor:
+                                                      AppColor.cardGrey,
+                                                  onTap: () async {
+                                                    bool alreadyAdded =
+                                                        matchViewModel
+                                                            .matchAlreadyAdded(
+                                                                schedule.id!);
+
+                                                    if (alreadyAdded) {
+                                                      Utils.flushBarErrorMessage(
+                                                          'Match already added',
+                                                          context);
+                                                    } else {
+                                                      viewModel.getMatchNumber(
+                                                          schedule.id!);
+                                                      AlertDialog alert =
+                                                          AlertDialog(
+                                                        title: const Text(
+                                                          'Add to matches',
+                                                          style: TextStyles
+                                                              .scheduleText,
+                                                        ),
+                                                        content: const Text(
+                                                          'confirm to add',
+                                                          style: TextStyles
+                                                              .teamCardText,
+                                                        ),
+                                                        actions: [
+                                                          Row(
+                                                            children: [
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    if (schedule.team1Name !=
+                                                                            '' &&
+                                                                        schedule.team2Name !=
+                                                                            "") {
+                                                                      Matches matches = Matches(
+                                                                          tournamentId:
+                                                                              tournamentId,
+                                                                          scheduleId: schedule
+                                                                              .id,
+                                                                          team1Id: schedule
+                                                                              .team1Id,
+                                                                          team2Id: schedule
+                                                                              .team2Id,
+                                                                          team1Name: schedule
+                                                                              .team1Name,
+                                                                          team2Name: schedule
+                                                                              .team2Name,
+                                                                          team1Score:
+                                                                              0,
+                                                                          team2Score:
+                                                                              0,
+                                                                          matchNumber: viewModel
+                                                                              .matchNumber,
+                                                                          penaltyScore:
+                                                                              '');
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      await matchViewModel.addMatches(
+                                                                          schedule
+                                                                              .tournamentId!,
+                                                                          matches);
+                                                                    } else {
+                                                                      Utils.flushBarErrorMessage(
+                                                                          'The team is\'nt final yet.',
+                                                                          context);
+                                                                    }
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Confirm',
+                                                                      style: TextStyles
+                                                                          .confirmText)),
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Cancel',
+                                                                      style: TextStyles
+                                                                          .cancelText))
+                                                            ],
+                                                          )
+                                                        ],
+                                                      );
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return alert;
+                                                          });
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    "${schedule.team1Name?.isNotEmpty ?? false ? schedule.team1Name!.toUpperCase() : 'TBD'} vs ${schedule.team2Name?.isNotEmpty ?? false ? schedule.team2Name!.toUpperCase() : 'TBD'}",
                                                     style:
                                                         TextStyles.scheduleText,
                                                   ),
-                                                  content: const Text(
-                                                    'confirm to add',
-                                                    style:
-                                                        TextStyles.teamCardText,
-                                                  ),
-                                                  actions: [
-                                                    Row(
-                                                      children: [
-                                                        TextButton(
-                                                            onPressed:
-                                                                () async {
-                                                              if (schedule.team1Name !=
-                                                                      '' &&
-                                                                  schedule.team2Name !=
-                                                                      "") {
-                                                                Matches matches = Matches(
-                                                                    tournamentId:
-                                                                        tournamentId,
-                                                                    scheduleId:
-                                                                        schedule
-                                                                            .id,
-                                                                    team1Id: schedule
-                                                                        .team1Id,
-                                                                    team2Id:
-                                                                        schedule
-                                                                            .team2Id,
-                                                                    team1Name:
-                                                                        schedule
-                                                                            .team1Name,
-                                                                    team2Name:
-                                                                        schedule
-                                                                            .team2Name,
-                                                                    team1Score:
-                                                                        0,
-                                                                    team2Score:
-                                                                        0,
-                                                                    penaltyScore:
-                                                                        '');
-                                                                Navigator.pop(
-                                                                    context);
-                                                                await matchViewModel
-                                                                    .addMatches(
-                                                                        schedule
-                                                                            .tournamentId!,
-                                                                        matches);
-                                                              } else {
-                                                                Utils.flushBarErrorMessage(
-                                                                    'The team is\'nt final yet.',
-                                                                    context);
-                                                              }
-                                                            },
-                                                            child: const Text(
-                                                                'Confirm',
-                                                                style: TextStyles
-                                                                    .confirmText)),
-                                                        TextButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: const Text(
-                                                                'Cancel',
-                                                                style: TextStyles
-                                                                    .cancelText))
-                                                      ],
-                                                    )
-                                                  ],
-                                                );
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return alert;
-                                                    });
-                                              }
-                                            },
-                                            child: Text(
-                                              "${schedule.team1Name?.isNotEmpty ?? false ? schedule.team1Name!.toUpperCase() : 'TBD'} vs ${schedule.team2Name?.isNotEmpty ?? false ? schedule.team2Name!.toUpperCase() : 'TBD'}",
-                                              style: TextStyles.scheduleText,
-                                            ),
-                                          ),
-                                        ]),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                );
+                                                ),
+                                              ]),
+                                        )
+                                        .toList(),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
               } else {
                 return teamList.isNotEmpty
                     ? Column(
@@ -215,10 +230,11 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                           ),
                         ],
                       )
-                    :  Center(
+                    : Center(
                         child: Text(
                           'Add all participating teams First',
-                          style: TextStyles.cardText.copyWith(fontSize: 16, fontWeight: FontWeight.w100),
+                          style: TextStyles.cardText.copyWith(
+                              fontSize: 16, fontWeight: FontWeight.w100),
                         ),
                       );
               }

@@ -72,6 +72,7 @@ class DbHelper {
         "isFirstHalf INTEGER,"
         "isSecondHalf INTEGER,"
         "hasStarted INTEGER,"
+        "matchNumber INTEGER,"
         "penaltyScore INTEGER,"
         "matchTime INTEGER,"
         "scheduleId INTEGER,"

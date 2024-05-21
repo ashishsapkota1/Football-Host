@@ -20,6 +20,15 @@ class ScheduleQueries {
     });
   }
 
+  static Future<int?> getMatchNumber(int scheduleId) async {
+    final db = await DbHelper.instance.db;
+    List<Map<String, dynamic>> result = await db!.transaction((txn) async {
+      return await txn.query('Schedule',
+          columns: ['matchNumber'], where: 'id =?', whereArgs: [scheduleId]);
+    });
+    return result.isNotEmpty ? result.first['matchNumber'] : null;
+  }
+
   static Future<void> updateSchedule() async {
     final db = await DbHelper.instance.db;
     try {
@@ -30,11 +39,11 @@ class ScheduleQueries {
         SET team1Id = (
           SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Id ELSE m.team2Id END
           FROM Match m
-          WHERE m.scheduleId = Schedule.team1DependsOn 
+          WHERE m.matchNumber = Schedule.team1DependsOn 
             AND m.isFirstHalf = 1
             AND m.isSecondHalf = 1
         )
-        WHERE team1Id IS NULL
+        WHERE team1Id = 0 OR team1Id IS NULL
       ''');
         print('team1Id updated: $team1IdUpdated rows');
 
@@ -43,11 +52,11 @@ class ScheduleQueries {
         SET team1Name = (
           SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Name ELSE m.team2Name END
           FROM Match m
-          WHERE m.scheduleId = Schedule.team1DependsOn 
+          WHERE m.matchNumber = Schedule.team1DependsOn 
             AND m.isFirstHalf = 1
             AND m.isSecondHalf = 1
         )
-        WHERE team1Name IS Null
+        WHERE team1Name = '' OR team1Name IS NULL
       ''');
         print('team1Name updated: $team1NameUpdated rows');
 
@@ -56,11 +65,11 @@ class ScheduleQueries {
         SET team2Id = (
           SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Id ELSE m.team2Id END
           FROM Match m
-         WHERE m.scheduleId = Schedule.team2DependsOn 
+         WHERE m.matchNumber = Schedule.team2DependsOn 
             AND m.isFirstHalf = 1
             AND m.isSecondHalf = 1
         )
-        WHERE team2Id IS NULL
+        WHERE team2Id = 0 OR team2Id IS NULL
       ''');
         print('team2Id updated: $team2IdUpdated rows');
 
@@ -69,11 +78,11 @@ class ScheduleQueries {
         SET team2Name = (
           SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Name ELSE m.team2Name END
           FROM Match m
-          WHERE m.scheduleId = Schedule.team2DependsOn 
+          WHERE m.matchNumber = Schedule.team2DependsOn 
             AND m.isFirstHalf = 1
             AND m.isSecondHalf = 1
         )
-        WHERE team2Name IS NULL
+        WHERE team2Name = '' OR team2Name IS NULL
       ''');
         print('team1Name updated: $team2NameUpdated rows');
       });
@@ -81,5 +90,4 @@ class ScheduleQueries {
       print(e.toString());
     }
   }
-
 }

@@ -36,7 +36,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
     scoreViewModel.getTeam1Score(widget.matches.id!);
     scoreViewModel.getTeam2Score(widget.matches.id!);
 
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 700), () {
       setState(() {
         isLoading = false;
       });
