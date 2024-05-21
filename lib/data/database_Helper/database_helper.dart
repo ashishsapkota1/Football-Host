@@ -1,15 +1,10 @@
-import 'package:football_host/view_model/matchViewModel/schedule_view_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../view_model/matchViewModel/match_view_model.dart';
-
 class DbHelper {
   static Database? _db;
   static const String dbName = 'tournament_host.db';
-  final ScheduleViewModel scheduleViewModel = ScheduleViewModel();
-  final MatchViewModel matchViewModel = MatchViewModel();
 
   DbHelper._();
 

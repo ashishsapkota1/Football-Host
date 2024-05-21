@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/spacing.dart';
+import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/model/match/goal_scored.dart';
@@ -8,6 +9,7 @@ import '../../view_model/matchViewModel/goal_scorer_view_model.dart';
 import '../../view_model/player_view_model.dart';
 
 class TimeLine extends StatefulWidget {
+  final int? matchID;
   final String? team1Name;
   final String? team2Name;
   final int? team1Id;
@@ -15,6 +17,7 @@ class TimeLine extends StatefulWidget {
 
   const TimeLine(
       {super.key,
+        required this.matchID,
       required this.team1Name,
       required this.team2Name,
       required this.team1Id,
@@ -25,15 +28,16 @@ class TimeLine extends StatefulWidget {
 }
 
 class _TimeLineState extends State<TimeLine> {
+
   @override
   Widget build(BuildContext context) {
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
     final goalScorers = goalScorerViewModel.goalScorer;
 
     final team1GoalScorers =
-        goalScorers.where((scorer) => scorer.teamId == widget.team1Id).toList();
+        goalScorers.where((scorer) => scorer.teamId == widget.team1Id && scorer.matchId == widget.matchID).toList();
     final team2GoalScorers =
-        goalScorers.where((scorer) => scorer.teamId == widget.team2Id).toList();
+        goalScorers.where((scorer) => scorer.teamId == widget.team2Id && scorer.matchId == widget.matchID).toList();
 
     return Row(
       children: [

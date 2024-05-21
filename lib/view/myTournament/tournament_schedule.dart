@@ -27,13 +27,10 @@ class TournamentSchedule extends StatefulWidget {
 }
 
 class _TournamentScheduleState extends State<TournamentSchedule> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    final tournamentNameViewModel = Provider.of<TournamentNameViewModel>(context, listen: false);
-    int tournamentId = tournamentNameViewModel.selectedTournamentId!;
     Provider.of<ScheduleViewModel>(context, listen: false).updateSchedule();
   }
 
@@ -120,33 +117,45 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                                         TextButton(
                                                             onPressed:
                                                                 () async {
-                                                              Matches matches = Matches(
-                                                                  tournamentId:
-                                                                      tournamentId,
-                                                                  scheduleId:
-                                                                      schedule
-                                                                          .id,
-                                                                  team1Id: schedule
-                                                                      .team1Id,
-                                                                  team2Id: schedule
-                                                                      .team2Id,
-                                                                  team1Name:
-                                                                      schedule
-                                                                          .team1Name,
-                                                                  team2Name:
-                                                                      schedule
-                                                                          .team2Name,
-                                                                  team1Score: 0,
-                                                                  team2Score: 0,
-                                                                  penaltyScore:
-                                                                      '');
-                                                              Navigator.pop(
-                                                                  context);
-                                                              await matchViewModel
-                                                                  .addMatches(
-                                                                      schedule
-                                                                          .tournamentId!,
-                                                                      matches);
+                                                              if (schedule.team1Name !=
+                                                                      '' &&
+                                                                  schedule.team2Name !=
+                                                                      "") {
+                                                                Matches matches = Matches(
+                                                                    tournamentId:
+                                                                        tournamentId,
+                                                                    scheduleId:
+                                                                        schedule
+                                                                            .id,
+                                                                    team1Id: schedule
+                                                                        .team1Id,
+                                                                    team2Id:
+                                                                        schedule
+                                                                            .team2Id,
+                                                                    team1Name:
+                                                                        schedule
+                                                                            .team1Name,
+                                                                    team2Name:
+                                                                        schedule
+                                                                            .team2Name,
+                                                                    team1Score:
+                                                                        0,
+                                                                    team2Score:
+                                                                        0,
+                                                                    penaltyScore:
+                                                                        '');
+                                                                Navigator.pop(
+                                                                    context);
+                                                                await matchViewModel
+                                                                    .addMatches(
+                                                                        schedule
+                                                                            .tournamentId!,
+                                                                        matches);
+                                                              } else {
+                                                                Utils.flushBarErrorMessage(
+                                                                    'The team is\'nt final yet.',
+                                                                    context);
+                                                              }
                                                             },
                                                             child: const Text(
                                                                 'Confirm',
@@ -188,23 +197,30 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                       .toList(),
                 );
               } else {
-                return Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        generateSchedule(
-                            tournamentId,
-                            teamList,
-                            teamViewModel,
-                            scheduleViewModel,
-                            teamNameViewModel,
-                            tournamentViewModel);
-                        setState(() {});
-                      },
-                      child: const Text('Generate Schedule'),
-                    ),
-                  ],
-                );
+                return teamList.isNotEmpty
+                    ? Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              generateSchedule(
+                                  tournamentId,
+                                  teamList,
+                                  teamViewModel,
+                                  scheduleViewModel,
+                                  teamNameViewModel,
+                                  tournamentViewModel);
+                              setState(() {});
+                            },
+                            child: const Text('Generate Schedule'),
+                          ),
+                        ],
+                      )
+                    :  Center(
+                        child: Text(
+                          'Add all participating teams First',
+                          style: TextStyles.cardText.copyWith(fontSize: 16, fontWeight: FontWeight.w100),
+                        ),
+                      );
               }
             },
           ),
@@ -227,7 +243,7 @@ Future<void> generateSchedule(
     allTeams.add('team-${oneTeam.id!}');
   }
   allTeams.shuffle();
-  int matchNumber = 1;
+  int matchNumber = Random().nextInt(9999);
   int noOfTeams = allTeams.length;
   int noOfRounds = (log(noOfTeams) ~/ log(2)).floor();
   int a = (noOfTeams ~/ 2).toInt();
@@ -383,7 +399,6 @@ Future<void> generateSchedule(
     }
     remainingRound--;
   }
-  print(allSchedules.length);
   addScheduleToDB(tournamentId, allSchedules, scheduleViewModel);
 }
 

@@ -30,6 +30,7 @@ class MatchQueries {
     });
   }
 
+
   //Insert time
   static Future<int?> insertMatchTime(int matchId, int matchTime) async {
     final db = await DbHelper.instance.db;
