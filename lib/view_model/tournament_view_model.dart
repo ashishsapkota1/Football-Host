@@ -17,7 +17,9 @@ class TournamentViewModel with ChangeNotifier {
       _tournamentList.add(newTournament);
       notifyListeners();
     }else{
-      print('failed to insert Tournament');
+      if (kDebugMode) {
+        print('failed to insert Tournament');
+      }
     }
   }
 

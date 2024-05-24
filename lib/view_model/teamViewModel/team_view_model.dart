@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:football_host/data/database_Helper/database_helper.dart';
 import 'package:football_host/data/database_Helper/queries/team_queries.dart';
 
 import '../../data/model/team_model.dart';
@@ -17,7 +16,9 @@ class TeamViewModel extends ChangeNotifier {
       _tournamentTeams.add(newTeam);
       notifyListeners();
     } else {
-      print('failed');
+      if (kDebugMode) {
+        print('failed');
+      }
     }
   }
 

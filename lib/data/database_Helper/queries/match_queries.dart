@@ -30,6 +30,16 @@ class MatchQueries {
     });
   }
 
+  static Future<List<GoalScorer>> getGoalScorer(int matchId) async{
+    final db = await DbHelper.instance.db;
+    final List<Map<String, dynamic>>? maps = await db!.transaction((txn) async{
+      return txn.query('GOALSCORER', where: 'matchId = ?', whereArgs: [matchId]);
+    });
+    return List.generate(maps!.length, (index) {
+      return GoalScorer.fromMap(maps[index]);
+    });
+  }
+
 
   //Insert time
   static Future<int?> insertMatchTime(int matchId, int matchTime) async {
@@ -56,6 +66,22 @@ class MatchQueries {
     });
   }
 
+  static Future<int?> addTeam1PenaltyGoal(int matchId, int goalNumber) async {
+    final db = await DbHelper.instance.db;
+    return db!.transaction((txn) async {
+      return await txn.update("MATCH", {'penaltyScore1': goalNumber},
+          where: "id = ?", whereArgs: [matchId]);
+    });
+  }
+
+  static Future<int?> addTeam2PenaltyGoal(int matchId, int goalNumber) async {
+    final db = await DbHelper.instance.db;
+    return db!.transaction((txn) async {
+      return await txn.update("MATCH", {'penaltyScore2': goalNumber},
+          where: "id = ?", whereArgs: [matchId]);
+    });
+  }
+
   static Future<int?> getTeam1Score(int matchId) async {
     final db = await DbHelper.instance.db;
     List<Map<String, dynamic>> result = await db!.transaction((txn) async {
@@ -72,6 +98,24 @@ class MatchQueries {
           columns: ['team2Score'], where: 'id = ?', whereArgs: [matchId]);
     });
     return result.isNotEmpty ? result.first['team2Score'] : null;
+  }
+
+  static Future<int?> getTeam1PenaltyScore(int matchId) async {
+    final db = await DbHelper.instance.db;
+    List<Map<String, dynamic>> result = await db!.transaction((txn) async {
+      return await txn.query('MATCH',
+          columns: ['penaltyScore1'], where: 'id = ?', whereArgs: [matchId]);
+    });
+    return result.isNotEmpty ? result.first['penaltyScore1'] : null;
+  }
+
+  static Future<int?> getTeam2PenaltyScore(int matchId) async {
+    final db = await DbHelper.instance.db;
+    List<Map<String, dynamic>> result = await db!.transaction((txn) async {
+      return await txn.query('MATCH',
+          columns: ['penaltyScore2'], where: 'id = ?', whereArgs: [matchId]);
+    });
+    return result.isNotEmpty ? result.first['penaltyScore2'] : null;
   }
 
   //update 1stHalf

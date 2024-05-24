@@ -35,8 +35,10 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
     final scoreViewModel = Provider.of<ScoreViewModel>(context, listen: false);
     scoreViewModel.getTeam1Score(widget.matches.id!);
     scoreViewModel.getTeam2Score(widget.matches.id!);
+    scoreViewModel.getTeam1PenaltyScore(widget.matches.id!);
+    scoreViewModel.getTeam2PenaltyScore(widget.matches.id!);
 
-    Future.delayed(const Duration(milliseconds: 700), () {
+    Future.delayed(const Duration(milliseconds: 800), () {
       setState(() {
         isLoading = false;
       });
@@ -48,6 +50,8 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
     final scoreViewModel = Provider.of<ScoreViewModel>(context);
     int team1Score = scoreViewModel.team1Score;
     int team2Score = scoreViewModel.team2Score;
+    int team1PenaltyScore = scoreViewModel.team1PenaltyScore;
+    int team2PenaltyScore = scoreViewModel.team2PenaltyScore;
     List<Widget> tabs = [
       LineUp(
           matchId: widget.matches.id,
@@ -79,7 +83,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
               child: Builder(
                 builder: (BuildContext context) {
                   final TabController tabController =
-                      DefaultTabController.of(context);
+                  DefaultTabController.of(context);
                   tabController.addListener(() {
                     if (tabController.indexIsChanging) {
                       tabController.index;
@@ -93,76 +97,101 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                       child: isLoading
                           ? const SizedBox()
                           : AppBar(
-                              centerTitle: true,
-                              backgroundColor: AppColor.appBarColor,
-                              title: Text(
-                                "${widget.matches.team1Name?.toUpperCase()} vs ${widget.matches.team2Name?.toUpperCase()}",
-                                style: TextStyles.appBarText,
-                              ),
-                              flexibleSpace: FlexibleSpaceBar(
-                                background: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      widget.matches.team1Name!.toUpperCase(),
-                                      style: TextStyles.matchStyle,
-                                    ),
-                                    verticalSpacing(
-                                        space: Responsive.screenWidth(context) *
-                                            0.08),
-                                    Text(
-                                      team1Score.toString(),
-                                      style: TextStyles.scoreStyle,
-                                    ),
-                                    verticalSpacing(
-                                        space: Responsive.screenWidth(context) *
-                                            0.04),
-                                    const Text(
-                                      '-',
-                                      style: TextStyles.scoreStyle,
-                                    ),
-                                    verticalSpacing(
-                                        space: Responsive.screenWidth(context) *
-                                            0.04),
-                                    Text(
-                                      team2Score.toString(),
-                                      style: TextStyles.scoreStyle,
-                                    ),
-                                    verticalSpacing(
-                                        space: Responsive.screenWidth(context) *
-                                            0.08),
-                                    Text(
-                                      widget.matches.team2Name!.toUpperCase(),
-                                      style: TextStyles.matchStyle,
-                                    ),
-                                  ],
-                                ),
-                                expandedTitleScale: 2,
-                              ),
-                              bottom: TabBar(
-                                controller: tabController,
-                                labelStyle: TextStyles.tabBarStyle,
-                                tabs: const [
-                                  Tab(
-                                    text: 'LineUp',
+                        centerTitle: true,
+                        backgroundColor: AppColor.appBarColor,
+                        title: Text(
+                          "${widget.matches.team1Name?.toUpperCase().substring(
+                              0, 3)} vs ${widget.matches.team2Name
+                              ?.toUpperCase().substring(0, 3)}",
+                          style: TextStyles.appBarText,
+                        ),
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    widget.matches.team1Name!
+                                        .toUpperCase()
+                                        .substring(0, 3),
+                                    style: TextStyles.matchStyle,
                                   ),
-                                  Tab(
-                                    text: 'Timer',
+                                  horizontalSpacing(
+                                      space: Responsive.screenWidth(
+                                          context) *
+                                          0.08),
+                                  Text(
+                                    team1Score.toString(),
+                                    style: TextStyles.scoreStyle,
                                   ),
-                                  Tab(
-                                    text: 'Add Goal',
+                                  horizontalSpacing(
+                                      space: Responsive.screenWidth(
+                                          context) *
+                                          0.04),
+                                  const Text(
+                                    '-',
+                                    style: TextStyles.scoreStyle,
                                   ),
-                                  Tab(
-                                    text: 'Timeline',
-                                  )
+                                  horizontalSpacing(
+                                      space: Responsive.screenWidth(
+                                          context) *
+                                          0.04),
+                                  Text(
+                                    team2Score.toString(),
+                                    style: TextStyles.scoreStyle,
+                                  ),
+                                  horizontalSpacing(
+                                      space: Responsive.screenWidth(
+                                          context) *
+                                          0.08),
+                                  Text(
+                                    widget.matches.team2Name!
+                                        .toUpperCase()
+                                        .substring(0, 3),
+                                    style: TextStyles.matchStyle,
+                                  ),
                                 ],
                               ),
+                              (team1PenaltyScore > team2PenaltyScore)
+                                  ? Text(
+                                  '${widget.matches.team1Name!.substring(0,
+                                      3)} won $team1PenaltyScore - $team2PenaltyScore on penalty')
+                                : (team2PenaltyScore > team1PenaltyScore)
+                                  ? Text(
+                                  '${widget.matches.team2Name!.substring(0,
+                                      3)} won $team2PenaltyScore - $team1PenaltyScore on penalty')
+                                  : const Text('')
+                            ],
+                          ),
+                          expandedTitleScale: 2,
+                        ),
+                        bottom: TabBar(
+                          controller: tabController,
+                          labelStyle: TextStyles.tabBarStyle,
+                          tabs: const [
+                            Tab(
+                              text: 'LineUp',
                             ),
+                            Tab(
+                              text: 'Timer',
+                            ),
+                            Tab(
+                              text: 'Add Goal',
+                            ),
+                            Tab(
+                              text: 'Timeline',
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                     body: isLoading
                         ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
+                      child: CircularProgressIndicator(),
+                    )
                         : TabBarView(children: tabs),
                   );
                 },

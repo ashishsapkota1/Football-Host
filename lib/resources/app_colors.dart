@@ -9,4 +9,5 @@ class AppColor{
   static const textGreen = Color(0xFF03C03C);
   static const lineUpColor = Color(0xFF34A853);
   static const positionNameColor = Color(0xFF3457D5);
+  static const toastColor = Color(0xFFB22222);
 }

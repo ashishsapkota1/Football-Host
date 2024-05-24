@@ -112,6 +112,17 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                                       Utils.flushBarErrorMessage(
                                                           'Match already added',
                                                           context);
+                                                    } else if (schedule
+                                                                .team1Id ==
+                                                            0 ||
+                                                        schedule.team1Id ==
+                                                            null ||
+                                                        schedule.team2Id == 0 ||
+                                                        schedule.team2Id ==
+                                                            null) {
+                                                      Utils.flushBarErrorMessage(
+                                                          'The team is\'nt final yet.',
+                                                          context);
                                                     } else {
                                                       viewModel.getMatchNumber(
                                                           schedule.id!);
@@ -133,42 +144,41 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                                                               TextButton(
                                                                   onPressed:
                                                                       () async {
-                                                                    if (schedule.team1Name !=
-                                                                            '' &&
-                                                                        schedule.team2Name !=
-                                                                            "") {
-                                                                      Matches matches = Matches(
-                                                                          tournamentId:
-                                                                              tournamentId,
-                                                                          scheduleId: schedule
-                                                                              .id,
-                                                                          team1Id: schedule
-                                                                              .team1Id,
-                                                                          team2Id: schedule
-                                                                              .team2Id,
-                                                                          team1Name: schedule
-                                                                              .team1Name,
-                                                                          team2Name: schedule
-                                                                              .team2Name,
-                                                                          team1Score:
-                                                                              0,
-                                                                          team2Score:
-                                                                              0,
-                                                                          matchNumber: viewModel
-                                                                              .matchNumber,
-                                                                          penaltyScore:
-                                                                              '');
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      await matchViewModel.addMatches(
-                                                                          schedule
-                                                                              .tournamentId!,
-                                                                          matches);
-                                                                    } else {
-                                                                      Utils.flushBarErrorMessage(
-                                                                          'The team is\'nt final yet.',
-                                                                          context);
-                                                                    }
+                                                                    Matches matches = Matches(
+                                                                        tournamentId:
+                                                                            tournamentId,
+                                                                        scheduleId:
+                                                                            schedule
+                                                                                .id,
+                                                                        team1Id:
+                                                                            schedule
+                                                                                .team1Id,
+                                                                        team2Id:
+                                                                            schedule
+                                                                                .team2Id,
+                                                                        team1Name:
+                                                                            schedule
+                                                                                .team1Name,
+                                                                        team2Name:
+                                                                            schedule
+                                                                                .team2Name,
+                                                                        team1Score:
+                                                                            0,
+                                                                        team2Score:
+                                                                            0,
+                                                                        matchNumber:
+                                                                            viewModel
+                                                                                .matchNumber,
+                                                                        penaltyScore1:
+                                                                            0,
+                                                                        penaltyScore2:
+                                                                            0);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    await matchViewModel.addMatches(
+                                                                        schedule
+                                                                            .tournamentId!,
+                                                                        matches);
                                                                   },
                                                                   child: const Text(
                                                                       'Confirm',
@@ -213,22 +223,24 @@ class _TournamentScheduleState extends State<TournamentSchedule> {
                       );
               } else {
                 return teamList.isNotEmpty
-                    ? Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              generateSchedule(
-                                  tournamentId,
-                                  teamList,
-                                  teamViewModel,
-                                  scheduleViewModel,
-                                  teamNameViewModel,
-                                  tournamentViewModel);
-                              setState(() {});
-                            },
-                            child: const Text('Generate Schedule'),
-                          ),
-                        ],
+                    ? Center(
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                generateSchedule(
+                                    tournamentId,
+                                    teamList,
+                                    teamViewModel,
+                                    scheduleViewModel,
+                                    teamNameViewModel,
+                                    tournamentViewModel);
+                                setState(() {});
+                              },
+                              child: const Text('Generate Schedule'),
+                            ),
+                          ],
+                        ),
                       )
                     : Center(
                         child: Text(

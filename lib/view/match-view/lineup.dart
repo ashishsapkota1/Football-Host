@@ -9,6 +9,7 @@ import 'package:football_host/view_model/matchViewModel/match_timer_model.dart';
 import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:provider/provider.dart';
+
 import '../../resources/app_colors.dart';
 import '../../resources/utils/text_styles.dart';
 
@@ -140,7 +141,7 @@ class _LineUpState extends State<LineUp> {
                     value: value, child: Text(value));
               }).toList(),
             ),
-            horizontalSpacing(space: 8),
+            verticalSpacing(space: 8),
             PlayingXiTeam1(teamId: widget.team1Id),
             _buildFormation1(dropDownValue1),
             const Text('Select formation'),
@@ -160,10 +161,10 @@ class _LineUpState extends State<LineUp> {
                     value: value, child: Text(value));
               }).toList(),
             ),
-            horizontalSpacing(space: 8),
+            verticalSpacing(space: 8),
             PlayingXiTeam2(teamId: widget.team2Id),
             _buildFormation2(dropDownValue2),
-            horizontalSpacing(space: 14),
+            verticalSpacing(space: 14),
             Offstage(
               offstage: viewModel.hasStarted,
               child: !viewModel.isFirstHalf && !viewModel.isSecondHalf
@@ -196,7 +197,7 @@ class _LineUpState extends State<LineUp> {
               )
                   : const SizedBox()
             ),
-            horizontalSpacing(space: 8),
+            verticalSpacing(space: 8),
             Offstage(
                 offstage: viewModel.hasStarted,
                 child: viewModel.isFirstHalf && viewModel.isSecondHalf
@@ -219,7 +220,7 @@ class _LineUpState extends State<LineUp> {
                               matchTimerViewModel.startTimer(
                                   (matchTime1 / 2).ceil(), widget.matchId!);
                               Utils.toastMessage(
-                                  'FirstHalf has started', AppColor.appBarColor);
+                                  'FirstHalf has started', AppColor.toastColor);
                             }
                           } else{
                             const path = "sound/whistle.mp3";
@@ -230,7 +231,7 @@ class _LineUpState extends State<LineUp> {
                             matchTimerViewModel.startTimer(
                                 (matchTime / 2).ceil(), widget.matchId!);
                             Utils.toastMessage(
-                                'SecondHalf has started', AppColor.appBarColor);
+                                'SecondHalf has started', AppColor.toastColor);
 
                           }
                         },
@@ -243,7 +244,7 @@ class _LineUpState extends State<LineUp> {
                                 'Start first half',
                                 style: TextStyles.tabBarStyle,
                               ))),
-            horizontalSpacing(space: 8)
+            verticalSpacing(space: 8)
           ],
         ),
       );

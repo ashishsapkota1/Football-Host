@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:football_host/resources/utils/spacing.dart';
-import 'package:football_host/view_model/matchViewModel/match_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/model/match/goal_scored.dart';
@@ -17,7 +16,7 @@ class TimeLine extends StatefulWidget {
 
   const TimeLine(
       {super.key,
-        required this.matchID,
+      required this.matchID,
       required this.team1Name,
       required this.team2Name,
       required this.team1Id,
@@ -28,16 +27,27 @@ class TimeLine extends StatefulWidget {
 }
 
 class _TimeLineState extends State<TimeLine> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<GoalScorerViewModel>(context, listen: false)
+        .getGoalScorer(widget.matchID!);
+  }
 
   @override
   Widget build(BuildContext context) {
     final goalScorerViewModel = Provider.of<GoalScorerViewModel>(context);
     final goalScorers = goalScorerViewModel.goalScorer;
 
-    final team1GoalScorers =
-        goalScorers.where((scorer) => scorer.teamId == widget.team1Id && scorer.matchId == widget.matchID).toList();
-    final team2GoalScorers =
-        goalScorers.where((scorer) => scorer.teamId == widget.team2Id && scorer.matchId == widget.matchID).toList();
+    final team1GoalScorers = goalScorers
+        .where((scorer) =>
+            scorer.teamId == widget.team1Id && scorer.matchId == widget.matchID)
+        .toList();
+    final team2GoalScorers = goalScorers
+        .where((scorer) =>
+            scorer.teamId == widget.team2Id && scorer.matchId == widget.matchID)
+        .toList();
 
     return Row(
       children: [
@@ -61,7 +71,7 @@ class _TimeLineState extends State<TimeLine> {
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            horizontalSpacing(space: 8),
+            verticalSpacing(space: 8),
             const Divider(
               thickness: 3,
             ),
@@ -88,7 +98,7 @@ class _TimeLineState extends State<TimeLine> {
                                         snapshot.data!,
                                         style: TextStyles.timeLineStyle,
                                       ),
-                                      verticalSpacing(space: 10),
+                                      horizontalSpacing(space: 10),
                                       Text(
                                         '${goalScorer.goalTime}\'',
                                         style: TextStyles.timeLineStyle,
@@ -103,7 +113,7 @@ class _TimeLineState extends State<TimeLine> {
                             } else {
                               return const Column(
                                 children: [
-                                   Text('No Player Picked'),
+                                  Text('No Player Picked'),
                                   Divider(
                                     thickness: 1,
                                   )

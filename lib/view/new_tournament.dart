@@ -16,8 +16,9 @@ class AddTournament extends StatefulWidget {
 class _AddTournamentState extends State<AddTournament> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = TextEditingController();
-    TournamentViewModel tournamentViewModel = Provider.of<TournamentViewModel>(context, listen: false);
+    TextEditingController controller = TextEditingController();
+    TournamentViewModel tournamentViewModel =
+        Provider.of<TournamentViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.appBarColor,
@@ -32,25 +33,21 @@ class _AddTournamentState extends State<AddTournament> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
-                controller: _controller,
+                controller: controller,
                 decoration: InputDecoration(
                     hintText: 'Tournament Name',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)
-                    )
-                )
-            ),
+                        borderRadius: BorderRadius.circular(12)))),
           ),
           InkWell(
-            onTap: () async{
-              String tournamentName = _controller.text.trim();
-              if(tournamentName.isNotEmpty){
+            onTap: () async {
+              String tournamentName = controller.text.trim();
+              if (tournamentName.isNotEmpty) {
                 Navigator.pop(context);
                 await tournamentViewModel.addTournament(tournamentName, '');
-                await Utils.toastMessage('Tournament added', AppColor.appBarColor);
+                await Utils.toastMessage(
+                    'Tournament added', AppColor.toastColor);
               }
-
-
             },
             child: Container(
               height: Responsive.screenHeight(context) * 0.07,
@@ -60,11 +57,9 @@ class _AddTournamentState extends State<AddTournament> {
                   borderRadius: BorderRadius.circular(12)),
               child: const Center(
                   child: Text(
-                    'Add Tournament',
-                    style: TextStyles.buttonText,
-                  )
-
-              ),
+                'Add Tournament',
+                style: TextStyles.buttonText,
+              )),
             ),
           ),
         ],

@@ -29,5 +29,11 @@ class GoalScorerViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> getGoalScorer(int matchId) async{
+    List<GoalScorer> result = await MatchQueries.getGoalScorer(matchId);
+    _goalScorer = result;
+    notifyListeners();
+  }
+
 
 }

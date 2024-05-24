@@ -31,7 +31,9 @@ class MatchViewModel extends ChangeNotifier {
       _matches.add(matches);
       notifyListeners();
     } else {
-      print('failed');
+      if (kDebugMode) {
+        print('failed');
+      }
     }
   }
 

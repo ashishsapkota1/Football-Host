@@ -61,7 +61,7 @@ class _FormationNo1State extends State<FormationNo1> {
                             ),
                             child: Row(
                               children: [
-                                verticalSpacing(space: 20),
+                                horizontalSpacing(space: 20),
                                 Text(
                                   widget.teamName!,
                                   style: TextStyles.lineUpTeamNameStyle,

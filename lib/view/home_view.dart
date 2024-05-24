@@ -4,11 +4,11 @@ import 'package:football_host/resources/app_colors.dart';
 import 'package:football_host/resources/utils/images.dart';
 import 'package:football_host/resources/utils/responsive.dart';
 import 'package:football_host/resources/utils/spacing.dart';
-import 'package:football_host/view/myTournament/tournament_matches.dart';
 import 'package:football_host/view_model/home_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:provider/provider.dart';
+
 import '../resources/utils/routes/routes_name.dart';
 import '../resources/utils/text_styles.dart';
 
@@ -164,7 +164,7 @@ class _HomeViewState extends State<HomeView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      verticalSpacing(space: 6),
+                      horizontalSpacing(space: 6),
                       Image.asset(
                         imageModel.isTapped
                             ? Images.tappedWhistle
@@ -175,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
                             ? Colors.grey
                             : AppColor.backGroundColor,
                       ),
-                      verticalSpacing(space: 8),
+                      horizontalSpacing(space: 8),
                       const Text(
                         'Start a New Tournament',
                         style: TextStyles.buttonText,

@@ -1,4 +1,6 @@
 import 'package:football_host/data/database_Helper/database_helper.dart';
+import 'package:football_host/resources/app_colors.dart';
+import 'package:football_host/resources/utils/utils.dart';
 
 import '../../model/match/match_schedule_model.dart';
 
@@ -33,11 +35,18 @@ class ScheduleQueries {
     final db = await DbHelper.instance.db;
     try {
       await db!.transaction((txn) async {
-        print('Updating team1Id and team1Name...');
-        int team1IdUpdated = await txn.rawUpdate('''
+        // Update team1Id based on match results
+        await txn.rawUpdate('''
         UPDATE Schedule
         SET team1Id = (
-          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Id ELSE m.team2Id END
+          SELECT CASE 
+                   WHEN m.team1Score > m.team2Score THEN m.team1Id 
+                   WHEN m.team1Score < m.team2Score THEN m.team2Id
+                   ELSE CASE 
+                          WHEN m.penaltyScore1 > m.penaltyScore2 THEN m.team1Id 
+                          ELSE m.team2Id 
+                        END 
+                 END
           FROM Match m
           WHERE m.matchNumber = Schedule.team1DependsOn 
             AND m.isFirstHalf = 1
@@ -45,12 +54,19 @@ class ScheduleQueries {
         )
         WHERE team1Id = 0 OR team1Id IS NULL
       ''');
-        print('team1Id updated: $team1IdUpdated rows');
 
-        int team1NameUpdated = await txn.rawUpdate('''
+        // Update team1Name based on match results
+        await txn.rawUpdate('''
         UPDATE Schedule
         SET team1Name = (
-          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Name ELSE m.team2Name END
+          SELECT CASE 
+                   WHEN m.team1Score > m.team2Score THEN m.team1Name 
+                   WHEN m.team1Score < m.team2Score THEN m.team2Name
+                   ELSE CASE 
+                          WHEN m.penaltyScore1 > m.penaltyScore2 THEN m.team1Name 
+                          ELSE m.team2Name 
+                        END 
+                 END
           FROM Match m
           WHERE m.matchNumber = Schedule.team1DependsOn 
             AND m.isFirstHalf = 1
@@ -58,25 +74,39 @@ class ScheduleQueries {
         )
         WHERE team1Name = '' OR team1Name IS NULL
       ''');
-        print('team1Name updated: $team1NameUpdated rows');
 
-        int team2IdUpdated = await txn.rawUpdate('''
+        // Update team2Id based on match results
+        await txn.rawUpdate('''
         UPDATE Schedule
         SET team2Id = (
-          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Id ELSE m.team2Id END
+          SELECT CASE 
+                   WHEN m.team1Score > m.team2Score THEN m.team1Id 
+                   WHEN m.team1Score < m.team2Score THEN m.team2Id
+                   ELSE CASE 
+                          WHEN m.penaltyScore1 > m.penaltyScore2 THEN m.team1Id 
+                          ELSE m.team2Id 
+                        END 
+                 END
           FROM Match m
-         WHERE m.matchNumber = Schedule.team2DependsOn 
+          WHERE m.matchNumber = Schedule.team2DependsOn 
             AND m.isFirstHalf = 1
             AND m.isSecondHalf = 1
         )
         WHERE team2Id = 0 OR team2Id IS NULL
       ''');
-        print('team2Id updated: $team2IdUpdated rows');
 
-        int team2NameUpdated = await txn.rawUpdate('''
+        // Update team2Name based on match results
+        await txn.rawUpdate('''
         UPDATE Schedule
         SET team2Name = (
-          SELECT CASE WHEN m.team1Score > m.team2Score THEN m.team1Name ELSE m.team2Name END
+          SELECT CASE 
+                   WHEN m.team1Score > m.team2Score THEN m.team1Name 
+                   WHEN m.team1Score < m.team2Score THEN m.team2Name
+                   ELSE CASE 
+                          WHEN m.penaltyScore1 > m.penaltyScore2 THEN m.team1Name 
+                          ELSE m.team2Name 
+                        END 
+                 END
           FROM Match m
           WHERE m.matchNumber = Schedule.team2DependsOn 
             AND m.isFirstHalf = 1
@@ -84,10 +114,10 @@ class ScheduleQueries {
         )
         WHERE team2Name = '' OR team2Name IS NULL
       ''');
-        print('team1Name updated: $team2NameUpdated rows');
       });
     } catch (e) {
-      print(e.toString());
+      Utils.toastMessage(e.toString(), AppColor.toastColor);
     }
   }
+
 }

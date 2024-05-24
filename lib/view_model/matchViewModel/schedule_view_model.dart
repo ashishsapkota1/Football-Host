@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:football_host/data/database_Helper/queries/schedule_queries.dart';
 
 import '../../data/model/match/match_schedule_model.dart';
@@ -8,6 +8,7 @@ class ScheduleViewModel extends ChangeNotifier {
   late int? _matchNumber;
 
   List<Schedule> get scheduleList => _scheduleList;
+
   int? get matchNumber => _matchNumber;
 
   Future<void> addSchedule(int tournamentId, Schedule schedule) async {
@@ -18,7 +19,9 @@ class ScheduleViewModel extends ChangeNotifier {
       _scheduleList.add(newSchedule);
       notifyListeners();
     } else {
-      print('failed');
+      if (kDebugMode) {
+        print('failed');
+      }
     }
   }
 

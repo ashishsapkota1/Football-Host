@@ -12,7 +12,8 @@ class Matches {
   bool isSecondHalf;
   bool hasStarted;
   int? matchNumber;
-  String? penaltyScore;
+  int? penaltyScore1;
+  int? penaltyScore2;
   int? matchTime;
 
   Matches(
@@ -29,7 +30,8 @@ class Matches {
       this.isSecondHalf = false,
       this.hasStarted = false,
       this.matchNumber,
-      this.penaltyScore,
+      this.penaltyScore1,
+      this.penaltyScore2,
       this.matchTime});
 
   Map<String, dynamic> toMap() {
@@ -45,8 +47,9 @@ class Matches {
       "isFirstHalf": isFirstHalf,
       "isSecondHalf": isSecondHalf,
       "hasStarted": hasStarted,
-      "matchNumber" : matchNumber,
-      "penaltyScore": penaltyScore,
+      "matchNumber": matchNumber,
+      "penaltyScore1": penaltyScore1,
+      "penaltyScore2": penaltyScore2,
       "matchTime": matchTime
     };
   }
@@ -65,6 +68,7 @@ class Matches {
         isSecondHalf = map['isSecondHalf'] == 1,
         hasStarted = map['hasStarted'] == 1,
         matchNumber = map['matchNumber'],
-        penaltyScore = map['penaltyScore'],
+        penaltyScore1 = map['penaltyScore1'],
+        penaltyScore2 = map['penaltyScore2'],
         matchTime = map['matchTime'];
 }

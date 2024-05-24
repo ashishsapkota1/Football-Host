@@ -74,7 +74,7 @@ _displayTextField(BuildContext context) {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12))),
                     ),
-                    horizontalSpacing(space: 8),
+                    verticalSpacing(space: 8),
                     TextField(
                       keyboardType: TextInputType.number,
                       controller: playerJerseyNo,
@@ -83,7 +83,7 @@ _displayTextField(BuildContext context) {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12))),
                     ),
-                    horizontalSpacing(space: 8),
+                    verticalSpacing(space: 8),
                     DropdownButton<String>(
                         value: selectedPosition,
                         items: playerPosition.map((position) {

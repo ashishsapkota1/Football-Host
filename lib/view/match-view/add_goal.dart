@@ -70,7 +70,7 @@ class _AddGoalState extends State<AddGoal> {
                   "Select scoring team",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
-                horizontalSpacing(space: 8),
+                verticalSpacing(space: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -89,7 +89,7 @@ class _AddGoalState extends State<AddGoal> {
                     ),
                   ],
                 ),
-                horizontalSpacing(space: 14),
+                verticalSpacing(space: 14),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
