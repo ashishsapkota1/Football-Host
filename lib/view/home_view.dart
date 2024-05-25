@@ -7,6 +7,7 @@ import 'package:football_host/resources/utils/spacing.dart';
 import 'package:football_host/view_model/home_view_model.dart';
 import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../resources/utils/routes/routes_name.dart';
@@ -20,6 +21,83 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermission();
+  }
+
+  Future<void> _requestPermission() async {
+    await Permission.storage.request();
+    var status = await Permission.storage.status;
+    if (status.isDenied) {
+        _showPermissionDeniedDialog();
+
+    }
+
+    if (status.isPermanentlyDenied) {
+      _showPermissionPermanentlyDeniedDialog();
+    }
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Storage permission denied'),
+          content: const Text('Allow storage permission.'),
+          actions: [
+            TextButton(
+              onPressed: () async{
+                Navigator.pop(context);
+                await Permission.storage.isGranted;
+              },
+              child: const Text('Allow'),
+            ),
+            TextButton(
+              onPressed: () async{
+                Navigator.of(context).pop();
+                _showPermissionPermanentlyDeniedDialog();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPermissionPermanentlyDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Permission Permanently Denied'),
+          content: const Text(
+              'Please enable it in the system settings.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                openAppSettings();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Open Settings'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _requestPermission();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final imageModel = Provider.of<HomeViewModel>(context);

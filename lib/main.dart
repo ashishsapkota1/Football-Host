@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:football_host/resources/utils/routes/routes.dart';
 import 'package:football_host/resources/utils/routes/routes_name.dart';
 import 'package:football_host/view_model/home_view_model.dart';
@@ -15,8 +16,9 @@ import 'package:football_host/view_model/tournamentName_view_model.dart';
 import 'package:football_host/view_model/tournament_view_model.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => TournamentViewModel()),
         ChangeNotifierProvider(create: (context) => HomeViewModel()),
-        ChangeNotifierProvider(create: (context) =>TournamentNameViewModel()),
+        ChangeNotifierProvider(create: (context) => TournamentNameViewModel()),
         ChangeNotifierProvider(create: (context) => NavbarViewModel()),
         ChangeNotifierProvider(create: (context) => TeamViewModel()),
         ChangeNotifierProvider(create: (context) => PlayerViewModel()),
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ScoreViewModel()),
         ChangeNotifierProvider(create: (context) => GoalScorerViewModel())
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
         theme: ThemeData(fontFamily: 'Poppins'),
         debugShowCheckedModeBanner: false,
         initialRoute: RoutesName.homePage,

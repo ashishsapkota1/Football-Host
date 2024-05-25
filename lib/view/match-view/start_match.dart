@@ -83,7 +83,7 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
               child: Builder(
                 builder: (BuildContext context) {
                   final TabController tabController =
-                  DefaultTabController.of(context);
+                      DefaultTabController.of(context);
                   tabController.addListener(() {
                     if (tabController.indexIsChanging) {
                       tabController.index;
@@ -97,101 +97,116 @@ class _StartMatchState extends State<StartMatch> with TickerProviderStateMixin {
                       child: isLoading
                           ? const SizedBox()
                           : AppBar(
-                        centerTitle: true,
-                        backgroundColor: AppColor.appBarColor,
-                        title: Text(
-                          "${widget.matches.team1Name?.toUpperCase().substring(
-                              0, 3)} vs ${widget.matches.team2Name
-                              ?.toUpperCase().substring(0, 3)}",
-                          style: TextStyles.appBarText,
-                        ),
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    widget.matches.team1Name!
-                                        .toUpperCase()
-                                        .substring(0, 3),
-                                    style: TextStyles.matchStyle,
+                              centerTitle: true,
+                              backgroundColor: AppColor.appBarColor,
+                              title: Text(
+                                "${widget.matches.team1Name?.toUpperCase().substring(0, 3)} vs ${widget.matches.team2Name?.toUpperCase().substring(0, 3)}",
+                                style: TextStyles.appBarText,
+                              ),
+                              flexibleSpace: FlexibleSpaceBar(
+                                background: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          widget.matches.team1Name!
+                                              .toUpperCase()
+                                              .substring(0, 3),
+                                          style: TextStyles.matchStyle,
+                                        ),
+                                        horizontalSpacing(
+                                            space: Responsive.screenWidth(
+                                                    context) *
+                                                0.08),
+                                        Text(
+                                          team1Score.toString(),
+                                          style: TextStyles.scoreStyle,
+                                        ),
+                                        horizontalSpacing(
+                                            space: Responsive.screenWidth(
+                                                    context) *
+                                                0.04),
+                                        const Text(
+                                          '-',
+                                          style: TextStyles.scoreStyle,
+                                        ),
+                                        horizontalSpacing(
+                                            space: Responsive.screenWidth(
+                                                    context) *
+                                                0.04),
+                                        Text(
+                                          team2Score.toString(),
+                                          style: TextStyles.scoreStyle,
+                                        ),
+                                        horizontalSpacing(
+                                            space: Responsive.screenWidth(
+                                                    context) *
+                                                0.08),
+                                        Text(
+                                          widget.matches.team2Name!
+                                              .toUpperCase()
+                                              .substring(0, 3),
+                                          style: TextStyles.matchStyle,
+                                        ),
+                                      ],
+                                    ),
+                                    if(viewModel.isFirstHalf && viewModel.isSecondHalf)
+                                      (team1Score > team2Score)
+                                          ? Text(
+                                          '${widget.matches.team1Name!
+                                              .substring(0,
+                                              3)} won by $team1Score - $team2Score ')
+                                          : (team2Score > team1Score)
+                                          ? Text(
+                                          '${widget.matches.team2Name!
+                                              .substring(0,
+                                              3)} won by $team2Score - $team1Score ')
+                                          : const SizedBox(),
+                                      (team1PenaltyScore > team2PenaltyScore)
+                                          ? Text(
+                                          '${widget.matches.team1Name!
+                                              .substring(0,
+                                              3)} won by $team1PenaltyScore - $team2PenaltyScore on penalty')
+                                          : (team2PenaltyScore >
+                                          team1PenaltyScore)
+                                          ? Text(
+                                          '${widget.matches.team2Name!
+                                              .substring(0,
+                                              3)} won by $team2PenaltyScore - $team1PenaltyScore on penalty')
+                                          : const SizedBox()
+
+
+                                  ],
+                                ),
+                                expandedTitleScale: 2,
+                              ),
+                              bottom: TabBar(
+                                controller: tabController,
+                                labelStyle: TextStyles.tabBarStyle,
+                                tabs: const [
+                                  Tab(
+                                    text: 'LineUp',
                                   ),
-                                  horizontalSpacing(
-                                      space: Responsive.screenWidth(
-                                          context) *
-                                          0.08),
-                                  Text(
-                                    team1Score.toString(),
-                                    style: TextStyles.scoreStyle,
+                                  Tab(
+                                    text: 'Timer',
                                   ),
-                                  horizontalSpacing(
-                                      space: Responsive.screenWidth(
-                                          context) *
-                                          0.04),
-                                  const Text(
-                                    '-',
-                                    style: TextStyles.scoreStyle,
+                                  Tab(
+                                    text: 'Add Goal',
                                   ),
-                                  horizontalSpacing(
-                                      space: Responsive.screenWidth(
-                                          context) *
-                                          0.04),
-                                  Text(
-                                    team2Score.toString(),
-                                    style: TextStyles.scoreStyle,
-                                  ),
-                                  horizontalSpacing(
-                                      space: Responsive.screenWidth(
-                                          context) *
-                                          0.08),
-                                  Text(
-                                    widget.matches.team2Name!
-                                        .toUpperCase()
-                                        .substring(0, 3),
-                                    style: TextStyles.matchStyle,
-                                  ),
+                                  Tab(
+                                    text: 'Timeline',
+                                  )
                                 ],
                               ),
-                              (team1PenaltyScore > team2PenaltyScore)
-                                  ? Text(
-                                  '${widget.matches.team1Name!.substring(0,
-                                      3)} won $team1PenaltyScore - $team2PenaltyScore on penalty')
-                                : (team2PenaltyScore > team1PenaltyScore)
-                                  ? Text(
-                                  '${widget.matches.team2Name!.substring(0,
-                                      3)} won $team2PenaltyScore - $team1PenaltyScore on penalty')
-                                  : const Text('')
-                            ],
-                          ),
-                          expandedTitleScale: 2,
-                        ),
-                        bottom: TabBar(
-                          controller: tabController,
-                          labelStyle: TextStyles.tabBarStyle,
-                          tabs: const [
-                            Tab(
-                              text: 'LineUp',
                             ),
-                            Tab(
-                              text: 'Timer',
-                            ),
-                            Tab(
-                              text: 'Add Goal',
-                            ),
-                            Tab(
-                              text: 'Timeline',
-                            )
-                          ],
-                        ),
-                      ),
                     ),
                     body: isLoading
                         ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
+                            child: CircularProgressIndicator(),
+                          )
                         : TabBarView(children: tabs),
                   );
                 },
